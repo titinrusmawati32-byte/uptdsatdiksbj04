@@ -674,7 +674,7 @@ function renderPengumumanCards(container, list) {
       <div class="pengumuman-thumb-wrap">
         <img src="${escapeHtml(item.bannerUrl)}" 
              alt="${escapeHtml(item.judul)}" 
-             class="pengumuman-thumb" 
+             class="pengumuman-thumb image-fit-contain" 
              loading="lazy" 
              referrerpolicy="no-referrer"
              onerror="handleThumbError(this, '${driveId || ""}', '${fallbackSvg}')">
@@ -724,8 +724,8 @@ function openPengumumanModal(id) {
   const modalFallbackSvg = item.fallbackSvg || "assets/img/pengumuman-sumpah-pemuda.svg";
 
   content.innerHTML = `
-    <div style="border-radius: 14px; overflow: hidden; margin-bottom: 1.25rem; max-height: 300px; background: var(--primary);">
-      <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${modalDriveId || ""}', '${modalFallbackSvg}')">
+    <div style="border-radius: 14px; overflow: hidden; margin-bottom: 1.25rem; max-height: 480px; min-height: 200px; background: linear-gradient(145deg, #071A30 0%, #0F2A4A 100%); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color);">
+      <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" class="image-fit-contain" style="max-height: 480px; width: 100%; object-fit: contain; object-position: center; display: block;" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${modalDriveId || ""}', '${modalFallbackSvg}')">
     </div>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
       <span class="pengumuman-date" style="font-size: 0.9rem;">
@@ -769,8 +769,8 @@ function openAllPengumumanModal() {
       const fallbackSvg = item.fallbackSvg || "assets/img/pengumuman-sumpah-pemuda.svg";
       return `
     <div style="background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.1rem; display: flex; gap: 1rem; align-items: center; transition: var(--transition);">
-      <div style="width: 84px; height: 60px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: var(--primary);">
-        <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${driveId || ""}', '${fallbackSvg}')">
+      <div style="width: 88px; height: 64px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: linear-gradient(145deg, #071A30 0%, #0F2A4A 100%); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color);">
+        <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" class="image-fit-contain" style="width: 100%; height: 100%; object-fit: contain; object-position: center;" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${driveId || ""}', '${fallbackSvg}')">
       </div>
       <div style="flex: 1; min-width: 0;">
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
@@ -1057,7 +1057,7 @@ function renderEkskulCards(container, list) {
     .map(
       (item) => `
     <div class="card">
-      ${item.fotoUrl ? `<img src="${formatPhotoUrl(item.fotoUrl)}" alt="${escapeHtml(item.nama)}" class="card-img" referrerpolicy="no-referrer">` : ""}
+      ${item.fotoUrl ? `<img src="${formatPhotoUrl(item.fotoUrl)}" alt="${escapeHtml(item.nama)}" class="card-img image-fit-contain" referrerpolicy="no-referrer">` : ""}
       <div class="card-body">
         <h3 class="card-title" style="color: var(--primary);">${escapeHtml(item.nama)}</h3>
         <p>${escapeHtml(item.deskripsi)}</p>
@@ -1105,7 +1105,7 @@ function renderFasilitasCards(container, list) {
   container.innerHTML = list
     .map((fasilitas) => {
       const photoHtml = fasilitas.fotoUrl
-        ? `<img src="${formatPhotoUrl(fasilitas.fotoUrl)}" alt="${escapeHtml(fasilitas.nama)}" class="card-img" referrerpolicy="no-referrer" onerror="this.outerHTML=getDefaultFacilityImgHtml()">`
+        ? `<img src="${formatPhotoUrl(fasilitas.fotoUrl)}" alt="${escapeHtml(fasilitas.nama)}" class="card-img image-fit-contain" referrerpolicy="no-referrer" onerror="this.outerHTML=getDefaultFacilityImgHtml()">`
         : getDefaultFacilityImgHtml();
 
       return `
