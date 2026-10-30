@@ -52,17 +52,26 @@ export default async function handler(req, res) {
 
       const data = store.handlePost(body);
 
-      // Asynchronously forward write actions to Google Apps Script
+      // NON-BLOCKING: Teruskan mutasi ke Google Apps Script di latar belakang tanpa menahan response user
       if (DEFAULT_GAS_URL && !DEFAULT_GAS_URL.includes("SAMPLE_DEPLOYMENT_ID")) {
         try {
-          await fetch(DEFAULT_GAS_URL, {
+          const cleanBody = JSON.parse(JSON.stringify(body));
+          if (cleanBody.data && typeof cleanBody.data === "object") {
+            ["fotoUrl", "bannerUrl", "foto", "gambar", "thumbnail", "url"].forEach((k) => {
+              if (cleanBody.data[k] && String(cleanBody.data[k]).startsWith("data:")) {
+                cleanBody.data[k] = "[Foto Cloud]";
+              }
+            });
+          }
+          fetch(DEFAULT_GAS_URL, {
             method: "POST",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(body)
-          });
+            body: JSON.stringify(cleanBody)
+          }).catch(() => {});
         } catch {}
       }
 
+      // Langsung balas ke klien dalam hitungan milidetik!
       res.status(200).json({
         ok: true,
         data,

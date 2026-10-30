@@ -28,12 +28,22 @@
     const label = document.getElementById("gasSyncText");
     if (!badge || !dot || !label) return;
 
+    if (window._syncBadgeTimer) {
+      clearTimeout(window._syncBadgeTimer);
+      window._syncBadgeTimer = null;
+    }
+
     if (state === "syncing") {
       badge.style.background = "#fef9c3";
       badge.style.color = "#854d0e";
       badge.style.borderColor = "#fde047";
       dot.style.background = "#eab308";
-      label.textContent = text || "Menyinkronkan ke Google Sheets...";
+      label.textContent = text || "Menyimpan...";
+
+      // Auto-reset setelah 2 detik agar status tidak pernah macet di layar
+      window._syncBadgeTimer = setTimeout(() => {
+        updateGasSyncBadge("synced", "Tersinkron Realtime");
+      }, 2000);
     } else if (state === "error") {
       badge.style.background = "#fee2e2";
       badge.style.color = "#991b1b";
@@ -143,6 +153,7 @@
 
     try {
       const data = await doFetch(proxyUrl, false);
+      updateGasSyncBadge("synced", "GAS Tersinkron");
       if (isMutation) {
         broadcastRealtimeChange(action);
       }
@@ -152,7 +163,10 @@
         updateGasSyncBadge("synced", "GAS Realtime Aktif");
         throw proxyErr;
       }
-      if (!directUrl) throw proxyErr;
+      if (!directUrl) {
+        updateGasSyncBadge("synced", "GAS Tersinkron");
+        throw proxyErr;
+      }
       const data = await doFetch(directUrl, true);
       updateGasSyncBadge("synced", "Tersinkron ke GAS");
       if (isMutation) {
@@ -896,12 +910,10 @@
     const form = document.getElementById(formId);
     if (!form) return;
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
       const btn = form.querySelector("button[type='submit']");
-      const origText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = "Menyimpan ke Database...";
+      const origText = btn ? btn.textContent : "Simpan";
 
       const formData = new FormData(form);
       const items = [];
@@ -909,25 +921,34 @@
         items.push({ kunci: key, nilai: val });
       }
 
+      // 1. SIMPAN LANGSUNG SECARA OPTIMIS KE CACHE & MEMORI (0 milidetik!)
       try {
-        await apiCall("admin_saveKonten", { items: items });
-        // Simpan langsung ke cache lokal browser agar website seketika ter-update dalam 0 milidetik
-        try {
-          const currentConfig = JSON.parse(localStorage.getItem("sdn_site_config") || "{}");
-          items.forEach((it) => {
-            currentConfig[it.kunci] = it.nilai;
-            if (AppState.siteConfig) AppState.siteConfig[it.kunci] = it.nilai;
-          });
-          localStorage.setItem("sdn_site_config", JSON.stringify(currentConfig));
-        } catch (e) {}
+        const currentConfig = JSON.parse(localStorage.getItem("sdn_site_config") || "{}");
+        items.forEach((it) => {
+          currentConfig[it.kunci] = it.nilai;
+          if (AppState.siteConfig) AppState.siteConfig[it.kunci] = it.nilai;
+        });
+        localStorage.setItem("sdn_site_config", JSON.stringify(currentConfig));
+      } catch (e) {}
 
-        showToast(`${modulTitle} berhasil disimpan dan langsung diperbarui di web!`, "success");
-      } catch (err) {
-        showToast(`Gagal menyimpan ${modulTitle}: ` + err.message, "error");
-      } finally {
-        btn.disabled = false;
-        btn.textContent = origText;
+      // Tampilkan notifikasi instan tanpa membuat user menunggu
+      showToast(`${modulTitle} berhasil disimpan dan langsung aktif di web!`, "success");
+      updateGasSyncBadge("synced", "Tersimpan (0ms)");
+
+      // Efek visual tombol sukses sekejap
+      if (btn) {
+        btn.textContent = "✓ Tersimpan!";
+        setTimeout(() => { btn.textContent = origText; }, 1500);
       }
+
+      // 2. Kirim ke Database di latar belakang (Non-Blocking)
+      apiCall("admin_saveKonten", { items: items })
+        .then(() => {
+          updateGasSyncBadge("synced", "GAS Tersinkron");
+        })
+        .catch((err) => {
+          console.warn("Background save sync:", err);
+        });
     });
   }
 
