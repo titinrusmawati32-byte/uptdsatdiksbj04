@@ -555,18 +555,59 @@ const FirestoreCMS = {
   uploadMedia: async (payload = {}) => {
     const berkas = payload.berkas || {};
     let rawBase64 = String(berkas.base64 || "");
+    if (rawBase64.includes(",")) rawBase64 = rawBase64.split(",")[1];
     const mime = berkas.mime || "image/jpeg";
-    const dataUrl = rawBase64.startsWith("data:")
-      ? rawBase64
-      : `data:${mime};base64,${rawBase64}`;
-    const id = "MED-" + Date.now() + "-" + Math.random().toString(36).substring(2, 6);
+    const nama = berkas.nama || ("foto-" + Date.now() + ".jpg");
+
+    let finalUrl = `data:${mime};base64,${rawBase64}`;
+    let fileId = "MED-" + Date.now() + "-" + Math.random().toString(36).substring(2, 6);
+
+    // 1. Unggah berkas ke Google Drive via Google Apps Script Web App
+    const gasUrl = (window.APP_CONFIG && window.APP_CONFIG.API_URL) || "";
+    if (gasUrl && !gasUrl.includes("SAMPLE_DEPLOYMENT_ID")) {
+      try {
+        const gasRes = await fetch(gasUrl, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "admin_uploadMedia",
+            berkas: { nama, mime, base64: rawBase64 },
+            alt: payload.alt || nama
+          })
+        });
+        const driveJson = await gasRes.json();
+        if (driveJson && driveJson.ok && driveJson.url) {
+          finalUrl = driveJson.url; // Tautan resmi Google Drive: https://lh3.googleusercontent.com/d/FILE_ID
+          fileId = driveJson.fileId || driveJson.id || fileId;
+        }
+      } catch (err) {
+        console.warn("[UploadMedia] Direct GAS Drive upload fallback ke proxy:", err);
+        try {
+          const proxyRes = await fetch("/api/gas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "admin_uploadMedia",
+              berkas: { nama, mime, base64: rawBase64 },
+              alt: payload.alt || nama
+            })
+          });
+          const proxyJson = await proxyRes.json();
+          if (proxyJson && proxyJson.ok && proxyJson.url) {
+            finalUrl = proxyJson.url;
+            fileId = proxyJson.fileId || proxyJson.id || fileId;
+          }
+        } catch (e2) {}
+      }
+    }
 
     const mediaDoc = {
-      id,
-      fileId: id,
-      url: dataUrl,
-      alt: payload.alt || berkas.nama || "Foto SDN Sumberejo 04",
-      namaAsli: berkas.nama || "foto.jpg",
+      id: fileId,
+      fileId: fileId,
+      url: finalUrl,
+      driveUrl: finalUrl.startsWith("http") ? finalUrl : "",
+      alt: payload.alt || nama,
+      namaAsli: nama,
       mime,
       diunggah: new Date().toISOString().replace("T", " ").substring(0, 16),
       createdAt: new Date().toISOString()
@@ -574,24 +615,13 @@ const FirestoreCMS = {
 
     if (db) {
       try {
-        await setDoc(doc(db, "media", id), mediaDoc);
+        await setDoc(doc(db, "media", fileId), mediaDoc);
       } catch (e) {
         console.warn("[FirestoreCMS] Simpan media ke Firestore warning:", e);
       }
     }
 
-    // Teruskan ke Google Apps Script di latar belakang jika tersedia
-    forwardToGasBackground({
-      action: "admin_uploadMedia",
-      berkas: {
-        nama: berkas.nama,
-        mime: berkas.mime,
-        base64: rawBase64.includes(",") ? rawBase64.split(",")[1] : rawBase64
-      },
-      alt: payload.alt
-    });
-
-    return { ok: true, id, fileId: id, url: dataUrl };
+    return { ok: true, id: fileId, fileId: fileId, url: finalUrl };
   },
 
   /**

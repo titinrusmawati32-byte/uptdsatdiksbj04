@@ -1247,7 +1247,7 @@
       try {
         // Kompresi di sisi browser via ImageProcessor (Maks 50 MB)
         const processed = await ImageProcessor.compress(file);
-        progressText.textContent = `Menyimpan ${processed.name} (${processed.sizeFormatted})...`;
+        progressText.textContent = `Mengunggah ${processed.name} (${processed.sizeFormatted}) ke Google Drive...`;
 
         const result = await apiCall("admin_uploadMedia", {
           berkas: {
@@ -1258,7 +1258,7 @@
           alt: file.name
         });
 
-        showToast("Foto berhasil dikompresi dan disimpan ke Cloud Database!", "success");
+        showToast("Foto berhasil diunggah dan disimpan sebagai link Google Drive!", "success");
         loadMediaLibrary();
       } catch (err) {
         showToast("Gagal mengunggah foto: " + err.message, "error");
@@ -1918,19 +1918,21 @@
               alt: file.name
             });
 
-            // Hanya gunakan URL server jika valid dan bukan /api/media/ (yang bisa 404 pada hosting statis)
+            // Gunakan URL Google Drive resmi
             if (res && res.url && !res.url.startsWith("/api/media/")) {
               hiddenVal.value = res.url;
               if (preview) {
                 const formatted = formatPhotoUrl(res.url);
                 preview.src = formatted;
               }
+              showToast(`Foto berhasil diunggah ke Google Drive (${compressed.sizeFormatted})!`, "success");
+            } else {
+              showToast(`Foto siap disimpan (${compressed.sizeFormatted})!`, "success");
             }
           } catch (uploadErr) {
             console.warn("[UploadMedia] Terus gunakan dataUrl lokal:", uploadErr);
+            showToast(`Foto siap disimpan (${compressed.sizeFormatted})!`, "info");
           }
-
-          showToast(`Foto berhasil dikompresi (${compressed.sizeFormatted}) dan siap disimpan!`, "success");
         } catch (err) {
           showToast("Gagal mengolah foto: " + err.message, "error");
         } finally {
@@ -2179,11 +2181,16 @@
   function formatPhotoUrl(url) {
     if (!url) return "";
     const clean = String(url).trim();
+    if (clean.includes("lh3.googleusercontent.com")) {
+      return clean;
+    }
+    const fileId = extractDriveId(clean);
+    if (fileId) {
+      return `https://lh3.googleusercontent.com/d/${fileId}=w1000`;
+    }
     if (
       clean.startsWith("data:") ||
       clean.startsWith("blob:") ||
-      clean.startsWith("/api/media/") ||
-      clean.startsWith("/api/drive-image") ||
       clean.startsWith("/assets/")
     ) {
       return clean;
@@ -2193,10 +2200,6 @@
     }
     if (clean.startsWith("assets/")) {
       return "/" + clean;
-    }
-    const fileId = extractDriveId(clean);
-    if (fileId) {
-      return `/api/drive-image?id=${fileId}`;
     }
     return clean;
   }

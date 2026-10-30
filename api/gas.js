@@ -50,6 +50,29 @@ export default async function handler(req, res) {
       }
       body = body || {};
 
+      // KHUSUS UPLOAD MEDIA: Unggah langsung ke Google Drive dan kembalikan URL Google Drive resmi
+      if (body.action === "admin_uploadMedia" && DEFAULT_GAS_URL && !DEFAULT_GAS_URL.includes("SAMPLE_DEPLOYMENT_ID")) {
+        try {
+          const driveRes = await fetch(DEFAULT_GAS_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(body)
+          });
+          const driveJson = await driveRes.json();
+          if (driveJson && driveJson.ok && driveJson.url) {
+            return res.status(200).json({
+              ok: true,
+              data: driveJson,
+              id: driveJson.fileId || driveJson.id,
+              url: driveJson.url,
+              fileId: driveJson.fileId || driveJson.id
+            });
+          }
+        } catch (e) {
+          console.warn("GAS Drive upload fallback:", e);
+        }
+      }
+
       const data = store.handlePost(body);
 
       // NON-BLOCKING: Teruskan mutasi ke Google Apps Script di latar belakang tanpa menahan response user

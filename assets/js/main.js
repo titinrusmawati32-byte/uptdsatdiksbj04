@@ -1521,20 +1521,21 @@ function getDefaultAvatarHtml(nama) {
 function formatPhotoUrl(url) {
   if (!url) return "";
   const clean = String(url).trim();
+  if (clean.includes("lh3.googleusercontent.com")) {
+    return clean;
+  }
+  const fileId = extractDriveId(clean);
+  if (fileId) {
+    return `https://lh3.googleusercontent.com/d/${fileId}=w1200`;
+  }
   if (
     clean.startsWith("data:") ||
     clean.startsWith("blob:") ||
-    clean.startsWith("/api/media/") ||
-    clean.startsWith("/api/drive-image") ||
     clean.startsWith("assets/") ||
     clean.startsWith("./assets/") ||
     clean.startsWith("/assets/")
   ) {
     return clean;
-  }
-  const fileId = extractDriveId(clean);
-  if (fileId) {
-    return `/api/drive-image?id=${fileId}`;
   }
   return clean;
 }

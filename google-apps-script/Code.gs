@@ -178,6 +178,22 @@ function doPost(e) {
       return jsonResponse({ ok: true, nomorPendaftaran: noReg });
     }
 
+    // 8. UNGGAH FOTO KE GOOGLE DRIVE & KEMBALIKAN TAUTAN GOOGLE DRIVE RESMI
+    if (action === "admin_uploadMedia" || action === "uploadMedia") {
+      const berkas = body.berkas || {};
+      const fileId = uploadImageToGoogleDrive(berkas);
+      const driveUrl = "https://lh3.googleusercontent.com/d/" + fileId;
+      const viewUrl = "https://drive.google.com/file/d/" + fileId + "/view?usp=sharing";
+      return jsonResponse({
+        ok: true,
+        id: fileId,
+        fileId: fileId,
+        url: driveUrl,
+        viewUrl: viewUrl,
+        message: "Foto berhasil diunggah ke Google Drive!"
+      });
+    }
+
     return jsonResponse({ ok: false, message: "Aksi POST '" + action + "' tidak dikenali." });
   } catch (err) {
     return jsonResponse({ ok: false, message: err.toString() });
@@ -503,6 +519,38 @@ function readAllDataBundle() {
     collections: collections,
     pendaftar: pendaftar
   };
+}
+
+/**
+ * Menyimpan file foto yang dikompresi ke Folder Google Drive khusus
+ * dan menghasilkan link Google Drive yang dapat diakses publik
+ */
+function uploadImageToGoogleDrive(berkas) {
+  let base64 = String(berkas.base64 || "");
+  if (base64.includes(",")) {
+    base64 = base64.split(",")[1];
+  }
+  const mime = berkas.mime || "image/jpeg";
+  const nama = berkas.nama || ("foto-" + Utilities.formatDate(new Date(), "GMT+7", "yyyyMMdd-HHmmss") + ".jpg");
+
+  // Cari atau buat folder "SDN 04 - Media Website" di Google Drive
+  let folder;
+  const folderName = "SDN 04 - Media Website";
+  const folders = DriveApp.getFoldersByName(folderName);
+  if (folders.hasNext()) {
+    folder = folders.next();
+  } else {
+    folder = DriveApp.createFolder(folderName);
+  }
+
+  const bytes = Utilities.base64Decode(base64);
+  const blob = Utilities.newBlob(bytes, mime, nama);
+  const file = folder.createFile(blob);
+
+  // Set izin public link agar bisa diakses oleh website publik dan admin CMS
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+
+  return file.getId();
 }
 
 /**
