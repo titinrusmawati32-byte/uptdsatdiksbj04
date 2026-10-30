@@ -54,6 +54,8 @@ body {
   height: 100%;
   object-fit: contain;
   object-position: center;
+  border: none;
+  box-shadow: none;
 }
 
 .image-fit-natural {
@@ -62,6 +64,8 @@ body {
   height: auto;
   max-height: 100%;
   object-fit: contain;
+  border: none;
+  box-shadow: none;
 }
 
 .image-fit-cover {
@@ -70,6 +74,8 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  border: none;
+  box-shadow: none;
 }
 
 /* ==========================================
@@ -547,7 +553,9 @@ body {
   height: 110px;
   object-fit: contain;
   object-position: center;
-  background: #071A30;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   display: block;
 }
 

@@ -113,6 +113,8 @@ img, svg, video {
   height: 100%;
   object-fit: contain;
   object-position: center;
+  border: none;
+  box-shadow: none;
 }
 
 .image-fit-natural {
@@ -121,6 +123,8 @@ img, svg, video {
   height: auto;
   max-height: 100%;
   object-fit: contain;
+  border: none;
+  box-shadow: none;
 }
 
 .image-fit-cover {
@@ -129,12 +133,16 @@ img, svg, video {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  border: none;
+  box-shadow: none;
 }
 
 .image-container-contain {
   position: relative;
   width: 100%;
-  background: linear-gradient(145deg, #071A30 0%, #0F2A4A 100%);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1225,16 +1233,22 @@ p {
   height: 220px;
   object-fit: contain;
   object-position: center;
-  background: linear-gradient(145deg, #071A30 0%, #0F2A4A 100%);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid var(--border-color);
+  border: none;
+  box-shadow: none;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  overflow: hidden;
   transition: transform 0.45s var(--ease-smooth);
 }
 
 img.card-img {
   display: block;
+  border: none;
+  box-shadow: none;
 }
 
 .card:hover .card-img {
@@ -1368,13 +1382,16 @@ img.card-img {
   aspect-ratio: 16 / 9;
   height: 100%;
   min-height: 290px;
-  border-bottom: none;
-  border-right: 1px solid var(--border-color);
-  background: linear-gradient(145deg, #071A30 0%, #0F2A4A 100%);
+  border: none;
+  box-shadow: none;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+  border-top-right-radius: 0;
 }
 
 .pengumuman-card.pengumuman-featured .pengumuman-card-content {
@@ -1416,12 +1433,15 @@ img.card-img {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: linear-gradient(145deg, #071A30 0%, #0F2A4A 100%);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-bottom: 1px solid var(--border-color);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
 }
 
 .pengumuman-thumb {
@@ -1430,6 +1450,8 @@ img.card-img {
   object-fit: contain;
   object-position: center;
   display: block;
+  border: none;
+  box-shadow: none;
   transition: transform 0.45s var(--ease-smooth);
 }
 
@@ -1591,9 +1613,11 @@ img.card-img {
     grid-template-columns: 1fr;
   }
   .pengumuman-card.pengumuman-featured .pengumuman-thumb-wrap {
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
+    border: none;
     min-height: 220px;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    border-bottom-left-radius: 0;
   }
 }
 
@@ -1619,9 +1643,9 @@ img.card-img {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: linear-gradient(145deg, #071A30 0%, #0F2A4A 100%);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   aspect-ratio: 16 / 10;
   cursor: pointer;
   display: flex;
@@ -1634,6 +1658,9 @@ img.card-img {
   height: 100%;
   object-fit: cover;
   display: block;
+  border: none;
+  box-shadow: none;
+  border-radius: inherit;
   transition: transform 0.45s var(--ease-smooth);
 }
 
@@ -1641,6 +1668,8 @@ img.card-img {
 .galeri-card img.image-fit-contain {
   object-fit: contain;
   object-position: center;
+  border: none;
+  box-shadow: none;
 }
 
 .galeri-card:hover img {

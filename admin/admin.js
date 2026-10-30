@@ -1398,7 +1398,7 @@
             return `
         <tr>
           <td>
-            ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.judul)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 66px; height: 46px; border-radius: 6px; object-fit: contain; object-position: center; background: #071A30; border: 1px solid var(--border); display: block;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 66px; height: 46px; border-radius: 6px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">📢</div>`}
+            ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.judul)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 66px; height: 46px; border-radius: 6px; object-fit: contain; object-position: center; background: transparent; border: none; box-shadow: none; display: block;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 66px; height: 46px; border-radius: 6px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">📢</div>`}
           </td>
           <td><strong>${escapeHtml(it.judul)}</strong><br><small style="color: var(--text-muted);">${escapeHtml(isiStr ? isiStr.substring(0, 60) + (isiStr.length > 60 ? '...' : '') : '')}</small></td>
           <td>${it.tanggal || "-"}</td>
@@ -1424,7 +1424,7 @@
         <tr>
           <td><strong>${it.urutan || 99}</strong></td>
           <td>
-            ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.nama)}" referrerpolicy="no-referrer" class="image-fit-cover" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top center; border: 1px solid var(--border); display: block;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👨‍🏫</div>`}
+            ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.nama)}" referrerpolicy="no-referrer" class="image-fit-cover" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top center; background: transparent; border: none; box-shadow: none; display: block;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👨‍🏫</div>`}
           </td>
           <td><strong>${escapeHtml(it.nama)}</strong></td>
           <td>${escapeHtml(it.jabatan)}</td>
@@ -1450,7 +1450,7 @@
         <tr>
           <td>
             <div style="display: flex; align-items: center; gap: 0.65rem;">
-              ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.nama)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 58px; height: 42px; border-radius: 6px; object-fit: contain; object-position: center; background: #071A30; border: 1px solid var(--border); flex-shrink: 0;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 58px; height: 42px; border-radius: 6px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;">🎯</div>`}
+              ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.nama)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 58px; height: 42px; border-radius: 6px; object-fit: contain; object-position: center; background: transparent; border: none; box-shadow: none; flex-shrink: 0;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 58px; height: 42px; border-radius: 6px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;">🎯</div>`}
               <div>
                 <strong>${escapeHtml(it.nama)}</strong>
               </div>
@@ -1481,7 +1481,7 @@
         <tr>
           <td><strong>${it.urutan || 99}</strong></td>
           <td>
-            ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.nama)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 58px; height: 42px; border-radius: 4px; object-fit: contain; object-position: center; background: #071A30; border: 1px solid var(--border); display: block;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 58px; height: 42px; border-radius: 4px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🏢</div>`}
+            ${displayPhoto ? `<img src="${escapeHtml(displayPhoto)}" alt="${escapeHtml(it.nama)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 58px; height: 42px; border-radius: 4px; object-fit: contain; object-position: center; background: transparent; border: none; box-shadow: none; display: block;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">` : `<div style="width: 58px; height: 42px; border-radius: 4px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🏢</div>`}
           </td>
           <td><strong>${escapeHtml(it.nama)}</strong></td>
           <td><small style="color: var(--text-muted);">${escapeHtml(descStr ? descStr.substring(0, 50) + (descStr.length > 50 ? '...' : '') : '')}</small></td>
@@ -1518,7 +1518,7 @@
                 ? it.tipe === "video"
                   ? `<a href="${escapeHtml(displayUrl)}" target="_blank" class="btn btn-outline btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.78rem;">Buka Video ↗</a>`
                   : `<div style="display: flex; align-items: center; gap: 0.5rem;">
-                       <img src="${escapeHtml(displayUrl)}" alt="${escapeHtml(it.judul)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 58px; height: 42px; border-radius: 4px; object-fit: contain; object-position: center; background: #071A30; border: 1px solid var(--border);" onerror="window.handleAdminImgError(this, '${driveId || ''}')">
+                       <img src="${escapeHtml(displayUrl)}" alt="${escapeHtml(it.judul)}" referrerpolicy="no-referrer" class="image-fit-contain" style="width: 58px; height: 42px; border-radius: 4px; object-fit: contain; object-position: center; background: transparent; border: none; box-shadow: none;" onerror="window.handleAdminImgError(this, '${driveId || ''}')">
                        <a href="${escapeHtml(displayUrl)}" target="_blank" class="btn btn-outline btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">Buka ↗</a>
                      </div>`
                 : '<span style="color: var(--text-muted);">-</span>'
@@ -1842,7 +1842,7 @@
           <img id="previewColImg_${fieldName}" src="${escapeHtml(previewUrl)}" 
                referrerpolicy="no-referrer"
                class="image-fit-contain"
-               style="width: 120px; height: 86px; border-radius: var(--radius); object-fit: contain; object-position: center; background: #071A30; border: 1px solid var(--border); display: ${previewUrl ? 'block' : 'none'}; padding: 2px;"
+               style="width: 120px; height: 86px; border-radius: var(--radius); object-fit: contain; object-position: center; background: transparent; border: none; box-shadow: none; display: ${previewUrl ? 'block' : 'none'};"
                onerror="window.handleAdminImgError(this, '${driveId || ''}')">
           <div style="flex: 1; min-width: 200px;">
             <input type="file" id="fileColInput_${fieldName}" accept="image/*" class="form-control" style="font-size: 0.85rem;">
