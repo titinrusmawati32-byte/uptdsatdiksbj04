@@ -308,10 +308,19 @@ function forwardToGasBackground(body) {
   const gasUrl = (window.APP_CONFIG && window.APP_CONFIG.API_URL) || "";
   if (!gasUrl || gasUrl.includes("SAMPLE_DEPLOYMENT_ID")) return;
   try {
+    const cleanBody = JSON.parse(JSON.stringify(body));
+    if (cleanBody.data && typeof cleanBody.data === "object") {
+      ["fotoUrl", "bannerUrl", "foto", "gambar", "thumbnail", "url", "url_foto"].forEach((f) => {
+        if (cleanBody.data[f] && String(cleanBody.data[f]).startsWith("data:")) {
+          cleanBody.data[f] = "[Foto Cloud]";
+        }
+      });
+    }
     fetch(gasUrl, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(body)
+      body: JSON.stringify(cleanBody),
+      mode: "no-cors"
     }).catch(() => {});
   } catch {}
 }

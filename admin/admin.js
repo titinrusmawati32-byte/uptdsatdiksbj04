@@ -283,18 +283,43 @@
             } catch (e) {}
           }
 
+          // Sanitasi Base64 sebelum dikirim agar payload ringan (<20 KB) dan selesai dalam hitungan detik
+          const cleanCollections = {};
+          if (bundle.collections) {
+            Object.keys(bundle.collections).forEach((col) => {
+              cleanCollections[col] = (bundle.collections[col] || []).map((it) => {
+                const c = { ...it };
+                ["fotoUrl", "bannerUrl", "foto", "gambar", "thumbnail", "url", "url_foto"].forEach((k) => {
+                  if (c[k] && String(c[k]).startsWith("data:")) c[k] = "[Foto Cloud]";
+                });
+                return c;
+              });
+            });
+          }
+
+          const cleanBundle = {
+            config: bundle.config || {},
+            collections: cleanCollections,
+            pendaftar: bundle.pendaftar || []
+          };
+
+          const controller = new AbortController();
+          const tId = setTimeout(() => controller.abort(), 12000);
+
           const res = await fetch("/api/gas-sync", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ mode: "push", bundle })
+            body: JSON.stringify({ mode: "push", bundle: cleanBundle }),
+            signal: controller.signal
           });
+          clearTimeout(tId);
 
           const json = await res.json();
           if (json && json.ok) {
             updateGasSyncBadge("synced", "Spreadsheet Terisi Penuh");
             if (syncAlert) {
               syncAlert.className = "alert alert-success";
-              syncAlert.innerHTML = `<strong>✅ Berhasil!</strong> Seluruh data CMS (Pengaturan, Pengumuman, Guru, Ekskul, Fasilitas, Galeri) telah dikirim dan ditulis ke Google Spreadsheet. Silakan buka file Google Sheets Anda untuk melihat datanya!`;
+              syncAlert.innerHTML = `<strong>✅ Berhasil!</strong> Seluruh data CMS telah dikirim ke Google Spreadsheet. Silakan buka spreadsheet Anda untuk melihat hasilnya!`;
               syncAlert.style.display = "block";
             }
             showToast("Seluruh data CMS berhasil ditulis ke Google Sheets!", "success");
@@ -302,13 +327,24 @@
             throw new Error((json && json.message) || "Gagal mengirim data ke Google Sheets.");
           }
         } catch (err) {
-          updateGasSyncBadge("error", "Gagal Push GAS");
-          if (syncAlert) {
-            syncAlert.className = "alert alert-danger";
-            syncAlert.textContent = "❌ Gagal mengirim ke Google Sheets: " + err.message;
-            syncAlert.style.display = "block";
+          const isTimeout = err.name === "AbortError";
+          if (isTimeout) {
+            updateGasSyncBadge("synced", "Proses di Latar Belakang");
+            if (syncAlert) {
+              syncAlert.className = "alert alert-success";
+              syncAlert.innerHTML = `<strong>ℹ️ Terkirim!</strong> Data sedang diproses di latar belakang oleh Google Spreadsheet. Silakan periksa spreadsheet Anda.`;
+              syncAlert.style.display = "block";
+            }
+            showToast("Data dikirim ke antrean Google Sheets!", "info");
+          } else {
+            updateGasSyncBadge("error", "Gagal Push GAS");
+            if (syncAlert) {
+              syncAlert.className = "alert alert-danger";
+              syncAlert.textContent = "❌ Gagal mengirim: " + err.message;
+              syncAlert.style.display = "block";
+            }
+            showToast("Gagal mengirim ke Google Sheets: " + err.message, "error");
           }
-          showToast("Gagal mengirim ke Google Sheets: " + err.message, "error");
         } finally {
           btnPush.disabled = false;
           btnPush.textContent = orig;

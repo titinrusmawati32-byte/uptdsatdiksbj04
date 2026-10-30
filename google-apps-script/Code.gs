@@ -221,7 +221,10 @@ function pushAllBundleToSheets(bundle) {
           let val = item[h];
           if (val === undefined || val === null) val = "";
           if (typeof val === "boolean") val = val ? "TRUE" : "FALSE";
-          return String(val);
+          val = String(val);
+          if (val.startsWith("data:")) val = "[Foto Cloud]";
+          if (val.length > 40000) val = val.substring(0, 40000);
+          return val;
         });
       });
 
@@ -278,7 +281,9 @@ function saveSiteConfig(items) {
 
   items.forEach(it => {
     const k = String(it.kunci || "").trim();
-    const v = String(it.nilai !== undefined && it.nilai !== null ? it.nilai : "");
+    let v = String(it.nilai !== undefined && it.nilai !== null ? it.nilai : "");
+    if (v.startsWith("data:")) v = "[Foto Cloud]";
+    if (v.length > 40000) v = v.substring(0, 40000);
     if (!k) return;
 
     if (existingKeys[k]) {
@@ -325,7 +330,10 @@ function saveOrUpdateRow(sheetName, data) {
     let val = data[h];
     if (val === undefined || val === null) val = "";
     if (typeof val === "boolean") val = val ? "TRUE" : "FALSE";
-    return String(val);
+    val = String(val);
+    if (val.startsWith("data:")) val = "[Foto Cloud]";
+    if (val.length > 40000) val = val.substring(0, 40000);
+    return val;
   });
 
   if (foundRowIndex > 0) {
