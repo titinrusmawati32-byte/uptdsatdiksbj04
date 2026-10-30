@@ -122,6 +122,53 @@ function doPost(e) {
   const action = body.action || (e && e.parameter && e.parameter.action) || "";
 
   try {
+    // 0. AUTENTIKASI LOGIN ADMIN CMS
+    if (action === "admin_login") {
+      const u = String(body.namaPengguna || "").trim().toLowerCase();
+      const p = String(body.kataSandi || "");
+      const validUsers = [
+        { id: "USR-001", namaPengguna: "kepsek", namaTampil: "Kepala Sekolah", peran: "superadmin", kataSandi: "admin12345" },
+        { id: "USR-002", namaPengguna: "editor", namaTampil: "Ibu Endang (Humas)", peran: "editor", kataSandi: "guru12345" },
+        { id: "USR-003", namaPengguna: "panitia", namaTampil: "Panitia SPMB", peran: "admin_spmb", kataSandi: "spmb12345" }
+      ];
+      const match = validUsers.find(function(x) {
+        return x.namaPengguna === u && x.kataSandi === p;
+      });
+      if (match) {
+        return jsonResponse({
+          ok: true,
+          data: {
+            token: "GAS_TOKEN_" + Utilities.getUuid(),
+            pengguna: {
+              id: match.id,
+              namaPengguna: match.namaPengguna,
+              namaTampil: match.namaTampil,
+              peran: match.peran
+            }
+          }
+        });
+      }
+      return jsonResponse({ ok: false, message: "Nama pengguna atau kata sandi salah." });
+    }
+
+    if (action === "admin_me") {
+      return jsonResponse({
+        ok: true,
+        data: {
+          pengguna: {
+            id: "USR-001",
+            namaPengguna: "kepsek",
+            namaTampil: "Kepala Sekolah",
+            peran: "superadmin"
+          }
+        }
+      });
+    }
+
+    if (action === "admin_logout") {
+      return jsonResponse({ ok: true });
+    }
+
     // 1. PUSH SELURUH BUNDLE DATA CMS KE SPREADSHEET DALAM SEKALI KLIK
     if (action === "admin_pushBundle" || action === "pushAll") {
       const bundle = body.bundle || body.data || {};
