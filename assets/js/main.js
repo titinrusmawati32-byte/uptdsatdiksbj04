@@ -591,8 +591,7 @@ function normalizePengumumanList(rawList) {
     }
 
     const localSavedPhoto = item.id ? localStorage.getItem("sdn_photo_" + item.id) : null;
-    const rawUploaded =
-      localSavedPhoto ||
+    const dbPhoto =
       item.fotoUrl ||
       item.bannerUrl ||
       item.foto ||
@@ -603,6 +602,10 @@ function normalizePengumumanList(rawList) {
       item.url ||
       item.urlFoto ||
       "";
+    // Nilai database Firestore/CMS adalah prioritas utama
+    const rawUploaded = (dbPhoto && !String(dbPhoto).endsWith(".svg"))
+      ? dbPhoto
+      : ((localSavedPhoto && !String(localSavedPhoto).endsWith(".svg")) ? localSavedPhoto : (dbPhoto || localSavedPhoto || ""));
     const uploadedPhoto = String(rawUploaded);
     let isCustomPhoto = false;
     let bannerUrl = "";
@@ -1539,6 +1542,7 @@ function formatPhotoUrl(url) {
 function handleThumbError(imgEl, driveId, fallbackSvg) {
   if (!imgEl) return;
   const cur = imgEl.src || "";
+  if (cur.startsWith("data:")) return;
   if (driveId && cur.includes("/api/drive-image")) {
     imgEl.src = `https://lh3.googleusercontent.com/d/${driveId}=w1200`;
     return;

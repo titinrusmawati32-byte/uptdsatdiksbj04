@@ -6,10 +6,10 @@
 
 window.ImageProcessor = (function () {
   const MAX_INPUT_SIZE = 50 * 1024 * 1024; // 50 MB
-  const TARGET_MAX_OUTPUT_SIZE = 450 * 1024; // 450 KB (Kualitas HD tajam & cepat diunggah ke GAS)
-  const ABSOLUTE_MAX_OUTPUT_SIZE = 1.5 * 1024 * 1024; // 1.5 MB batas aman payload JSON GAS
-  const MAX_DIMENSION_DEFAULT = 1600; // px (Full HD tajam)
-  const MAX_DIMENSION_HERO = 2000; // px
+  const TARGET_MAX_OUTPUT_SIZE = 140 * 1024; // 140 KB (Sangat tajam, cepat, hemat memori & aman untuk Firestore)
+  const ABSOLUTE_MAX_OUTPUT_SIZE = 350 * 1024; // 350 KB batas maksimal
+  const MAX_DIMENSION_DEFAULT = 1200; // px (Full HD tajam untuk web sekolah)
+  const MAX_DIMENSION_HERO = 1600; // px
 
   /**
    * Mengompresi berkas gambar dari input file
@@ -88,9 +88,11 @@ window.ImageProcessor = (function () {
       const dotIdx = file.name ? file.name.lastIndexOf(".") : -1;
       const baseName = dotIdx > 0 ? file.name.substring(0, dotIdx) : file.name || "foto";
       const cleanFileName = sanitizeFileName(baseName) + ".jpg";
+      const dataUrl = `data:image/jpeg;base64,${base64}`;
 
       return {
         base64: base64,
+        dataUrl: dataUrl,
         mime: "image/jpeg",
         name: cleanFileName,
         width: canvas.width,

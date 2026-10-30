@@ -1091,7 +1091,7 @@
       try {
         // Kompresi di sisi browser via ImageProcessor (Maks 50 MB)
         const processed = await ImageProcessor.compress(file);
-        progressText.textContent = `Mengunggah ${processed.name} (${processed.sizeFormatted}) ke Google Drive...`;
+        progressText.textContent = `Menyimpan ${processed.name} (${processed.sizeFormatted})...`;
 
         const result = await apiCall("admin_uploadMedia", {
           berkas: {
@@ -1102,7 +1102,7 @@
           alt: file.name
         });
 
-        showToast("Foto berhasil dikompresi dan diunggah ke Google Drive!", "success");
+        showToast("Foto berhasil dikompresi dan disimpan ke Cloud Database!", "success");
         loadMediaLibrary();
       } catch (err) {
         showToast("Gagal mengunggah foto: " + err.message, "error");
@@ -1193,7 +1193,7 @@
           if (!it.fotoUrl) {
             try {
               const cachedP = localStorage.getItem("sdn_photo_" + it.id);
-              if (cachedP) it.fotoUrl = cachedP;
+              if (cachedP && !cachedP.includes(".svg")) it.fotoUrl = cachedP;
             } catch (e) {}
           }
         });
@@ -1738,36 +1738,48 @@
         if (submitBtn) submitBtn.disabled = true;
 
         try {
-          // Kompresi di browser (Mendukung hingga 50 MB)
+          // Kompresi di browser (Mendukung hingga 50 MB, optimal untuk web & database)
           const compressed = await ImageProcessor.compress(file);
-          if (progress) progress.textContent = `⏳ Mengunggah ${compressed.name} (${compressed.sizeFormatted})...`;
+          const dataUrl = compressed.dataUrl || `data:${compressed.mime || "image/jpeg"};base64,${compressed.base64}`;
 
-          const res = await apiCall("admin_uploadMedia", {
-            berkas: {
-              nama: compressed.name,
-              mime: compressed.mime,
-              base64: compressed.base64
-            },
-            alt: file.name
-          });
-
-          hiddenVal.value = res.url;
+          // Pasang dataUrl ke hidden input dan pratinjau agar gambar instan aktif dan tidak pernah ter-reset ke default
+          hiddenVal.value = dataUrl;
           if (preview) {
-            const formatted = formatPhotoUrl(res.url);
-            const dId = extractDriveId(res.url);
-            preview.onerror = function () {
-              window.handleAdminImgError(this, dId || "");
-            };
-            preview.src = formatted;
+            preview.onerror = null;
+            preview.src = dataUrl;
             preview.style.display = "block";
           }
+
+          if (progress) progress.textContent = `⏳ Menyimpan ${compressed.name} (${compressed.sizeFormatted})...`;
+
+          try {
+            const res = await apiCall("admin_uploadMedia", {
+              berkas: {
+                nama: compressed.name,
+                mime: compressed.mime,
+                base64: compressed.base64
+              },
+              alt: file.name
+            });
+
+            // Hanya gunakan URL server jika valid dan bukan /api/media/ (yang bisa 404 pada hosting statis)
+            if (res && res.url && !res.url.startsWith("/api/media/")) {
+              hiddenVal.value = res.url;
+              if (preview) {
+                const formatted = formatPhotoUrl(res.url);
+                preview.src = formatted;
+              }
+            }
+          } catch (uploadErr) {
+            console.warn("[UploadMedia] Terus gunakan dataUrl lokal:", uploadErr);
+          }
+
           showToast(`Foto berhasil dikompresi (${compressed.sizeFormatted}) dan siap disimpan!`, "success");
         } catch (err) {
-          showToast("Gagal mengunggah foto: " + err.message, "error");
+          showToast("Gagal mengolah foto: " + err.message, "error");
         } finally {
           if (progress) progress.style.display = "none";
           if (submitBtn) submitBtn.disabled = false;
-          setTimeout(() => URL.revokeObjectURL(localPreviewUrl), 10000);
         }
       });
     });
@@ -1855,10 +1867,16 @@
       dataObj.gambar = photoVal;
       dataObj.thumbnail = photoVal;
 
-      if (dataObj.id && photoVal && !photoVal.startsWith("data:")) {
+      if (dataObj.id) {
         try {
-          localStorage.setItem("sdn_photo_" + dataObj.id, photoVal);
-        } catch (e) {}
+          if (photoVal && !photoVal.includes(".svg")) {
+            localStorage.setItem("sdn_photo_" + dataObj.id, photoVal);
+          } else {
+            localStorage.removeItem("sdn_photo_" + dataObj.id);
+          }
+        } catch (e) {
+          try { localStorage.removeItem("sdn_photo_" + dataObj.id); } catch (_) {}
+        }
       }
     }
 
@@ -2030,6 +2048,7 @@
   function handleAdminImgError(imgEl, driveId) {
     if (!imgEl) return;
     const cur = imgEl.src || "";
+    if (cur.startsWith("data:")) return;
     if (driveId && cur.includes("/api/drive-image")) {
       imgEl.src = `https://lh3.googleusercontent.com/d/${driveId}=w1000`;
       return;

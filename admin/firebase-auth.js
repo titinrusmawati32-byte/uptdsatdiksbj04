@@ -341,7 +341,9 @@ const FirestoreCMS = {
       "admin_deleteRow",
       "admin_toggleRow",
       "admin_updatePendaftar",
-      "admin_saveUser"
+      "admin_saveUser",
+      "admin_uploadMedia",
+      "admin_listMedia"
     ];
     return handled.includes(action);
   },
@@ -539,6 +541,67 @@ const FirestoreCMS = {
   },
 
   /**
+   * Mengunggah dan menyimpan media ke Firestore
+   */
+  uploadMedia: async (payload = {}) => {
+    const berkas = payload.berkas || {};
+    let rawBase64 = String(berkas.base64 || "");
+    const mime = berkas.mime || "image/jpeg";
+    const dataUrl = rawBase64.startsWith("data:")
+      ? rawBase64
+      : `data:${mime};base64,${rawBase64}`;
+    const id = "MED-" + Date.now() + "-" + Math.random().toString(36).substring(2, 6);
+
+    const mediaDoc = {
+      id,
+      fileId: id,
+      url: dataUrl,
+      alt: payload.alt || berkas.nama || "Foto SDN Sumberejo 04",
+      namaAsli: berkas.nama || "foto.jpg",
+      mime,
+      diunggah: new Date().toISOString().replace("T", " ").substring(0, 16),
+      createdAt: new Date().toISOString()
+    };
+
+    if (db) {
+      try {
+        await setDoc(doc(db, "media", id), mediaDoc);
+      } catch (e) {
+        console.warn("[FirestoreCMS] Simpan media ke Firestore warning:", e);
+      }
+    }
+
+    // Teruskan ke Google Apps Script di latar belakang jika tersedia
+    forwardToGasBackground({
+      action: "admin_uploadMedia",
+      berkas: {
+        nama: berkas.nama,
+        mime: berkas.mime,
+        base64: rawBase64.includes(",") ? rawBase64.split(",")[1] : rawBase64
+      },
+      alt: payload.alt
+    });
+
+    return { ok: true, id, fileId: id, url: dataUrl };
+  },
+
+  /**
+   * Mengambil daftar pustaka media
+   */
+  listMedia: async () => {
+    if (!db) return [];
+    try {
+      const snap = await getDocs(collection(db, "media"));
+      const list = [];
+      snap.forEach((d) => list.push({ ...d.data(), id: d.id }));
+      list.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+      return list;
+    } catch (e) {
+      return [];
+    }
+  },
+
+  /**
    * Listener real-time untuk pendaftar
    */
   listenToPendaftar: (callback) => {
@@ -580,6 +643,10 @@ const FirestoreCMS = {
         );
       case "admin_getCollection":
         return await FirestoreCMS.getCollection(payload.sheetName);
+      case "admin_uploadMedia":
+        return await FirestoreCMS.uploadMedia(payload);
+      case "admin_listMedia":
+        return await FirestoreCMS.listMedia();
       default:
         throw new Error(`Aksi ${action} tidak didukung langsung oleh Firestore.`);
     }
