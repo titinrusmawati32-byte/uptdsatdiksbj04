@@ -238,15 +238,104 @@
 
   function initRealtimeAdminEvents() {
     const syncBtn = document.getElementById("btnSyncGasNow");
-    if (syncBtn) {
-      syncBtn.addEventListener("click", async () => {
+    const modalSync = document.getElementById("modalSyncGas");
+    const btnPush = document.getElementById("btnPushToGas");
+    const btnPull = document.getElementById("btnPullFromGas");
+    const syncAlert = document.getElementById("gasSyncResultAlert");
+
+    if (syncBtn && modalSync) {
+      syncBtn.addEventListener("click", () => {
         if (!AppState.token || !AppState.user) return;
-        const orig = syncBtn.textContent;
-        syncBtn.disabled = true;
-        syncBtn.textContent = "⏳ Menyinkronkan...";
-        updateGasSyncBadge("syncing", "Menarik data Google Sheets...");
+        if (syncAlert) syncAlert.style.display = "none";
+        modalSync.classList.add("active");
+      });
+    }
+
+    // Opsi 1: PUSH — Mengirim seluruh data ke Google Spreadsheet
+    if (btnPush) {
+      btnPush.addEventListener("click", async () => {
+        const orig = btnPush.textContent;
+        btnPush.disabled = true;
+        btnPush.textContent = "⏳ Mengirim data ke Google Sheets...";
+        updateGasSyncBadge("syncing", "Mengirim data ke Spreadsheet...");
+
+        if (syncAlert) {
+          syncAlert.className = "alert alert-info";
+          syncAlert.textContent = "⏳ Sedang memproses pengiriman seluruh data CMS ke Google Spreadsheet...";
+          syncAlert.style.display = "block";
+        }
+
         try {
-          const res = await fetch("/api/gas-sync", { method: "POST" });
+          let bundle = {
+            config: AppState.siteConfig || {},
+            collections: AppState.collections || {},
+            pendaftar: AppState.pendaftarList || []
+          };
+
+          if (window.FirestoreCMS && window.FirestoreCMS.isReady()) {
+            try {
+              const freshBundle = await window.FirestoreCMS.getBundle();
+              if (freshBundle) {
+                bundle.config = freshBundle.config || bundle.config;
+                bundle.collections = freshBundle.collections || bundle.collections;
+                bundle.pendaftar = freshBundle.pendaftar || bundle.pendaftar;
+              }
+            } catch (e) {}
+          }
+
+          const res = await fetch("/api/gas-sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mode: "push", bundle })
+          });
+
+          const json = await res.json();
+          if (json && json.ok) {
+            updateGasSyncBadge("synced", "Spreadsheet Terisi Penuh");
+            if (syncAlert) {
+              syncAlert.className = "alert alert-success";
+              syncAlert.innerHTML = `<strong>✅ Berhasil!</strong> Seluruh data CMS (Pengaturan, Pengumuman, Guru, Ekskul, Fasilitas, Galeri) telah dikirim dan ditulis ke Google Spreadsheet. Silakan buka file Google Sheets Anda untuk melihat datanya!`;
+              syncAlert.style.display = "block";
+            }
+            showToast("Seluruh data CMS berhasil ditulis ke Google Sheets!", "success");
+          } else {
+            throw new Error((json && json.message) || "Gagal mengirim data ke Google Sheets.");
+          }
+        } catch (err) {
+          updateGasSyncBadge("error", "Gagal Push GAS");
+          if (syncAlert) {
+            syncAlert.className = "alert alert-danger";
+            syncAlert.textContent = "❌ Gagal mengirim ke Google Sheets: " + err.message;
+            syncAlert.style.display = "block";
+          }
+          showToast("Gagal mengirim ke Google Sheets: " + err.message, "error");
+        } finally {
+          btnPush.disabled = false;
+          btnPush.textContent = orig;
+        }
+      });
+    }
+
+    // Opsi 2: PULL — Menarik data dari Google Spreadsheet
+    if (btnPull) {
+      btnPull.addEventListener("click", async () => {
+        const orig = btnPull.textContent;
+        btnPull.disabled = true;
+        btnPull.textContent = "⏳ Menarik data dari Google Sheets...";
+        updateGasSyncBadge("syncing", "Menarik data Google Sheets...");
+
+        if (syncAlert) {
+          syncAlert.className = "alert alert-info";
+          syncAlert.textContent = "⏳ Mengambil data terbaru dari Google Spreadsheet...";
+          syncAlert.style.display = "block";
+        }
+
+        try {
+          const res = await fetch("/api/gas-sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mode: "pull" })
+          });
           const json = await res.json();
           if (json && json.ok) {
             if (json.data && window.FirestoreCMS && window.FirestoreCMS.isReady()) {
@@ -257,7 +346,7 @@
                 }
                 if (json.data.collections) {
                   for (const [sheet, rows] of Object.entries(json.data.collections)) {
-                    if (Array.isArray(rows)) {
+                    if (Array.isArray(rows) && rows.length > 0) {
                       for (const row of rows) {
                         await window.FirestoreCMS.saveRow(sheet, row);
                       }
@@ -270,16 +359,26 @@
             }
             await loadAllData();
             updateGasSyncBadge("synced", "GAS Tersinkron");
-            showToast("Data berhasil disinkronkan langsung dari Google Sheets ke Database Cloud!", "success");
+            if (syncAlert) {
+              syncAlert.className = "alert alert-success";
+              syncAlert.textContent = "✅ Data berhasil ditarik langsung dari Google Sheets ke Website!";
+              syncAlert.style.display = "block";
+            }
+            showToast("Data berhasil ditarik dari Google Sheets!", "success");
           } else {
             throw new Error((json && json.message) || "Gagal sinkronisasi");
           }
         } catch (err) {
           updateGasSyncBadge("error", "Gagal Sinkron GAS");
+          if (syncAlert) {
+            syncAlert.className = "alert alert-danger";
+            syncAlert.textContent = "❌ Gagal menarik data: " + err.message;
+            syncAlert.style.display = "block";
+          }
           showToast("Gagal menarik data dari Google Apps Script: " + err.message, "error");
         } finally {
-          syncBtn.disabled = false;
-          syncBtn.textContent = orig;
+          btnPull.disabled = false;
+          btnPull.textContent = orig;
         }
       });
     }

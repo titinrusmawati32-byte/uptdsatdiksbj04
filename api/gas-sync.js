@@ -19,6 +19,77 @@ export default async function handler(req, res) {
       });
     }
 
+    let body = req.body;
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        body = {};
+      }
+    }
+    body = body || {};
+
+    // 1. MODE PUSH: Mengirim seluruh data CMS ke Google Sheets agar Spreadsheet terisi
+    if (body.mode === "push" || req.query?.mode === "push") {
+      const bundle = body.bundle || {};
+
+      // Kirim perintah batch push ke Google Apps Script
+      const postPayload = {
+        action: "admin_pushBundle",
+        bundle: bundle
+      };
+
+      const gasRes = await fetch(DEFAULT_GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(postPayload)
+      });
+
+      const text = await gasRes.text();
+      let json = {};
+      try {
+        json = JSON.parse(text);
+      } catch {
+        json = { ok: gasRes.ok, message: text };
+      }
+
+      // Jika script GAS yang lama belum mengenali admin_pushBundle, lakukan fallback pengiriman per sheet
+      if (!json.ok && bundle.config) {
+        try {
+          const cfgItems = Object.entries(bundle.config).map(([k, v]) => ({ kunci: k, nilai: v }));
+          await fetch(DEFAULT_GAS_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "admin_saveKonten", items: cfgItems })
+          });
+
+          if (bundle.collections) {
+            for (const [sheet, rows] of Object.entries(bundle.collections)) {
+              if (Array.isArray(rows)) {
+                for (const row of rows) {
+                  await fetch(DEFAULT_GAS_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "admin_saveRow", sheetName: sheet, data: row })
+                  });
+                }
+              }
+            }
+          }
+          json = { ok: true, message: "Seluruh data berhasil disinkronkan ke Google Sheets!" };
+        } catch (fbErr) {
+          console.warn("Fallback push GAS:", fbErr);
+        }
+      }
+
+      return res.status(200).json({
+        ok: Boolean(json && json.ok),
+        message: json.message || "Data berhasil dikirim ke Google Sheets!",
+        details: json.details || null
+      });
+    }
+
+    // 2. MODE PULL: Menarik data dari Google Sheets ke CMS
     const gasRes = await fetch(`${DEFAULT_GAS_URL}?action=getSiteBundle&_t=${Date.now()}`, {
       method: "GET",
       headers: { Accept: "application/json" }
@@ -32,13 +103,13 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: Boolean(json && json.ok),
       data: json?.data || null,
-      message: json?.message || "Sinkronisasi berhasil",
+      message: json?.message || "Data berhasil ditarik dari Google Sheets",
       time: new Date().toISOString()
     });
   } catch (err) {
     return res.status(200).json({
       ok: false,
-      message: err.message || "Gagal sinkronisasi data dari Google Sheets"
+      message: err.message || "Gagal sinkronisasi dengan Google Sheets"
     });
   }
 }

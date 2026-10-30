@@ -736,6 +736,56 @@
     </div>
   </div>
 
+  <!-- ==========================================
+       MODAL: SINKRONISASI GOOGLE SHEETS (GAS)
+       ========================================== -->
+  <div class="modal-overlay" id="modalSyncGas">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>📊</span> Sinkronisasi Database Google Sheets
+        </h3>
+        <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('modalSyncGas').classList.remove('active')">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">
+          Hubungkan dan sinkronkan data antara panel CMS (Cloud Database) dengan Google Spreadsheet resmi SDN Sumberejo 04.
+        </p>
+
+        <!-- Opsi 1: PUSH (Mengisi Spreadsheet Kosong) -->
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem; color: #1e293b;">
+            <span>📤</span> Kirim Data ke Google Sheets (Isi Spreadsheet)
+          </h4>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Gunakan tombol ini jika Google Spreadsheet Anda masih kosong. Seluruh data Identitas, Pengumuman, Guru, Ekstrakurikuler, Fasilitas, dan Galeri akan langsung ditulis otomatis ke dalam Spreadsheet.
+          </p>
+          <button type="button" id="btnPushToGas" class="btn btn-primary btn-sm" style="width: 100%;">
+            📤 Kirim Semua Data ke Google Sheets Sekarang
+          </button>
+        </div>
+
+        <!-- Opsi 2: PULL (Menarik Data dari Spreadsheet) -->
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem; color: #1e293b;">
+            <span>📥</span> Tarik Data dari Google Sheets (Perbarui Website)
+          </h4>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Tarik data terbaru yang sudah Anda edit langsung di dalam sel-sel Google Spreadsheet untuk memperbarui database website secara seketika.
+          </p>
+          <button type="button" id="btnPullFromGas" class="btn btn-outline btn-sm" style="width: 100%;">
+            📥 Tarik Data dari Google Sheets Sekarang
+          </button>
+        </div>
+
+        <div id="gasSyncResultAlert" style="display: none; padding: 0.75rem; border-radius: var(--radius); font-size: 0.85rem; margin-top: 0.5rem;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('modalSyncGas').classList.remove('active')">Tutup</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Wadah Toast Notifikasi -->
   <div class="toast-container" id="toastContainer"></div>
 
