@@ -8,35 +8,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 
 :root {
-  /* Core Color Palette (Master Design System) */
-  --primary: #0B1F3A;           /* Primary Navy */
-  --primary-dark: #071A30;      /* Deep Navy (Top Bar & Footer) */
-  --primary-light: #EFF6FF;     /* Soft Ice Blue Tint */
-  --secondary-blue: #164E8A;    /* Secondary Institutional Blue */
-  --accent-gold: #F59E0B;       /* Accent Gold */
-  --accent-gold-hover: #D97706; /* Deeper Gold Hover */
-  --accent-orange: #F97316;     /* Accent Orange */
-  --bg-page: #F7F9FC;           /* Page Background */
-  --surface: #FFFFFF;           /* Card / Surface */
-  --heading: #10243E;           /* Heading Text */
-  --body-text: #526176;         /* Body Copy */
-  --muted-text: #718096;        /* Muted / Meta Text */
-  --border-color: #E3EAF2;      /* Soft Hairline Border */
-  --success: #16A34A;           /* Status Success */
-  --danger: #DC2626;            /* Status Danger */
-  --warning: #D97706;           /* Status Warning */
+  /* ==========================================================================
+     GLOBAL REBRANDING: SDN SUMBEREJO 04 AMBULU — GOLD & NAVY BLUE
+     Master Color Tokens
+     ========================================================================== */
+  --color-navy: #0B1F3A;
+  --color-navy-secondary: #132D4F;
+  --color-blue: #24558A;
+
+  --color-gold: #D4A72C;
+  --color-gold-light: #F5C451;
+
+  --color-background: #F5F7FB;
+  --color-surface: #FFFFFF;
+
+  --color-text-primary: #172B45;
+  --color-text-secondary: #64748B;
+
+  --color-border: #E2E8F0;
+
+  --color-success: #15803D;
+  --color-warning: #B45309;
+  --color-danger: #B91C1C;
+
+  /* Master Design System Mapped Variables */
+  --primary: var(--color-navy);
+  --primary-dark: var(--color-navy-secondary);
+  --primary-light: #EFF6FF;
+  --secondary-blue: var(--color-blue);
+  --accent-gold: var(--color-gold);
+  --accent-gold-hover: #BF9323;
+  --accent-orange: #F97316;
+  --bg-page: var(--color-background);
+  --surface: var(--color-surface);
+  --heading: var(--color-text-primary);
+  --body-text: var(--color-text-primary);
+  --muted-text: var(--color-text-secondary);
+  --border-color: var(--color-border);
+  --success: var(--color-success);
+  --danger: var(--color-danger);
+  --warning: var(--color-warning);
 
   /* Backwards-compatible aliases for secondary pages & dynamic JS components */
-  --secondary: #F59E0B;
-  --secondary-hover: #D97706;
+  --secondary: var(--color-gold);
+  --secondary-hover: #BF9323;
   --secondary-light: #FEF3C7;
-  --accent-sky: #164E8A;
-  --bg-body: #F7F9FC;
-  --bg-card: #FFFFFF;
+  --accent-sky: var(--color-blue);
+  --bg-body: var(--color-background);
+  --bg-card: var(--color-surface);
   --bg-muted: #EEF3F9;
-  --text-main: #10243E;
-  --text-body: #526176;
-  --text-muted: #718096;
+  --text-main: var(--color-text-primary);
+  --text-body: var(--color-text-primary);
+  --text-muted: var(--color-text-secondary);
 
   /* Typography */
   --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -45,10 +68,10 @@
   /* Layout & Spacing (4px / 8px spatial system) */
   --container-max: 1240px;
   --radius-xs: 8px;
-  --radius-sm: 12px;            /* Navigation & small elements */
-  --radius-md: 16px;            /* Standard cards & buttons */
-  --radius-lg: 20px;            /* Featured cards & containers */
-  --radius-xl: 24px;            /* Large banners & modals */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* Refined Elevation Shadows */
@@ -57,7 +80,7 @@
   --shadow-md: 0 12px 24px -6px rgba(11, 31, 58, 0.08), 0 4px 10px -2px rgba(11, 31, 58, 0.04);
   --shadow-lg: 0 20px 36px -8px rgba(11, 31, 58, 0.12), 0 8px 16px -4px rgba(11, 31, 58, 0.05);
   --shadow-xl: 0 28px 52px -12px rgba(11, 31, 58, 0.18);
-  --shadow-gold: 0 8px 20px -4px rgba(245, 158, 11, 0.35);
+  --shadow-gold: 0 8px 20px -4px rgba(212, 167, 44, 0.35);
 
   /* Transitions */
   --transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
@@ -519,16 +542,16 @@ p {
 }
 
 .nav-cta {
-  background-color: var(--accent-gold) !important;
-  color: var(--primary) !important;
+  background-color: var(--color-gold) !important;
+  color: var(--color-navy) !important;
   padding: 0.68rem 1.35rem !important;
   border-radius: var(--radius-full) !important;
   margin-left: 0.5rem;
   font-family: var(--font-display);
   font-weight: 700 !important;
   font-size: 0.875rem !important;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.28);
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 4px 12px rgba(212, 167, 44, 0.28);
+  border: 1px solid rgba(212, 167, 44, 0.4);
 }
 
 .nav-cta::after {
@@ -536,10 +559,10 @@ p {
 }
 
 .nav-cta:hover {
-  background-color: var(--accent-gold-hover) !important;
-  color: #FFFFFF !important;
+  background-color: var(--color-gold-light) !important;
+  color: var(--color-navy) !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.38);
+  box-shadow: 0 6px 16px rgba(212, 167, 44, 0.38);
 }
 
 /* Hamburger Toggle Button */
@@ -906,16 +929,16 @@ p {
 }
 
 .btn-secondary {
-  background-color: var(--accent-gold);
-  color: var(--primary);
+  background-color: var(--color-gold);
+  color: var(--color-navy);
   box-shadow: var(--shadow-gold);
 }
 
 .btn-secondary:hover {
-  background-color: var(--accent-gold-hover);
-  color: #FFFFFF;
+  background-color: var(--color-gold-light);
+  color: var(--color-navy);
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -4px rgba(245, 158, 11, 0.45);
+  box-shadow: 0 12px 24px -4px rgba(212, 167, 44, 0.45);
 }
 
 .btn-outline {

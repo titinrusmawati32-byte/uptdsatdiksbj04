@@ -5,25 +5,48 @@
    ========================================================================== */
 
 :root {
-  --primary: #1e3a8a;
-  --primary-hover: #172554;
-  --primary-light: #eff6ff;
-  --secondary: #eab308;
-  --secondary-hover: #ca8a04;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --bg-app: #f1f5f9;
-  --bg-card: #ffffff;
-  --border: #e2e8f0;
-  --success: #16a34a;
-  --success-bg: #f0fdf4;
-  --warning: #d97706;
-  --warning-bg: #fffbeb;
-  --danger: #dc2626;
-  --danger-bg: #fef2f2;
+  /* ==========================================================================
+     GLOBAL REBRANDING: SDN SUMBEREJO 04 AMBULU — GOLD & NAVY BLUE (CMS PANEL)
+     ========================================================================== */
+  --color-navy: #0B1F3A;
+  --color-navy-secondary: #132D4F;
+  --color-blue: #24558A;
+
+  --color-gold: #D4A72C;
+  --color-gold-light: #F5C451;
+
+  --color-background: #F5F7FB;
+  --color-surface: #FFFFFF;
+
+  --color-text-primary: #172B45;
+  --color-text-secondary: #64748B;
+
+  --color-border: #E2E8F0;
+
+  --color-success: #15803D;
+  --color-warning: #B45309;
+  --color-danger: #B91C1C;
+
+  /* Mapped Aliases */
+  --primary: var(--color-navy);
+  --primary-hover: var(--color-navy-secondary);
+  --primary-light: #EFF6FF;
+  --secondary: var(--color-gold);
+  --secondary-hover: #BF9323;
+  --text-main: var(--color-text-primary);
+  --text-muted: var(--color-text-secondary);
+  --bg-app: var(--color-background);
+  --bg-card: var(--color-surface);
+  --border: var(--color-border);
+  --success: var(--color-success);
+  --success-bg: #F0FDF4;
+  --warning: var(--color-warning);
+  --warning-bg: #FFFBEB;
+  --danger: var(--color-danger);
+  --danger-bg: #FEF2F2;
   --radius: 8px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 3px rgba(11, 31, 58, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(11, 31, 58, 0.1);
   --sidebar-w: 260px;
   --header-h: 64px;
 }
@@ -133,8 +156,8 @@ body {
 /* Sidebar Navigasi */
 .sidebar {
   width: var(--sidebar-w);
-  background: #ffffff;
-  border-right: 1px solid var(--border);
+  background: var(--color-navy);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -151,7 +174,8 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-navy-secondary);
 }
 
 .sidebar-logo {
@@ -162,15 +186,15 @@ body {
 .sidebar-brand {
   font-size: 1rem;
   font-weight: 800;
-  color: var(--primary);
+  color: #FFFFFF;
   line-height: 1.2;
 }
 
 .sidebar-brand small {
   display: block;
   font-size: 0.72rem;
-  color: var(--text-muted);
-  font-weight: 600;
+  color: var(--color-gold);
+  font-weight: 700;
 }
 
 .sidebar-nav {
@@ -182,7 +206,7 @@ body {
 .nav-group-title {
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.45);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 0.75rem 0.5rem 0.35rem;
@@ -194,7 +218,7 @@ body {
   gap: 0.75rem;
   padding: 0.65rem 0.85rem;
   border-radius: var(--radius);
-  color: var(--text-main);
+  color: rgba(255, 255, 255, 0.82);
   text-decoration: none;
   font-size: 0.92rem;
   font-weight: 600;
@@ -204,17 +228,19 @@ body {
 }
 
 .nav-item:hover {
-  background-color: var(--primary-light);
-  color: var(--primary);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
 }
 
 .nav-item.active {
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: var(--color-navy-secondary);
+  color: var(--color-gold);
+  border-left: 3.5px solid var(--color-gold);
+  font-weight: 700;
 }
 
 .nav-item.active .nav-icon {
-  filter: brightness(0) invert(1);
+  filter: none;
 }
 
 /* Header Atas */
@@ -409,11 +435,27 @@ body {
   text-decoration: none;
 }
 
-.btn-primary { background: var(--primary); color: #ffffff; }
-.btn-primary:hover { background: var(--primary-hover); }
+.btn-primary { 
+  background: var(--color-gold); 
+  color: var(--color-navy); 
+  font-weight: 700;
+  border-color: var(--color-gold);
+}
+.btn-primary:hover { 
+  background: var(--color-gold-light); 
+  color: var(--color-navy);
+  border-color: var(--color-gold-light);
+}
 
-.btn-secondary { background: var(--secondary); color: var(--text-main); font-weight: 700; }
-.btn-secondary:hover { background: var(--secondary-hover); }
+.btn-secondary { 
+  background: var(--color-navy); 
+  color: #ffffff; 
+  font-weight: 600; 
+}
+.btn-secondary:hover { 
+  background: var(--color-navy-secondary); 
+  color: #ffffff;
+}
 
 .btn-outline { background: transparent; border-color: var(--border); color: var(--text-main); }
 .btn-outline:hover { background: var(--bg-app); border-color: #cbd5e1; }
