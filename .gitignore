@@ -6,4 +6,4 @@ node_modules/
 Thumbs.db
 public/
 test.txt
-
+dist/
