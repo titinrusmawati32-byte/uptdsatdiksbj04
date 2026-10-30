@@ -724,8 +724,8 @@ function openPengumumanModal(id) {
   const modalFallbackSvg = item.fallbackSvg || "assets/img/pengumuman-sumpah-pemuda.svg";
 
   content.innerHTML = `
-    <div style="border-radius: 14px; overflow: hidden; margin-bottom: 1.25rem; max-height: 480px; min-height: 200px; background: transparent; display: flex; align-items: center; justify-content: center; border: none; box-shadow: none;">
-      <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" class="image-fit-contain" style="max-height: 480px; width: 100%; object-fit: contain; object-position: center; display: block; border: none; box-shadow: none;" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${modalDriveId || ""}', '${modalFallbackSvg}')">
+    <div style="border-radius: 14px; overflow: hidden; margin-bottom: 1.25rem; max-height: 520px; min-height: 260px; background: linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 100%); display: flex; align-items: center; justify-content: center; padding: 1rem;">
+      <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" class="image-fit-contain" style="max-height: 500px; width: auto; max-width: 100%; object-fit: contain; object-position: center; display: block; border-radius: 8px; box-shadow: 0 10px 25px -4px rgba(11, 31, 58, 0.12);" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${modalDriveId || ""}', '${modalFallbackSvg}')">
     </div>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
       <span class="pengumuman-date" style="font-size: 0.9rem;">
@@ -769,8 +769,8 @@ function openAllPengumumanModal() {
       const fallbackSvg = item.fallbackSvg || "assets/img/pengumuman-sumpah-pemuda.svg";
       return `
     <div style="background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.1rem; display: flex; gap: 1rem; align-items: center; transition: var(--transition);">
-      <div style="width: 88px; height: 64px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: transparent; display: flex; align-items: center; justify-content: center; border: none; box-shadow: none;">
-        <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" class="image-fit-contain" style="width: 100%; height: 100%; object-fit: contain; object-position: center; border: none; box-shadow: none;" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${driveId || ""}', '${fallbackSvg}')">
+      <div style="width: 96px; height: 74px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 100%); display: flex; align-items: center; justify-content: center; padding: 4px;">
+        <img src="${escapeHtml(item.bannerUrl)}" alt="${escapeHtml(item.judul)}" class="image-fit-contain" style="max-width: 100%; max-height: 100%; width: auto; height: 100%; object-fit: contain; object-position: center; border-radius: 4px; box-shadow: 0 2px 6px rgba(11, 31, 58, 0.08);" loading="lazy" referrerpolicy="no-referrer" onerror="handleThumbError(this, '${driveId || ""}', '${fallbackSvg}')">
       </div>
       <div style="flex: 1; min-width: 0;">
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">

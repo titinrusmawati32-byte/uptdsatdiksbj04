@@ -1842,7 +1842,7 @@
           <img id="previewColImg_${fieldName}" src="${escapeHtml(previewUrl)}" 
                referrerpolicy="no-referrer"
                class="image-fit-contain"
-               style="width: 120px; height: 86px; border-radius: var(--radius); object-fit: contain; object-position: center; background: transparent; border: none; box-shadow: none; display: ${previewUrl ? 'block' : 'none'};"
+               style="width: 140px; height: 110px; border-radius: 8px; object-fit: contain; object-position: center; background: linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 100%); padding: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: ${previewUrl ? 'block' : 'none'};"
                onerror="window.handleAdminImgError(this, '${driveId || ''}')">
           <div style="flex: 1; min-width: 200px;">
             <input type="file" id="fileColInput_${fieldName}" accept="image/*" class="form-control" style="font-size: 0.85rem;">
