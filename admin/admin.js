@@ -1105,14 +1105,28 @@
     if (!file) return;
     try {
       showToast(`Mengompresi foto ${file.name}...`, "info");
-      const res = await window.ImageProcessor.compressImage(file, "hero");
+
+      let dataUrl = "";
+      if (window.ImageProcessor && (typeof window.ImageProcessor.compress === "function" || typeof window.ImageProcessor.compressImage === "function")) {
+        const compressFn = window.ImageProcessor.compress || window.ImageProcessor.compressImage;
+        const res = await compressFn(file, "hero");
+        dataUrl = res.dataUrl || `data:${res.mime || "image/jpeg"};base64,${res.base64}`;
+      } else {
+        dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
       const inputUrl = document.getElementById(`inputHeroFoto${slotIdx}`);
       const thumb = document.getElementById(`thumbHeroFoto${slotIdx}`);
       if (inputUrl) {
-        inputUrl.value = res.dataUrl;
+        inputUrl.value = dataUrl;
         inputUrl.dispatchEvent(new Event("input", { bubbles: true }));
       }
-      if (thumb) thumb.src = res.dataUrl;
+      if (thumb) thumb.src = dataUrl;
 
       adminHeroPreviewIdx = slotIdx - 1;
       updateHeroAdminPreviews();

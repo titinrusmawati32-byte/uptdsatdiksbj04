@@ -191,6 +191,7 @@ window.ImageProcessor = (function () {
   }
 
   return {
-    compress: compressImage
+    compress: compressImage,
+    compressImage: compressImage
   };
 })();
