@@ -2259,3 +2259,430 @@ img.card-img {
     transform: none !important;
   }
 }
+
+
+/* ==========================================================================
+   MODERN BLUE HERO, FLOATING KEUNGGULAN CARDS & SHOWCASE BANNER SENAPATI
+   Clean, premium design system for SDN Sumberejo 04 Ambulu
+   ========================================================================== */
+
+/* 1. Modern Blue Hero Section */
+.hero-pabna {
+  position: relative;
+  background: 
+    radial-gradient(circle at 12% 20%, rgba(56, 189, 248, 0.32) 0%, transparent 40%),
+    radial-gradient(circle at 88% 28%, rgba(37, 99, 235, 0.42) 0%, transparent 52%),
+    radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.22) 0%, transparent 48%),
+    linear-gradient(135deg, #071A30 0%, #0c2b5e 35%, #1552a0 70%, #1d4ed8 100%);
+  color: #FFFFFF;
+  padding: 5.5rem 0 6.5rem;
+  overflow: hidden;
+}
+
+/* Glowing Ambient Bokeh Bubbles */
+.hero-bokeh {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(48px);
+  opacity: 0.55;
+  z-index: 1;
+}
+
+.hero-bokeh-1 {
+  width: 280px;
+  height: 280px;
+  background: rgba(56, 189, 248, 0.4);
+  top: -60px;
+  left: 5%;
+}
+
+.hero-bokeh-2 {
+  width: 380px;
+  height: 380px;
+  background: rgba(37, 99, 235, 0.35);
+  top: 10%;
+  right: 2%;
+}
+
+.hero-bokeh-3 {
+  width: 220px;
+  height: 220px;
+  background: rgba(147, 197, 253, 0.3);
+  bottom: 5%;
+  left: 45%;
+}
+
+.hero-pabna-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.hero-pabna-content {
+  text-align: left;
+}
+
+.hero-welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.hero-pabna-title {
+  font-size: clamp(2.3rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.18;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.25rem;
+}
+
+.hero-pabna-highlight {
+  background: linear-gradient(120deg, #FFFFFF 0%, #BAE6FD 60%, #FDE047 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline;
+}
+
+.hero-pabna-sub {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2.25rem;
+  max-width: 54ch;
+}
+
+.hero-pabna-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-pabna-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #2563EB;
+  color: #FFFFFF !important;
+  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 24px -2px rgba(37, 99, 235, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.btn-pabna-cta:hover {
+  background: #1D4ED8;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -2px rgba(37, 99, 235, 0.65);
+}
+
+.btn-pabna-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.38);
+  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.65rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.24s ease;
+  text-decoration: none;
+}
+
+.btn-pabna-secondary:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+/* Visual Right Column with Floating Badges */
+.hero-pabna-visual-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-pabna-frame {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 24px 50px -10px rgba(7, 26, 48, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-pabna-img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  display: block;
+}
+
+.floating-pill {
+  position: absolute;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.84rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: floatSlow 4s ease-in-out infinite alternate;
+}
+
+.floating-pill-top {
+  top: -16px;
+  right: -12px;
+  background: rgba(11, 31, 58, 0.88);
+  color: #FDE047;
+  border: 1.5px solid rgba(253, 224, 71, 0.5);
+}
+
+.floating-pill-bottom {
+  bottom: -18px;
+  left: -14px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #0F172A;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  animation-delay: 2s;
+}
+
+.floating-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10B981;
+  display: inline-block;
+  box-shadow: 0 0 10px #10B981;
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+/* 2. Floating 4 Feature Cards (Overlapping Hero Bottom) */
+.pabna-features-wrap {
+  margin-top: -3.75rem;
+  position: relative;
+  z-index: 10;
+  margin-bottom: 3.5rem;
+}
+
+.pabna-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.pabna-card {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  padding: 1.4rem 1.35rem;
+  box-shadow: 0 12px 30px -4px rgba(11, 31, 58, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pabna-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -6px rgba(11, 31, 58, 0.14);
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+.pabna-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  color: #FFFFFF;
+}
+
+.pabna-icon-blue { background: linear-gradient(135deg, #3B82F6, #1D4ED8); box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3); }
+.pabna-icon-teal { background: linear-gradient(135deg, #14B8A6, #0F766E); box-shadow: 0 6px 14px rgba(20, 184, 166, 0.3); }
+.pabna-icon-amber { background: linear-gradient(135deg, #F59E0B, #B45309); box-shadow: 0 6px 14px rgba(245, 158, 11, 0.3); }
+.pabna-icon-purple { background: linear-gradient(135deg, #8B5CF6, #6D28D9); box-shadow: 0 6px 14px rgba(139, 92, 246, 0.3); }
+
+.pabna-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pabna-card-title {
+  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #0F172A;
+  margin-bottom: 0.2rem;
+  line-height: 1.25;
+}
+
+.pabna-card-desc {
+  font-size: 0.78rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.pabna-card-arrow {
+  color: #94A3B8;
+  font-size: 1rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pabna-card:hover .pabna-card-arrow {
+  color: #2563EB;
+  transform: translateX(4px);
+}
+
+/* 3. Dedicated Showcase Foto Banner Section (Senapati Showcase) */
+.banner-senapati-section {
+  padding: 4.5rem 0 5rem;
+  background: #F8FAFC;
+  position: relative;
+}
+
+.banner-showcase-box {
+  background: #FFFFFF;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px -10px rgba(11, 31, 58, 0.12), 0 0 0 1px rgba(226, 232, 240, 0.8);
+  transition: box-shadow 0.3s ease;
+}
+
+.banner-showcase-box:hover {
+  box-shadow: 0 28px 60px -12px rgba(11, 31, 58, 0.18), 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+.banner-img-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #0B1F3A;
+}
+
+.banner-main-img {
+  width: 100%;
+  height: auto;
+  max-height: 720px;
+  object-fit: contain;
+  display: block;
+  background: #0B1F3A;
+  margin: 0 auto;
+}
+
+.banner-highlights-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 1.5rem 2rem;
+  background: #FFFFFF;
+  border-top: 1px solid #E2E8F0;
+}
+
+.banner-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: #F1F5F9;
+  color: #1E293B;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.banner-tag-pill:hover {
+  background: #EFF6FF;
+  color: #2563EB;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .hero-pabna-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .pabna-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hero-pabna-visual-wrap {
+    order: -1;
+  }
+  .hero-pabna-frame {
+    max-width: 100%;
+  }
+  .hero-pabna-img {
+    height: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-pabna {
+    padding: 3.5rem 0 5rem;
+  }
+  .pabna-features-grid {
+    grid-template-columns: 1fr;
+  }
+  .pabna-features-wrap {
+    margin-top: -2rem;
+  }
+  .hero-pabna-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-pabna-cta,
+  .btn-pabna-secondary {
+    justify-content: center;
+  }
+  .banner-highlights-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
