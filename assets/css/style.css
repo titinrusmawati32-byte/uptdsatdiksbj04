@@ -124,12 +124,6 @@ img, svg, video {
   display: block;
 }
 
-/* ==========================================================================
-   GLOBAL IMAGE DISPLAY STANDARDS (SPECIFICATION SECTION 4)
-   Mode A: Contain (Posters, Announcements, Infographics, Text-Critical Visuals)
-   Mode B: Natural (Documentation, Activity Photos, Proportion-Preserving)
-   Mode C: Cover (Intentional Cropping: Profile Avatars, Circular Badges)
-   ========================================================================== */
 .image-fit-contain {
   display: block;
   width: 100%;
@@ -203,7 +197,6 @@ p {
   line-height: 1.7;
 }
 
-/* Focus Accessibility */
 :focus-visible {
   outline: 2px solid var(--accent-gold);
   outline-offset: 2px;
@@ -292,12 +285,12 @@ p {
 }
 
 /* ==========================================================================
-   3. TOP INFORMATION BAR (SPECIFICATION SECTION 4)
+   3. TOP INFORMATION BAR
    ========================================================================== */
 .top-bar {
   background-color: var(--primary-dark);
   color: rgba(255, 255, 255, 0.92);
-  font-size: 0.78125rem; /* 12.5px */
+  font-size: 0.78125rem;
   min-height: 36px;
   display: flex;
   align-items: center;
@@ -397,7 +390,6 @@ p {
     min-height: 34px;
     font-size: 0.75rem;
   }
-  /* Hide long address on mobile to prevent wrapping or horizontal scroll */
   .top-info-address,
   .top-info > span:first-child:not(.top-keep-mobile) {
     display: none;
@@ -417,7 +409,7 @@ p {
 }
 
 /* ==========================================================================
-   4. MAIN NAVIGATION & MOBILE DRAWER (SPECIFICATION SECTION 5 & 6)
+   4. MAIN NAVIGATION & MOBILE DRAWER
    ========================================================================== */
 .site-header {
   background-color: var(--surface);
@@ -476,7 +468,7 @@ p {
 
 .brand-title {
   font-family: var(--font-display);
-  font-size: 1.0625rem; /* 17px */
+  font-size: 1.0625rem;
   font-weight: 800;
   line-height: 1.2;
   color: var(--primary);
@@ -485,7 +477,7 @@ p {
 
 .brand-sub {
   font-family: var(--font-sans);
-  font-size: 0.72rem; /* 11.5px */
+  font-size: 0.72rem;
   color: var(--body-text);
   font-weight: 500;
   margin-top: 2px;
@@ -513,7 +505,7 @@ p {
   color: var(--body-text);
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
   border-radius: var(--radius-sm);
   transition: var(--transition);
   white-space: nowrap;
@@ -565,7 +557,6 @@ p {
   box-shadow: 0 6px 16px rgba(212, 167, 44, 0.38);
 }
 
-/* Hamburger Toggle Button */
 .nav-toggle {
   display: none;
   background: var(--bg-page);
@@ -609,7 +600,6 @@ p {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Mobile Backdrop Overlay */
 .nav-backdrop {
   position: fixed;
   inset: 0;
@@ -727,7 +717,7 @@ p {
 }
 
 /* ==========================================================================
-   5. HERO SECTION (SPECIFICATION SECTION 7)
+   5. HERO SECTION
    ========================================================================== */
 .hero {
   position: relative;
@@ -738,7 +728,6 @@ p {
   overflow: hidden;
 }
 
-/* Subpage Hero Banner */
 .hero:not(.hero-video-section) {
   padding: 3.75rem 0;
   border-bottom: 4px solid var(--accent-gold);
@@ -766,7 +755,6 @@ p {
   margin-bottom: 0;
 }
 
-/* Main Landing Page Video Hero */
 .hero-video-section {
   min-height: 620px;
   display: flex;
@@ -968,7 +956,7 @@ p {
 }
 
 /* ==========================================================================
-   7. FEATURE CARDS (KEUNGGULAN SEKOLAH — SPECIFICATION SECTION 8)
+   7. FEATURE CARDS
    ========================================================================== */
 .pillars-wrap {
   margin-top: -3.5rem;
@@ -1127,7 +1115,7 @@ p {
 }
 
 /* ==========================================================================
-   9. SAMBUTAN KEPALA SEKOLAH (EXECUTIVE EDITORIAL LAYOUT)
+   9. SAMBUTAN KEPALA SEKOLAH
    ========================================================================== */
 .sambutan-box {
   background: var(--surface);
@@ -1208,7 +1196,7 @@ p {
 }
 
 /* ==========================================================================
-   10. CARDS & DYNAMIC COLLECTION GRIDS (GURU, PROGRAM, FASILITAS)
+   10. CARDS & DYNAMIC COLLECTION GRIDS
    ========================================================================== */
 .card-grid {
   display: grid;
@@ -1325,7 +1313,6 @@ img.card-img {
   border-top: 1px solid var(--border-color);
 }
 
-/* Guru & Tenaga Kependidikan Cards */
 .guru-card {
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -1383,7 +1370,7 @@ img.card-img {
 }
 
 /* ==========================================================================
-   11. BERITA & PENGUMUMAN (FEATURED + PORTAL CARDS)
+   11. BERITA & PENGUMUMAN
    ========================================================================== */
 .pengumuman-section {
   background-color: var(--bg-page);
@@ -1397,7 +1384,6 @@ img.card-img {
   align-items: stretch;
 }
 
-/* Featured Top Announcement spans full width on desktop when present */
 .pengumuman-card.pengumuman-featured {
   grid-column: 1 / -1;
   display: grid;
@@ -1674,7 +1660,7 @@ img.card-img {
 }
 
 /* ==========================================================================
-   12. GALERI KEGIATAN SEKOLAH (SPECIFICATION SECTION 8)
+   12. GALERI KEGIATAN SEKOLAH
    ========================================================================== */
 .galeri-grid {
   display: grid;
@@ -1773,7 +1759,7 @@ img.card-img {
 }
 
 /* ==========================================================================
-   13. SPMB STEPS & CTA BANNER (SPECIFICATION SECTION 9)
+   13. SPMB STEPS & CTA BANNER
    ========================================================================== */
 .steps-grid {
   display: grid;
@@ -1859,7 +1845,7 @@ img.card-img {
 }
 
 /* ==========================================================================
-   14. FORMS, TABLES & ALERTS (SPMB & PROFIL)
+   14. FORMS, TABLES & ALERTS
    ========================================================================== */
 .form-card {
   background: var(--surface);
@@ -1986,7 +1972,6 @@ img.card-img {
   overflow: hidden;
 }
 
-/* Alerts */
 .alert {
   padding: 1rem 1.25rem;
   border-radius: var(--radius-md);
@@ -2019,7 +2004,6 @@ img.card-img {
   color: #7F1D1D;
 }
 
-/* Info Table */
 .info-table {
   width: 100%;
   border-collapse: collapse;
@@ -2104,7 +2088,7 @@ img.card-img {
 }
 
 /* ==========================================================================
-   16. FOOTER (SPECIFICATION SECTION 10)
+   16. FOOTER
    ========================================================================== */
 .site-footer {
   background-color: var(--primary-dark);
@@ -2201,6 +2185,7 @@ img.card-img {
   }
   .footer-bottom {
     flex-direction: column;
+    align-items: stretch;
     text-align: center;
   }
 }
@@ -2251,7 +2236,6 @@ img.card-img {
   to { transform: rotate(360deg); }
 }
 
-/* Scroll Reveal Animations */
 .homyz-reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -2273,520 +2257,5 @@ img.card-img {
   .homyz-reveal {
     opacity: 1 !important;
     transform: none !important;
-  }
-}
-
-/* ==========================================================================
-   PABNA MODERN BLUE THEME & SHOWCASE BANNER SECTION
-   Refined Glassmorphism, Modern Hero, Floating Feature Cards & Photo Showcase
-   ========================================================================== */
-
-/* 1. Pabna Hero Section */
-.hero-pabna {
-  position: relative;
-  background: 
-    radial-gradient(circle at 12% 20%, rgba(56, 189, 248, 0.32) 0%, transparent 40%),
-    radial-gradient(circle at 88% 28%, rgba(37, 99, 235, 0.42) 0%, transparent 52%),
-    radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.22) 0%, transparent 48%),
-    linear-gradient(135deg, #071A30 0%, #0c2b5e 35%, #1552a0 70%, #1d4ed8 100%);
-  color: #FFFFFF;
-  padding: 5.5rem 0 6.5rem;
-  overflow: hidden;
-}
-
-/* Glowing Ambient Bokeh Bubbles */
-.hero-bokeh {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(48px);
-  opacity: 0.55;
-  z-index: 1;
-}
-.hero-bokeh-1 {
-  width: 280px;
-  height: 280px;
-  background: rgba(56, 189, 248, 0.4);
-  top: -60px;
-  left: 5%;
-}
-.hero-bokeh-2 {
-  width: 380px;
-  height: 380px;
-  background: rgba(37, 99, 235, 0.35);
-  top: 10%;
-  right: 2%;
-}
-.hero-bokeh-3 {
-  width: 220px;
-  height: 220px;
-  background: rgba(147, 197, 253, 0.3);
-  bottom: 5%;
-  left: 45%;
-}
-
-.hero-pabna-grid {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 1.12fr 0.88fr;
-  gap: 3.5rem;
-  align-items: center;
-}
-
-.hero-pabna-content {
-  text-align: left;
-}
-
-.hero-welcome-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 0.45rem 1.15rem;
-  border-radius: 9999px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-}
-
-.hero-pabna-title {
-  font-size: clamp(2.3rem, 4vw, 3.4rem);
-  font-weight: 800;
-  line-height: 1.18;
-  color: #FFFFFF;
-  letter-spacing: -0.025em;
-  margin-bottom: 1.25rem;
-}
-
-.hero-pabna-highlight {
-  background: linear-gradient(120deg, #FFFFFF 0%, #BAE6FD 60%, #FDE047 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline;
-}
-
-.hero-pabna-sub {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 2.25rem;
-  max-width: 54ch;
-}
-
-.hero-pabna-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-pabna-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: #2563EB;
-  color: #FFFFFF !important;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.95rem;
-  padding: 0.85rem 1.75rem;
-  border-radius: 9999px;
-  box-shadow: 0 10px 24px -2px rgba(37, 99, 235, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.2);
-  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-  text-decoration: none;
-}
-.btn-pabna-cta:hover {
-  background: #1D4ED8;
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px -2px rgba(37, 99, 235, 0.65);
-}
-
-.btn-pabna-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: rgba(255, 255, 255, 0.14);
-  color: #FFFFFF !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.38);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.95rem;
-  padding: 0.85rem 1.65rem;
-  border-radius: 9999px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.24s ease;
-  text-decoration: none;
-}
-.btn-pabna-secondary:hover {
-  background: rgba(255, 255, 255, 0.24);
-  border-color: #FFFFFF;
-  transform: translateY(-2px);
-}
-
-/* Visual Right Column with Floating Badges */
-.hero-pabna-visual-wrap {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-pabna-frame {
-  position: relative;
-  width: 100%;
-  max-width: 480px;
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 24px 50px -10px rgba(7, 26, 48, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.hero-pabna-img {
-  width: 100%;
-  height: 380px;
-  object-fit: cover;
-  display: block;
-}
-
-.floating-pill {
-  position: absolute;
-  z-index: 5;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 1.15rem;
-  border-radius: 9999px;
-  font-weight: 700;
-  font-size: 0.84rem;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  animation: floatSlow 4s ease-in-out infinite alternate;
-}
-
-.floating-pill-top {
-  top: -16px;
-  right: -12px;
-  background: rgba(11, 31, 58, 0.88);
-  color: #FDE047;
-  border: 1.5px solid rgba(253, 224, 71, 0.5);
-}
-
-.floating-pill-bottom {
-  bottom: -18px;
-  left: -14px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #0F172A;
-  border: 1.5px solid rgba(255, 255, 255, 0.9);
-  animation-delay: 2s;
-}
-
-.floating-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #10B981;
-  display: inline-block;
-  box-shadow: 0 0 10px #10B981;
-}
-
-@keyframes floatSlow {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-8px); }
-}
-
-/* 2. Floating 4 Feature Cards (Pabna Style) */
-.pabna-features-wrap {
-  margin-top: -3.75rem;
-  position: relative;
-  z-index: 10;
-  margin-bottom: 3.5rem;
-}
-
-.pabna-features-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-}
-
-.pabna-card {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 20px;
-  padding: 1.4rem 1.35rem;
-  box-shadow: 0 12px 30px -4px rgba(11, 31, 58, 0.08);
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  text-decoration: none;
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.pabna-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px -6px rgba(11, 31, 58, 0.14);
-  border-color: rgba(37, 99, 235, 0.4);
-}
-
-.pabna-card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  flex-shrink: 0;
-  color: #FFFFFF;
-}
-
-.pabna-icon-blue { background: linear-gradient(135deg, #3B82F6, #1D4ED8); box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3); }
-.pabna-icon-teal { background: linear-gradient(135deg, #14B8A6, #0F766E); box-shadow: 0 6px 14px rgba(20, 184, 166, 0.3); }
-.pabna-icon-amber { background: linear-gradient(135deg, #F59E0B, #B45309); box-shadow: 0 6px 14px rgba(245, 158, 11, 0.3); }
-.pabna-icon-purple { background: linear-gradient(135deg, #8B5CF6, #6D28D9); box-shadow: 0 6px 14px rgba(139, 92, 246, 0.3); }
-
-.pabna-card-info {
-  flex: 1;
-  min-width: 0;
-}
-.pabna-card-title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: #0F172A;
-  margin-bottom: 0.2rem;
-  line-height: 1.25;
-}
-.pabna-card-desc {
-  font-size: 0.78rem;
-  color: #64748B;
-  margin: 0;
-  line-height: 1.35;
-}
-.pabna-card-arrow {
-  color: #94A3B8;
-  font-size: 1rem;
-  transition: transform 0.2s ease, color 0.2s ease;
-  flex-shrink: 0;
-}
-.pabna-card:hover .pabna-card-arrow {
-  color: #2563EB;
-  transform: translateX(4px);
-}
-
-/* 3. SHOWCASE FOTO BANNER SECTION (SENAPATI SHOWCASE) */
-.banner-senapati-section {
-  padding: 4.5rem 0 5rem;
-  background: #F8FAFC;
-  position: relative;
-}
-
-.banner-showcase-box {
-  background: #FFFFFF;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 48px -10px rgba(11, 31, 58, 0.12), 0 0 0 1px rgba(226, 232, 240, 0.8);
-  transition: box-shadow 0.3s ease;
-}
-.banner-showcase-box:hover {
-  box-shadow: 0 28px 60px -12px rgba(11, 31, 58, 0.18), 0 0 0 1px rgba(37, 99, 235, 0.25);
-}
-
-.banner-img-wrap {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background: #0B1F3A;
-}
-
-.banner-main-img {
-  width: 100%;
-  height: auto;
-  max-height: 720px;
-  object-fit: contain;
-  display: block;
-  background: #0B1F3A;
-  margin: 0 auto;
-}
-
-.banner-highlights-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  padding: 1.5rem 2rem;
-  background: #FFFFFF;
-  border-top: 1px solid #E2E8F0;
-}
-
-.banner-tag-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background: #F1F5F9;
-  color: #1E293B;
-  font-size: 0.84rem;
-  font-weight: 700;
-  transition: all 0.2s ease;
-}
-.banner-tag-pill:hover {
-  background: #EFF6FF;
-  color: #2563EB;
-  transform: translateY(-2px);
-}
-
-/* 4. Pabna "About Our School" Section */
-.about-pabna-section {
-  padding: 5rem 0;
-  background: #FFFFFF;
-}
-
-.about-pabna-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 3.5rem;
-  align-items: center;
-}
-
-.about-pabna-media {
-  position: relative;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px -8px rgba(11, 31, 58, 0.14);
-}
-
-.about-pabna-img {
-  width: 100%;
-  height: 380px;
-  object-fit: cover;
-  display: block;
-}
-
-.about-location-pill {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  background: rgba(11, 31, 58, 0.88);
-  color: #FFFFFF;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 0.45rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.about-pabna-stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-top: 2rem;
-}
-
-.about-stat-pill-card {
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-radius: 16px;
-  padding: 1.25rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  transition: all 0.22s ease;
-}
-.about-stat-pill-card:hover {
-  background: #EFF6FF;
-  border-color: #BFDBFE;
-  transform: translateY(-3px);
-}
-
-.about-stat-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  background: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  flex-shrink: 0;
-}
-
-.about-stat-num {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #0F172A;
-  line-height: 1;
-  margin-bottom: 0.2rem;
-}
-
-.about-stat-lbl {
-  font-size: 0.78rem;
-  color: #64748B;
-  margin: 0;
-  line-height: 1.2;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .hero-pabna-grid,
-  .about-pabna-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-  .pabna-features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .hero-pabna-visual-wrap {
-    order: -1;
-  }
-  .hero-pabna-frame {
-    max-width: 100%;
-  }
-  .hero-pabna-img {
-    height: 300px;
-  }
-}
-
-@media (max-width: 640px) {
-  .pabna-features-grid {
-    grid-template-columns: 1fr;
-  }
-  .pabna-features-wrap {
-    margin-top: -2rem;
-  }
-  .about-pabna-stats-grid {
-    grid-template-columns: 1fr;
-  }
-  .hero-pabna-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .btn-pabna-cta,
-  .btn-pabna-secondary {
-    justify-content: center;
-  }
-  .banner-highlights-bar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
   }
 }
