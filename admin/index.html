@@ -97,6 +97,9 @@
         <a class="nav-item role-item-konten" data-view="beranda">
           <span class="nav-icon">🏠</span> Halaman Beranda
         </a>
+        <a class="nav-item role-item-konten" data-view="heroSlider">
+          <span class="nav-icon">🖼️</span> Slider Hero & Banner
+        </a>
         <a class="nav-item role-item-konten" data-view="profil">
           <span class="nav-icon">📜</span> Profil & Visi Misi
         </a>
@@ -331,6 +334,253 @@
             <div class="dirty-bar" id="barBeranda">
               <div class="dirty-text">💡 Simpan teks sambutan dan statistik beranda.</div>
               <button type="submit" class="btn btn-secondary">Simpan Perubahan Beranda</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ==================== VIEW: SLIDER HERO & BANNER ==================== -->
+        <section id="pane-heroSlider" class="view-pane" style="display: none;">
+          <form id="formHeroSlider">
+            <!-- Pratinjau Langsung (Live Visual Preview) -->
+            <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #0B1F3A 0%, #173863 100%); color: #FFFFFF; border: none; overflow: hidden;">
+              <div class="card-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.15); padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h3 class="card-title" style="color: #FFFFFF; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                    <span>✨</span> Pratinjau Tampilan Slider Hero &amp; Banner
+                  </h3>
+                  <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: rgba(255, 255, 255, 0.75);">
+                    Simulasi 5 foto berotasi otomatis di halaman depan SDN Sumberejo 04 Ambulu.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <span id="adminSliderIndicator" style="background: rgba(255, 255, 255, 0.2); padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: #FDE047;">Slide 1 / 5</span>
+                </div>
+              </div>
+              <div style="padding: 1.75rem 1.5rem; display: flex; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.22);">
+                <!-- Frame Pratinjau -->
+                <div style="position: relative; width: 100%; max-width: 460px; height: 320px; border-radius: 26px; overflow: hidden; box-shadow: 0 20px 48px rgba(0,0,0,0.45); background: #071A30; border: 1.5px solid rgba(255, 255, 255, 0.25);">
+                  <div id="adminHeroPreviewTrack" style="width: 100%; height: 100%; position: relative;">
+                    <img id="adminHeroPreviewImg" src="/assets/img/banner-senapati.jpg" alt="Preview Foto" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.4s ease;">
+                  </div>
+                  <!-- Floating Badge Top Preview -->
+                  <div id="adminBadgeTopPreview" style="position: absolute; top: 12px; right: 12px; z-index: 5; background: rgba(11, 31, 58, 0.9); color: #FDE047; border: 1.5px solid rgba(253, 224, 71, 0.5); padding: 0.4rem 0.85rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                    ✨ Small Steps, Big Dreams
+                  </div>
+                  <!-- Floating Badge Bottom Preview -->
+                  <div id="adminBadgeBottomPreview" style="position: absolute; bottom: 14px; left: 14px; z-index: 5; background: rgba(255, 255, 255, 0.95); color: #0F172A; border: 1.5px solid rgba(255, 255, 255, 0.9); padding: 0.4rem 0.85rem; border-radius: 999px; font-size: 0.78rem; font-weight: 800; display: flex; align-items: center; gap: 0.45rem; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
+                    <span>Senapati Berprestasi</span>
+                  </div>
+                  <!-- Dot indicator preview -->
+                  <div id="adminDotsPreview" style="position: absolute; bottom: 14px; right: 14px; z-index: 5; display: flex; gap: 5px; background: rgba(11, 31, 58, 0.65); padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2);">
+                    <span class="admin-prev-dot active" style="width: 18px; height: 6px; border-radius: 999px; background: #FDE047; display: inline-block;"></span>
+                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
+                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
+                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
+                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pengaturan Umum Slider -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+              <div class="card-header">
+                <h3 class="card-title">⚙️ Durasi Rotasi &amp; Teks Lencana (Badges)</h3>
+              </div>
+              <div class="form-row three-col">
+                <div class="form-group">
+                  <label class="form-label">Kecepatan Rotasi Otomatis</label>
+                  <select name="heroSliderInterval" id="heroSliderInterval" class="form-control">
+                    <option value="3000">Cepat (3 Detik)</option>
+                    <option value="4000" selected>Standar (4 Detik) - Direkomendasikan</option>
+                    <option value="5000">Tenang (5 Detik)</option>
+                    <option value="7000">Santai (7 Detik)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Teks Lencana Atas</label>
+                  <input type="text" name="heroBadgeTop" id="inputHeroBadgeTop" class="form-control" value="✨ Small Steps, Big Dreams" placeholder="✨ Small Steps, Big Dreams">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Teks Lencana Bawah</label>
+                  <input type="text" name="heroBadgeBottom" id="inputHeroBadgeBottom" class="form-control" value="Senapati Berprestasi" placeholder="Senapati Berprestasi">
+                </div>
+              </div>
+            </div>
+
+            <!-- Daftar 5 Foto Slider -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+              <div class="card-header">
+                <h3 class="card-title">📸 Pengaturan 5 Foto Slider</h3>
+                <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">
+                  Kelola 5 foto yang akan tampil bergantian secara otomatis. Anda dapat mengunggah file foto baru dari perangkat atau memasukkan URL gambar.
+                </p>
+              </div>
+
+              <!-- 5 Slot Cards -->
+              <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
+                <!-- Slot 1 -->
+                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
+                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
+                    <img id="thumbHeroFoto1" src="/assets/img/banner-senapati.jpg" alt="Foto 1" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#1 UTAMA</span>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #1 (Slide Utama)</strong>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(1)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
+                    </div>
+                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
+                        <input type="text" name="heroFoto1Title" id="inputHeroFoto1Title" class="form-control" value="Dewan Guru 'The Master' &amp; Senapati Berprestasi" placeholder="Judul foto 1">
+                      </div>
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
+                        <input type="text" name="heroFoto1" id="inputHeroFoto1" class="form-control" value="assets/img/banner-senapati.jpg" placeholder="assets/img/... atau https://...">
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
+                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
+                        📁 Unggah Foto Baru
+                        <input type="file" id="fileHeroFoto1" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 1)">
+                      </label>
+                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slot 2 -->
+                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
+                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
+                    <img id="thumbHeroFoto2" src="/assets/img/pengumuman-sumpah-pemuda.svg" alt="Foto 2" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#2</span>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #2 (Slide 2)</strong>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(2)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
+                    </div>
+                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
+                        <input type="text" name="heroFoto2Title" id="inputHeroFoto2Title" class="form-control" value="Peringatan Hari Sumpah Pemuda &amp; Budaya Nusantara" placeholder="Judul foto 2">
+                      </div>
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
+                        <input type="text" name="heroFoto2" id="inputHeroFoto2" class="form-control" value="assets/img/pengumuman-sumpah-pemuda.svg" placeholder="assets/img/... atau https://...">
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
+                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
+                        📁 Unggah Foto Baru
+                        <input type="file" id="fileHeroFoto2" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 2)">
+                      </label>
+                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slot 3 -->
+                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
+                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
+                    <img id="thumbHeroFoto3" src="/assets/img/pengumuman-pts.svg" alt="Foto 3" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#3</span>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #3 (Slide 3)</strong>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(3)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
+                    </div>
+                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
+                        <input type="text" name="heroFoto3Title" id="inputHeroFoto3Title" class="form-control" value="Pembelajaran Berkualitas &amp; Literasi Digital Siswa" placeholder="Judul foto 3">
+                      </div>
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
+                        <input type="text" name="heroFoto3" id="inputHeroFoto3" class="form-control" value="assets/img/pengumuman-pts.svg" placeholder="assets/img/... atau https://...">
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
+                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
+                        📁 Unggah Foto Baru
+                        <input type="file" id="fileHeroFoto3" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 3)">
+                      </label>
+                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slot 4 -->
+                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
+                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
+                    <img id="thumbHeroFoto4" src="/assets/img/pengumuman-rapat-ortu.svg" alt="Foto 4" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#4</span>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #4 (Slide 4)</strong>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(4)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
+                    </div>
+                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
+                        <input type="text" name="heroFoto4Title" id="inputHeroFoto4Title" class="form-control" value="Sinergi Komite Sekolah &amp; Paguyuban Wali Murid" placeholder="Judul foto 4">
+                      </div>
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
+                        <input type="text" name="heroFoto4" id="inputHeroFoto4" class="form-control" value="assets/img/pengumuman-rapat-ortu.svg" placeholder="assets/img/... atau https://...">
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
+                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
+                        📁 Unggah Foto Baru
+                        <input type="file" id="fileHeroFoto4" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 4)">
+                      </label>
+                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slot 5 -->
+                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
+                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
+                    <img id="thumbHeroFoto5" src="/assets/img/banner-senapati.jpg" alt="Foto 5" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#5</span>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #5 (Slide 5)</strong>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(5)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
+                    </div>
+                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
+                        <input type="text" name="heroFoto5Title" id="inputHeroFoto5Title" class="form-control" value="Visi Misi Sekolah Hebat &amp; Fasilitas Ramah Anak" placeholder="Judul foto 5">
+                      </div>
+                      <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
+                        <input type="text" name="heroFoto5" id="inputHeroFoto5" class="form-control" value="assets/img/banner-senapati.jpg" placeholder="assets/img/... atau https://...">
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
+                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
+                        📁 Unggah Foto Baru
+                        <input type="file" id="fileHeroFoto5" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 5)">
+                      </label>
+                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dirty Bar Simpan -->
+            <div class="dirty-bar" id="barHeroSlider">
+              <div class="dirty-text">💡 Perubahan 5 foto slider hero akan langsung aktif seketika di website.</div>
+              <button type="submit" class="btn btn-secondary">Simpan Pengaturan Slider Hero</button>
             </div>
           </form>
         </section>

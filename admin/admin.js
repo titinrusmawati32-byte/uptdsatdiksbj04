@@ -705,7 +705,7 @@
   function canRoleAccessView(role, viewName) {
     if (viewName === "dashboard") return true;
     if (role === "superadmin") return true;
-    const kontenViews = ["identitas", "beranda", "profil", "pengumuman", "guru", "ekskul", "fasilitas", "galeri", "media"];
+    const kontenViews = ["identitas", "beranda", "heroSlider", "profil", "pengumuman", "guru", "ekskul", "fasilitas", "galeri", "media"];
     const spmbViews = ["spmbConfig", "pendaftar"];
     if (role === "editor") return kontenViews.includes(viewName);
     if (role === "admin_spmb") return spmbViews.includes(viewName);
@@ -778,6 +778,7 @@
         dashboard: "Dasbor Operasional",
         identitas: "Identitas Lembaga Sekolah",
         beranda: "Konten Halaman Beranda",
+        heroSlider: "Pengaturan Slider Hero & Banner",
         profil: "Visi, Misi & Sejarah",
         spmbConfig: "Pengaturan Jadwal SPMB",
         pendaftar: "Verifikasi Pendaftar SPMB",
@@ -793,6 +794,10 @@
       document.getElementById("topPageTitle").textContent = titles[viewName] || "Admin Panel";
 
       // Muat data khusus view jika diperlukan
+      if (viewName === "heroSlider") {
+        updateHeroAdminPreviews();
+        startAdminPreviewTicker();
+      }
       if (viewName === "media") loadMediaLibrary();
       if (viewName === "pendaftar") loadPendaftarTable();
       if (viewName === "pengumuman") loadCollection("Pengumuman");
@@ -869,6 +874,24 @@
       });
     }
 
+    // Hero Slider (5 Foto)
+    const fHero = document.getElementById("formHeroSlider");
+    if (fHero) {
+      [
+        "heroBadgeTop", "heroBadgeBottom", "heroSliderInterval",
+        "heroFoto1", "heroFoto1Title",
+        "heroFoto2", "heroFoto2Title",
+        "heroFoto3", "heroFoto3Title",
+        "heroFoto4", "heroFoto4Title",
+        "heroFoto5", "heroFoto5Title"
+      ].forEach((k) => {
+        if (fHero[k] && cfg[k] !== undefined && cfg[k] !== "") {
+          fHero[k].value = cfg[k];
+        }
+      });
+      updateHeroAdminPreviews();
+    }
+
     // Profil
     const fProf = document.getElementById("formProfil");
     if (fProf) {
@@ -936,11 +959,12 @@
   }
 
   // ==========================================
-  // 5. PENYIMPANAN FORMULIR (IDENTITAS, DLL)
+  // 5. PENYIMPANAN FORMULIR (IDENTITAS, HERO, DLL)
   // ==========================================
   function initForms() {
     setupGenericForm("formIdentitas", "barIdentitas", "Identitas Sekolah");
     setupGenericForm("formBeranda", "barBeranda", "Halaman Beranda");
+    setupGenericForm("formHeroSlider", "barHeroSlider", "Slider Hero & Banner");
     setupGenericForm("formProfil", "barProfil", "Profil Sekolah");
     setupGenericForm("formSpmbConfig", "barSpmb", "Pengaturan SPMB");
   }
@@ -990,6 +1014,132 @@
         });
     });
   }
+
+  // ==========================================
+  // SLIDER HERO & BANNER ADMIN LOGIC (5 FOTO)
+  // ==========================================
+  const DEFAULT_HERO_SLIDES = [
+    {
+      foto: "assets/img/banner-senapati.jpg",
+      title: "Dewan Guru 'The Master' & Senapati Berprestasi"
+    },
+    {
+      foto: "assets/img/pengumuman-sumpah-pemuda.svg",
+      title: "Peringatan Hari Sumpah Pemuda & Budaya Nusantara"
+    },
+    {
+      foto: "assets/img/pengumuman-pts.svg",
+      title: "Pembelajaran Berkualitas & Literasi Digital Siswa"
+    },
+    {
+      foto: "assets/img/pengumuman-rapat-ortu.svg",
+      title: "Sinergi Komite Sekolah & Paguyuban Wali Murid"
+    },
+    {
+      foto: "assets/img/banner-senapati.jpg",
+      title: "Visi Misi Sekolah Hebat & Fasilitas Ramah Anak"
+    }
+  ];
+
+  let adminHeroPreviewIdx = 0;
+  let adminHeroPreviewTimer = null;
+
+  function updateHeroAdminPreviews() {
+    const f = document.getElementById("formHeroSlider");
+    if (!f) return;
+
+    for (let i = 1; i <= 5; i++) {
+      const input = document.getElementById(`inputHeroFoto${i}`);
+      const thumb = document.getElementById(`thumbHeroFoto${i}`);
+      const val = (input && input.value) ? input.value : DEFAULT_HERO_SLIDES[i - 1].foto;
+      if (thumb && thumb.src !== val) {
+        thumb.src = val;
+      }
+    }
+
+    const bTop = document.getElementById("inputHeroBadgeTop");
+    const bBot = document.getElementById("inputHeroBadgeBottom");
+    const pTop = document.getElementById("adminBadgeTopPreview");
+    const pBot = document.getElementById("adminBadgeBottomPreview");
+    if (bTop && pTop) pTop.textContent = bTop.value || "✨ Small Steps, Big Dreams";
+    if (bBot && pBot) {
+      pBot.innerHTML = `<span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span> <span>${escapeHtml(bBot.value || "Senapati Berprestasi")}</span>`;
+    }
+
+    renderCurrentAdminPreviewSlide();
+  }
+
+  function renderCurrentAdminPreviewSlide() {
+    const input = document.getElementById(`inputHeroFoto${adminHeroPreviewIdx + 1}`);
+    const img = document.getElementById("adminHeroPreviewImg");
+    const indicator = document.getElementById("adminSliderIndicator");
+    const dots = document.querySelectorAll("#adminDotsPreview .admin-prev-dot");
+
+    const val = (input && input.value) ? input.value : DEFAULT_HERO_SLIDES[adminHeroPreviewIdx].foto;
+    if (img) img.src = val;
+    if (indicator) indicator.textContent = `Slide ${adminHeroPreviewIdx + 1} / 5`;
+
+    dots.forEach((dot, idx) => {
+      if (idx === adminHeroPreviewIdx) {
+        dot.style.background = "#FDE047";
+        dot.style.width = "18px";
+        dot.style.borderRadius = "999px";
+      } else {
+        dot.style.background = "rgba(255,255,255,0.45)";
+        dot.style.width = "6px";
+        dot.style.borderRadius = "50%";
+      }
+    });
+  }
+
+  function startAdminPreviewTicker() {
+    if (adminHeroPreviewTimer) clearInterval(adminHeroPreviewTimer);
+    adminHeroPreviewTimer = setInterval(() => {
+      adminHeroPreviewIdx = (adminHeroPreviewIdx + 1) % 5;
+      renderCurrentAdminPreviewSlide();
+    }, 3500);
+  }
+
+  window.handleHeroUpload = async function (event, slotIdx) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    try {
+      showToast(`Mengompresi foto ${file.name}...`, "info");
+      const res = await window.ImageProcessor.compressImage(file, "hero");
+      const inputUrl = document.getElementById(`inputHeroFoto${slotIdx}`);
+      const thumb = document.getElementById(`thumbHeroFoto${slotIdx}`);
+      if (inputUrl) {
+        inputUrl.value = res.dataUrl;
+        inputUrl.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+      if (thumb) thumb.src = res.dataUrl;
+
+      adminHeroPreviewIdx = slotIdx - 1;
+      updateHeroAdminPreviews();
+      showToast(`Foto #${slotIdx} siap! Klik 'Simpan Pengaturan Slider Hero' di bawah.`, "success");
+    } catch (err) {
+      showToast(`Gagal mengunggah foto: ${err.message}`, "error");
+    }
+  };
+
+  window.resetHeroSlot = function (slotIdx) {
+    const def = DEFAULT_HERO_SLIDES[slotIdx - 1];
+    const inputUrl = document.getElementById(`inputHeroFoto${slotIdx}`);
+    const inputTitle = document.getElementById(`inputHeroFoto${slotIdx}Title`);
+    const thumb = document.getElementById(`thumbHeroFoto${slotIdx}`);
+    if (inputUrl) {
+      inputUrl.value = def.foto;
+      inputUrl.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    if (inputTitle) {
+      inputTitle.value = def.title;
+      inputTitle.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    if (thumb) thumb.src = def.foto;
+    adminHeroPreviewIdx = slotIdx - 1;
+    updateHeroAdminPreviews();
+    showToast(`Foto #${slotIdx} direset ke gambar standar sekolah.`, "info");
+  };
 
   // ==========================================
   // 6. MODUL PENDAFTAR SPMB

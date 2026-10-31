@@ -124,18 +124,27 @@
             </div>
           </div>
 
-          <!-- Kolom Kanan: Visual Frame & Floating Badges -->
-          <div class="hero-pabna-visual-wrap">
-            <div class="hero-pabna-frame">
-              <img src="assets/img/banner-senapati.jpg" alt="Siswa dan Guru SDN Sumberejo 04 Ambulu" class="hero-pabna-img">
+          <!-- Kolom Kanan: Visual Frame & Floating Badges with Auto-Slider -->
+          <div class="hero-pabna-visual-wrap" id="heroVisualWrap">
+            <div class="hero-pabna-frame" id="heroSliderFrame" aria-label="Slider Foto Unggulan Sekolah" role="region">
+              <div class="hero-slider-track" id="heroSliderTrack">
+                <div class="hero-slide active" data-index="0">
+                  <img src="assets/img/banner-senapati.jpg" alt="Siswa dan Guru SDN Sumberejo 04 Ambulu" class="hero-slide-img">
+                </div>
+              </div>
+              <!-- Nav dots indicators -->
+              <div class="hero-slider-dots" id="heroSliderDots" aria-label="Navigasi Slide"></div>
+              <!-- Tombol Panah Navigasi Slide -->
+              <button type="button" class="hero-slider-nav-btn prev" id="heroSlidePrev" aria-label="Foto Sebelumnya">&#10094;</button>
+              <button type="button" class="hero-slider-nav-btn next" id="heroSlideNext" aria-label="Foto Berikutnya">&#10095;</button>
             </div>
             <!-- Floating Badges -->
-            <div class="floating-pill floating-pill-top">
-              <span>✨ Small Steps, Big Dreams</span>
+            <div class="floating-pill floating-pill-top" id="heroBadgeTopEl">
+              <span data-config="heroBadgeTop">✨ Small Steps, Big Dreams</span>
             </div>
-            <div class="floating-pill floating-pill-bottom">
+            <div class="floating-pill floating-pill-bottom" id="heroBadgeBottomEl">
               <span class="floating-dot"></span>
-              <span style="font-weight: 800; color: #0F172A;">Senapati Berprestasi</span>
+              <span style="font-weight: 800; color: #0F172A;" data-config="heroBadgeBottom">Senapati Berprestasi</span>
             </div>
           </div>
         </div>
@@ -196,15 +205,21 @@
           </p>
         </div>
 
-        <!-- Banner Card Container -->
-        <div class="banner-showcase-box">
-          <div class="banner-img-wrap">
-            <img 
-              src="assets/img/banner-senapati.jpg" 
-              alt="Banner Resmi SDN Sumberejo 04 Ambulu - The Master, Berprestasi, Sekolah Hebat, Senapati, Visi & Misi" 
-              class="banner-main-img"
-              loading="lazy"
-            >
+        <!-- Banner Card Container with Auto-Slider -->
+        <div class="banner-showcase-box" id="bannerShowcaseBox">
+          <div class="banner-img-wrap" id="bannerShowcaseWrap">
+            <div class="banner-slider-track" id="bannerSliderTrack">
+              <div class="banner-slide active" data-index="0">
+                <img 
+                  src="assets/img/banner-senapati.jpg" 
+                  alt="Banner Resmi SDN Sumberejo 04 Ambulu - The Master, Berprestasi, Sekolah Hebat, Senapati, Visi & Misi" 
+                  class="banner-main-img"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+            <!-- Indicator dots for banner -->
+            <div class="banner-slider-dots" id="bannerSliderDots"></div>
           </div>
 
           <!-- Highlight Tags Bar -->

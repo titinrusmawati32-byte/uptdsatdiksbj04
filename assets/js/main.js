@@ -350,6 +350,9 @@ function applyConfigToDom(config) {
       badge.innerHTML = `<strong>Pendaftaran Ditutup.</strong> ${config.spmbJadwalBerikutnya || "Nantikan informasi pembukaan gelombang berikutnya."}`;
     }
   });
+
+  // Sinkronkan slider 5 foto dengan konfigurasi terbaru
+  renderHeroSlider(config);
 }
 
 function initGlobalData() {
@@ -602,7 +605,6 @@ function normalizePengumumanList(rawList) {
       item.url ||
       item.urlFoto ||
       "";
-    // Nilai database Firestore/CMS adalah prioritas utama
     const rawUploaded = (dbPhoto && !String(dbPhoto).endsWith(".svg"))
       ? dbPhoto
       : ((localSavedPhoto && !String(localSavedPhoto).endsWith(".svg")) ? localSavedPhoto : (dbPhoto || localSavedPhoto || ""));
@@ -934,6 +936,9 @@ function updateKepsekPhotoFromGuru(list) {
 }
 
 async function initHomePage() {
+  // Inisialisasi slider foto hero & showcase segera
+  renderHeroSlider();
+
   const pContainer = document.getElementById("pengumumanContainer");
   const gContainer = document.getElementById("guruContainer");
   const eContainer = document.getElementById("ekskulContainer");
@@ -1444,20 +1449,17 @@ function formatDateId(dateStr) {
 
 function formatSambutanHtml(rawText) {
   if (!rawText) return "";
-  // Bersihkan heading markdown seperti "# SAMBUTAN KEPALA SEKOLAH" atau "### SDN SUMBEREJO 04"
   const cleaned = String(rawText)
     .replace(/#+\s*SAMBUTAN KEPALA SEKOLAH\s*/gi, "")
     .replace(/#+\s*SDN SUMBEREJO 04(\s*AMBULU)?\s*/gi, "")
     .replace(/^#+\s+/gm, "")
     .trim();
 
-  // Pecah menjadi paragraf yang nyaman dibaca
   let paragraphs = cleaned
     .split(/\n{2,}|\r\n{2,}/)
     .map((p) => p.trim())
     .filter(Boolean);
 
-  // Jika seluruh teks berada dalam 1 baris panjang, pecah setiap ~3 kalimat agar mudah dipindai
   if (paragraphs.length === 1 && paragraphs[0].length > 360) {
     const sentences = paragraphs[0].match(/[^.!?]+[.!?]+(\s|$)/g) || [paragraphs[0]];
     paragraphs = [];
@@ -1579,4 +1581,238 @@ function getDefaultFacilityImgHtml() {
       🏫
     </div>
   `;
+}
+
+// ==========================================
+// 6. SLIDER HERO & BANNER OTOMATIS (5 FOTO)
+// ==========================================
+const DEFAULT_HERO_SLIDER_ITEMS = [
+  {
+    foto: "assets/img/banner-senapati.jpg",
+    title: "Dewan Guru 'The Master' & Senapati Berprestasi"
+  },
+  {
+    foto: "assets/img/pengumuman-sumpah-pemuda.svg",
+    title: "Peringatan Hari Sumpah Pemuda & Budaya Nusantara"
+  },
+  {
+    foto: "assets/img/pengumuman-pts.svg",
+    title: "Pembelajaran Berkualitas & Literasi Digital Siswa"
+  },
+  {
+    foto: "assets/img/pengumuman-rapat-ortu.svg",
+    title: "Sinergi Komite Sekolah & Paguyuban Wali Murid"
+  },
+  {
+    foto: "assets/img/banner-senapati.jpg",
+    title: "Visi Misi Sekolah Hebat & Fasilitas Ramah Anak"
+  }
+];
+
+let heroSliderCurrentIndex = 0;
+let heroSliderTimer = null;
+let heroSliderIntervalMs = 4000;
+let isHeroSliderPaused = false;
+
+function renderHeroSlider(cfg) {
+  const heroTrack = document.getElementById("heroSliderTrack");
+  const heroDots = document.getElementById("heroSliderDots");
+  const bannerTrack = document.getElementById("bannerSliderTrack");
+  const bannerDots = document.getElementById("bannerSliderDots");
+
+  if (!heroTrack && !bannerTrack) return;
+
+  let config = cfg;
+  if (!config) {
+    try {
+      config = JSON.parse(localStorage.getItem("sdn_site_config") || "{}");
+    } catch (e) {
+      config = {};
+    }
+  }
+
+  const slides = [];
+  for (let i = 1; i <= 5; i++) {
+    const rawFoto = (config && config[`heroFoto${i}`]) || DEFAULT_HERO_SLIDER_ITEMS[i - 1].foto;
+    const title = (config && config[`heroFoto${i}Title`]) || DEFAULT_HERO_SLIDER_ITEMS[i - 1].title;
+    slides.push({
+      index: i - 1,
+      foto: formatPhotoUrl(rawFoto),
+      rawFoto: rawFoto,
+      title: title
+    });
+  }
+
+  heroSliderIntervalMs = parseInt((config && config.heroSliderInterval) || "4000", 10);
+  if (isNaN(heroSliderIntervalMs) || heroSliderIntervalMs < 1000) {
+    heroSliderIntervalMs = 4000;
+  }
+
+  const badgeTopEl = document.querySelector('[data-config="heroBadgeTop"]');
+  if (badgeTopEl && config && config.heroBadgeTop) {
+    badgeTopEl.textContent = config.heroBadgeTop;
+  }
+  const badgeBottomEl = document.querySelector('[data-config="heroBadgeBottom"]');
+  if (badgeBottomEl && config && config.heroBadgeBottom) {
+    badgeBottomEl.textContent = config.heroBadgeBottom;
+  }
+
+  if (heroTrack) {
+    heroTrack.innerHTML = slides
+      .map((s, idx) => {
+        const driveId = extractDriveId(s.rawFoto);
+        return `
+          <div class="hero-slide ${idx === heroSliderCurrentIndex ? 'active' : ''}" data-index="${idx}">
+            <img src="${escapeHtml(s.foto)}" 
+                 alt="${escapeHtml(s.title)}" 
+                 class="hero-slide-img" 
+                 loading="${idx === 0 ? 'eager' : 'lazy'}" 
+                 referrerpolicy="no-referrer"
+                 onerror="handleThumbError(this, '${driveId || ''}', 'assets/img/banner-senapati.jpg')">
+          </div>
+        `;
+      })
+      .join("");
+  }
+
+  if (heroDots) {
+    heroDots.innerHTML = slides
+      .map((s, idx) => `
+        <button type="button" 
+                class="hero-slider-dot ${idx === heroSliderCurrentIndex ? 'active' : ''}" 
+                data-index="${idx}" 
+                aria-label="Pindah ke Foto ${idx + 1}: ${escapeHtml(s.title)}" 
+                onclick="window.goToHeroSlide(${idx})">
+        </button>
+      `)
+      .join("");
+  }
+
+  if (bannerTrack) {
+    bannerTrack.innerHTML = slides
+      .map((s, idx) => {
+        const driveId = extractDriveId(s.rawFoto);
+        return `
+          <div class="banner-slide ${idx === heroSliderCurrentIndex ? 'active' : ''}" data-index="${idx}">
+            <img src="${escapeHtml(s.foto)}" 
+                 alt="${escapeHtml(s.title)}" 
+                 class="banner-main-img" 
+                 loading="${idx === 0 ? 'eager' : 'lazy'}" 
+                 referrerpolicy="no-referrer"
+                 onerror="handleThumbError(this, '${driveId || ''}', 'assets/img/banner-senapati.jpg')">
+          </div>
+        `;
+      })
+      .join("");
+  }
+
+  if (bannerDots) {
+    bannerDots.innerHTML = slides
+      .map((s, idx) => `
+        <button type="button" 
+                class="banner-slider-dot ${idx === heroSliderCurrentIndex ? 'active' : ''}" 
+                data-index="${idx}" 
+                aria-label="Foto Banner ${idx + 1}" 
+                onclick="window.goToHeroSlide(${idx})">
+        </button>
+      `)
+      .join("");
+  }
+
+  setupHeroSliderInteractions();
+}
+window.renderHeroSlider = renderHeroSlider;
+
+function goToHeroSlide(index) {
+  const heroSlides = document.querySelectorAll("#heroSliderTrack .hero-slide");
+  const heroDots = document.querySelectorAll("#heroSliderDots .hero-slider-dot");
+  const bannerSlides = document.querySelectorAll("#bannerSliderTrack .banner-slide");
+  const bannerDots = document.querySelectorAll("#bannerSliderDots .banner-slider-dot");
+
+  const total = Math.max(heroSlides.length, bannerSlides.length, 5);
+  heroSliderCurrentIndex = (index + total) % total;
+
+  heroSlides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === heroSliderCurrentIndex);
+  });
+  heroDots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === heroSliderCurrentIndex);
+  });
+  bannerSlides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === heroSliderCurrentIndex);
+  });
+  bannerDots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === heroSliderCurrentIndex);
+  });
+}
+window.goToHeroSlide = goToHeroSlide;
+
+function nextHeroSlide() {
+  goToHeroSlide(heroSliderCurrentIndex + 1);
+}
+window.nextHeroSlide = nextHeroSlide;
+
+function prevHeroSlide() {
+  goToHeroSlide(heroSliderCurrentIndex - 1);
+}
+window.prevHeroSlide = prevHeroSlide;
+
+function startHeroSliderTimer() {
+  if (heroSliderTimer) clearInterval(heroSliderTimer);
+  heroSliderTimer = setInterval(() => {
+    if (!isHeroSliderPaused) {
+      nextHeroSlide();
+    }
+  }, heroSliderIntervalMs);
+}
+
+function setupHeroSliderInteractions() {
+  startHeroSliderTimer();
+
+  const btnPrev = document.getElementById("heroSlidePrev");
+  const btnNext = document.getElementById("heroSlideNext");
+  if (btnPrev) {
+    btnPrev.onclick = (e) => {
+      e.preventDefault();
+      prevHeroSlide();
+      startHeroSliderTimer();
+    };
+  }
+  if (btnNext) {
+    btnNext.onclick = (e) => {
+      e.preventDefault();
+      nextHeroSlide();
+      startHeroSliderTimer();
+    };
+  }
+
+  const heroFrame = document.getElementById("heroSliderFrame");
+  if (heroFrame && !heroFrame._hasSliderEvents) {
+    heroFrame._hasSliderEvents = true;
+    heroFrame.addEventListener("mouseenter", () => { isHeroSliderPaused = true; });
+    heroFrame.addEventListener("mouseleave", () => { isHeroSliderPaused = false; });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+    heroFrame.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    heroFrame.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 40) {
+        nextHeroSlide();
+        startHeroSliderTimer();
+      } else if (touchEndX > touchStartX + 40) {
+        prevHeroSlide();
+        startHeroSliderTimer();
+      }
+    }, { passive: true });
+  }
+
+  const bannerBox = document.getElementById("bannerShowcaseBox");
+  if (bannerBox && !bannerBox._hasSliderEvents) {
+    bannerBox._hasSliderEvents = true;
+    bannerBox.addEventListener("mouseenter", () => { isHeroSliderPaused = true; });
+    bannerBox.addEventListener("mouseleave", () => { isHeroSliderPaused = false; });
+  }
 }
