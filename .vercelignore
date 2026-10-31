@@ -1,8 +1,5 @@
-local-server.js
-server.js
+index.js
 build.js
+bun.lock
+local-server.js
 .git
-.gitignore
-docs
-apps-script
-test.txt
