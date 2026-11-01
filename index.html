@@ -16,167 +16,136 @@
 <body>
 
   <!-- ==========================================
-       TOP INFORMATION BAR
+       TOP INFORMATION BAR (Navy Wave with Phone Pill & Social Badges)
        ========================================== -->
-  <div class="top-bar">
+  <div class="top-bar-flagship">
     <div class="container top-bar-inner">
-      <div class="top-info">
-        <span class="top-info-item top-info-address">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-          <span data-config="alamat">Jl. Lapangan No. 88 Krajan Kidul, Desa Sumberejo, Kec. Ambulu, Kab. Jember, Jawa Timur</span>
+      <div class="top-info-left">
+        <span class="top-info-item">
+          <svg class="top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          <span data-config="alamat">Jl Lapangan No 88 Krajan Kidul Sumberejo Kecamatan Ambulu Jember</span>
         </span>
-        <span class="top-info-item top-info-hours top-keep-mobile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          <span data-config="jamLayanan">Senin - Jumat, 07:00 - 13:00 WIB</span>
+        <span class="top-sep" aria-hidden="true">|</span>
+        <span class="top-info-item">
+          <svg class="top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span data-config="jamLayanan">Senin - Kamis, 07:00 - 13:00 WIB</span>
         </span>
       </div>
-      <div class="top-info">
-        <span class="top-info-item top-keep-mobile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-          <a href="tel:0338123456" data-config="telepon" class="top-bar-phone">(0338) 123456</a>
-        </span>
+      <div class="top-info-right">
+        <a href="tel:0338123456" class="top-phone-pill" data-config="telepon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"/></svg>
+          <span>(0338) 123456</span>
+        </a>
+        <div class="top-social-badges">
+          <a href="https://youtube.com" class="social-circle sc-yt" data-config="medsosYt" aria-label="YouTube" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://facebook.com" class="social-circle sc-fb" data-config="medsosFb" aria-label="Facebook" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://instagram.com" class="social-circle sc-ig" data-config="medsosIg" aria-label="Instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- ==========================================
-       MAIN NAVIGATION & OFFICIAL HEADER BANNER
-       Sesuai Desain Resmi (Banner Biru Royal + Medali Emas + Foto Gedung Sekolah)
+       MAIN FLOATING WHITE PILL NAVBAR (Exact Reference Visual)
        ========================================== -->
-  <header class="header-pabna-banner" id="siteHeader">
-    <div class="container header-banner-container">
-      <div class="header-banner-card">
-        <!-- Bagian Atas: Identitas, Medali Logo, Foto Bangunan Sekolah & Pita Slogan -->
-        <div class="header-banner-top">
-          <div class="header-banner-brand">
-            <!-- Medali Emas Logo Sekolah -->
-            <a href="#beranda" class="header-logo-badge" aria-label="Beranda SDN Sumberejo 04 Ambulu">
-              <img src="assets/img/logo.svg" alt="Logo Resmi SDN Sumberejo 04 Ambulu" class="header-logo-img" width="56" height="56">
-            </a>
-            <div class="header-brand-divider" aria-hidden="true"></div>
-            <div class="header-brand-text">
-              <a href="#beranda" class="header-school-link">
-                <span class="header-school-name">
-                  <span data-config="namaSekolahPrefix">SDN SUMBEREJO</span> <span class="gold-num-badge">04</span> <span data-config="namaSekolahSuffix">AMBULU</span>
-                </span>
-                <span class="header-school-tagline">Unggul dalam Prestasi, Santun Berbudi</span>
-              </a>
-            </div>
+  <header class="header-nav-floating-wrap" id="siteHeader">
+    <div class="container nav-floating-container">
+      <nav class="nav-pill-master" aria-label="Navigasi Utama SDN Sumberejo 04">
+        <!-- Logo & Identitas Lembaga -->
+        <a href="#beranda" class="nav-pill-brand" aria-label="Beranda SDN Sumberejo 04 Ambulu">
+          <div class="nav-brand-logo-shield">
+            <img src="assets/img/logo.svg" alt="Logo Sekolah" width="46" height="46">
           </div>
-
-          <!-- Latar Belakang Gedung Sekolah SDN Sumberejo 04 Ambulu -->
-          <div class="header-banner-visual" aria-hidden="true">
-            <img src="assets/img/gedung-sekolah.png" alt="Gedung SDN Sumberejo 04 Ambulu" class="header-building-img" onerror="this.src='assets/img/banner-senapati.jpg'">
+          <div class="nav-brand-sep" aria-hidden="true"></div>
+          <div class="nav-brand-text">
+            <span class="nav-brand-title" data-config="namaSekolah">SDN SUMBEREJO 04 AMBULU</span>
+            <span class="nav-brand-sub" data-config="taglineSekolah">Unggul dalam Prestasi, Santun Berbudi</span>
           </div>
+        </a>
 
-          <!-- Pita Emas Slogan Kaligrafi Sekolah -->
-          <div class="header-ribbon-wrap" aria-hidden="true">
-            <div class="header-ribbon-text">
-              <span class="ribbon-line-1">Pendidikan Berkualitas</span>
-              <span class="ribbon-line-2">untuk Masa Depan Gemilang</span>
-            </div>
-          </div>
-
-          <!-- Tombol Menu Mobile / Tablet -->
-          <button class="nav-toggle header-banner-toggle" id="navToggle" type="button" aria-label="Buka navigasi menu" aria-expanded="false" aria-controls="navMenu">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
-
-        <!-- Bagian Bawah: Bar Navigasi Kapsul Mengambang (Floating Glossy Nav Pill Bar) -->
-        <nav class="header-nav-pillbar" aria-label="Navigasi Utama">
-          <ul class="nav-menu" id="navMenu">
-            <li class="nav-drawer-header">
-              <div style="display: flex; align-items: center; gap: 0.65rem;">
-                <img src="assets/img/logo.svg" alt="Logo" width="36" height="36">
-                <div>
-                  <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.88rem; color: #FFFFFF;">SDN SUMBEREJO 04</div>
-                  <div style="font-size: 0.7rem; color: #E4B12B;">Menu Navigasi</div>
-                </div>
+        <!-- Menu Navigasi (Desktop Horisontal / Mobile Drawer) -->
+        <ul class="nav-pill-menu" id="navMenu">
+          <li class="nav-drawer-header">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <img src="assets/img/logo.svg" alt="Logo" width="36" height="36">
+              <div>
+                <div style="font-weight: 800; font-size: 0.88rem; color: #102B50;" data-config="namaSekolah">SDN SUMBEREJO 04</div>
+                <div style="font-size: 0.7rem; color: #DDAE35;">Menu Navigasi</div>
               </div>
-              <button type="button" class="nav-drawer-close" id="navCloseBtn" aria-label="Tutup menu navigasi">✕</button>
-            </li>
-            <li>
-              <a href="#beranda" class="nav-link active">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                <span>Beranda</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#profil" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>Profil</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#guru" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-                <span>Guru</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#program" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zM4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1z"/></svg>
-                <span>Program</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#fasilitas" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <span>Fasilitas</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#pengumuman" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2v3h-2V3h-3V1h3a2 2 0 0 1 2 2zm-8 2a7 7 0 0 0-7 7v4H3v2h2.09A7.002 7.002 0 0 0 12 21a7.002 7.002 0 0 0 6.91-6H21v-2h-2v-4a7 7 0 0 0-7-7zm0 2c2.76 0 5 2.24 5 5v5H7v-5c0-2.76 2.24-5 5-5z"/></svg>
-                <span>Pengumuman</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#banner-senapati" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                <span>Showcase</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#galeri" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/></svg>
-                <span>Galeri</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#spmb" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                <span>SPMB</span>
-              </a>
-            </li>
-            <li class="nav-sep" aria-hidden="true">|</li>
-            <li>
-              <a href="#kontak" class="nav-link">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.36-.67.25-1.02A11.36 11.36 0 0 1 8.5 4.31c0-.55-.45-1-1-1H4.01c-.55 0-1 .45-1 1 0 9.39 7.63 17.02 17 17.02.55 0 1-.45 1-1v-3.45c0-.55-.45-1-1-1z"/></svg>
-                <span>Kontak</span>
-              </a>
-            </li>
-            <li class="nav-cta-item">
-              <a href="daftar.html" class="nav-link nav-cta">
-                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M13.13 2.06c-.6-.4-1.39-.17-1.74.45L8.52 7.74c-.45.8-.18 1.81.61 2.26l.48.27-2.6 4.5c-.34.58-.2 1.33.33 1.74l1.39 1.07c.52.4 1.25.32 1.68-.18l2.64-3.08.48.27c.8.45 1.81.18 2.26-.61l2.87-4.97c.39-.67.14-1.54-.53-1.92l-4.63-2.66zm6.81 16.51l-3.5-2.02.87-1.51 3.5 2.02-.87 1.51zM4.06 18.57l3.5 2.02-.87 1.51-3.5-2.02.87-1.51z"/></svg>
-                <span>Daftar Sekarang</span>
-                <span class="cta-arrow" aria-hidden="true">&gt;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+            </div>
+            <button type="button" class="nav-drawer-close" id="navCloseBtn" aria-label="Tutup menu navigasi">✕</button>
+          </li>
+          <li>
+            <a href="#beranda" class="nav-item-link active">
+              <span class="nav-icon">🏠</span> <span>Beranda</span>
+            </a>
+          </li>
+          <li>
+            <a href="#profil" class="nav-item-link">
+              <span class="nav-icon">👤</span> <span>Profil</span>
+            </a>
+          </li>
+          <li>
+            <a href="#guru" class="nav-item-link">
+              <span class="nav-icon">👥</span> <span>Guru</span>
+            </a>
+          </li>
+          <li>
+            <a href="#program" class="nav-item-link">
+              <span class="nav-icon">⊞</span> <span>Program</span>
+            </a>
+          </li>
+          <li>
+            <a href="#fasilitas" class="nav-item-link">
+              <span class="nav-icon">🏫</span> <span>Fasilitas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#pengumuman" class="nav-item-link">
+              <span class="nav-icon">📢</span> <span>Pengumuman</span>
+            </a>
+          </li>
+          <li>
+            <a href="#banner-senapati" class="nav-item-link">
+              <span class="nav-icon">📺</span> <span>Showcase</span>
+            </a>
+          </li>
+          <li>
+            <a href="#galeri" class="nav-item-link">
+              <span class="nav-icon">🖼️</span> <span>Galeri</span>
+            </a>
+          </li>
+          <li>
+            <a href="#spmb" class="nav-item-link">
+              <span class="nav-icon">📄</span> <span>SPMB</span>
+            </a>
+          </li>
+          <li>
+            <a href="#kontak" class="nav-item-link">
+              <span class="nav-icon">📞</span> <span>Kontak</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Tombol CTA Daftar Sekarang (Gold Pill Button) -->
+        <a href="daftar.html" class="nav-pill-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+          <span>Daftar Sekarang</span>
+        </a>
+
+        <!-- Tombol Hamburger Mobile -->
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka navigasi menu" aria-expanded="false" aria-controls="navMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
     </div>
   </header>
   <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
@@ -186,102 +155,130 @@
        ========================================== -->
   <main>
 
-    <!-- 1. MODERN BLUE HERO SECTION -->
-    <section class="hero-pabna" id="beranda">
-      <div class="hero-bokeh hero-bokeh-1" aria-hidden="true"></div>
-      <div class="hero-bokeh hero-bokeh-2" aria-hidden="true"></div>
-      <div class="hero-bokeh hero-bokeh-3" aria-hidden="true"></div>
+    <!-- ==========================================
+         HERO SECTION: FLAGSHIP REFERENCE LAYOUT
+         Nuansa Biru Royal + Script Emas + Foto Siswa & Gedung Sekolah
+         ========================================== -->
+    <section class="hero-flagship" id="beranda">
+      <!-- Background Curved Waves Overlay -->
+      <div class="hero-flagship-waves" aria-hidden="true"></div>
 
-      <div class="container">
-        <div class="hero-pabna-grid">
-          <!-- Kolom Kiri: Teks & Aksi -->
-          <div class="hero-pabna-content">
-            <div class="hero-welcome-badge">
-              <span>🎓</span>
-              <span>Selamat Datang di SDN Sumberejo 04 Ambulu</span>
-            </div>
-            <h1 class="hero-pabna-title">
-              Pendidikan Unggul untuk <span class="hero-pabna-highlight">Masa Depan Gemilang</span>
-            </h1>
-            <p class="hero-pabna-sub">
-              Di <strong data-config="namaSekolah" style="color: #FFFFFF;">SDN Sumberejo 04 Ambulu</strong>, kami membimbing tunas bangsa dengan kurikulum berkualitas, penanaman budi pekerti luhur, dan lingkungan belajar modern yang ramah anak.
-            </p>
-            <div class="hero-pabna-actions">
-              <a href="daftar.html" class="btn-pabna-cta">
-                <span>Daftar SPMB Online</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </a>
-              <a href="#profil" class="btn-pabna-secondary">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                <span>Lihat Profil Sekolah</span>
-              </a>
-            </div>
+      <div class="container hero-flagship-container">
+        <!-- Kolom Kiri: Teks & Aksi -->
+        <div class="hero-flagship-left">
+          <!-- Cursive Golden Script with Underline Swoosh Curve -->
+          <div class="hero-welcome-script">
+            <span class="script-text" data-config="heroWelcome">Selamat Datang di</span>
+            <svg class="script-swoosh" viewBox="0 0 160 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M2 12C45 4 110 3 158 14" stroke="#FFB800" stroke-width="3" stroke-linecap="round"/>
+            </svg>
           </div>
 
-          <!-- Kolom Kanan: Visual Frame & Floating Badges with Auto-Slider -->
-          <div class="hero-pabna-visual-wrap" id="heroVisualWrap">
-            <div class="hero-pabna-frame" id="heroSliderFrame" aria-label="Slider Foto Unggulan Sekolah" role="region">
-              <div class="hero-slider-track" id="heroSliderTrack">
-                <div class="hero-slide active" data-index="0">
-                  <img src="assets/img/banner-senapati.jpg" alt="Siswa dan Guru SDN Sumberejo 04 Ambulu" class="hero-slide-img">
-                </div>
-              </div>
-              <!-- Nav dots indicators -->
-              <div class="hero-slider-dots" id="heroSliderDots" aria-label="Navigasi Slide"></div>
-              <!-- Tombol Panah Navigasi Slide -->
-              <button type="button" class="hero-slider-nav-btn prev" id="heroSlidePrev" aria-label="Foto Sebelumnya">&#10094;</button>
-              <button type="button" class="hero-slider-nav-btn next" id="heroSlideNext" aria-label="Foto Berikutnya">&#10095;</button>
-            </div>
-            <!-- Floating Badges -->
-            <div class="floating-pill floating-pill-top" id="heroBadgeTopEl">
-              <span data-config="heroBadgeTop">✨ Small Steps, Big Dreams</span>
-            </div>
-            <div class="floating-pill floating-pill-bottom" id="heroBadgeBottomEl">
-              <span class="floating-dot"></span>
-              <span style="font-weight: 800; color: #0F172A;" data-config="heroBadgeBottom">Senapati Berprestasi</span>
-            </div>
+          <!-- School Name Bold White -->
+          <h2 class="hero-school-heading" data-config="heroSchoolName">SDN SUMBEREJO 04 AMBULU</h2>
+
+          <!-- Main Headline with Vertical Gold Bar -->
+          <div class="hero-headline-box">
+            <span class="hero-bar-gold" aria-hidden="true"></span>
+            <h1 class="hero-main-title">
+              <span data-config="heroHeadline">Pendidikan Unggul untuk</span><br>
+              <span class="gold-text-highlight" data-config="heroHeadlineHighlight">Masa Depan</span> <span data-config="heroHeadlineSuffix">Gemilang</span>
+            </h1>
+          </div>
+
+          <!-- Description -->
+          <p class="hero-flagship-desc" data-config="heroDeskripsi">
+            Dengan kurikulum berkualitas, penanaman budi pekerti luhur, dan lingkungan belajar yang nyaman.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="hero-flagship-actions">
+            <a href="daftar.html" class="btn-flagship-primary" data-config="heroCtaUrl">
+              <span class="btn-icon">🎓</span>
+              <span data-config="heroCtaText">Daftar SPMB Online</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+            <a href="#profil" class="btn-flagship-secondary" data-config="heroSecUrl">
+              <span class="btn-icon-play">▶</span>
+              <span data-config="heroSecText">Lihat Profil Sekolah</span>
+            </a>
+          </div>
+
+          <!-- Slider Pagination Dots Indicator -->
+          <div class="hero-dots-indicator" id="heroFlagshipDots" aria-label="Indikator Slide">
+            <span class="f-dot active"></span>
+            <span class="f-dot"></span>
+            <span class="f-dot"></span>
+            <span class="f-dot"></span>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Foto Asli Siswa & Gedung Sekolah dalam Bingkai Pita Biru & Emas -->
+        <div class="hero-flagship-right" id="heroVisualWrap">
+          <div class="hero-photo-curved-frame">
+            <img id="heroMainPhoto" src="assets/img/hero-students.jpg" alt="Siswa-Siswi SDN Sumberejo 04 Ambulu" class="hero-real-photo" onerror="this.src='assets/img/banner-senapati.jpg'">
+            <!-- Decorative Wave Ribbons overlay on right -->
+            <div class="photo-ribbon-gold-top" aria-hidden="true"></div>
+            <div class="photo-ribbon-blue-bottom" aria-hidden="true"></div>
           </div>
         </div>
       </div>
+
+      <!-- Natural Leaves Graphic Accent on bottom-left -->
+      <div class="hero-leaves-decor" aria-hidden="true"></div>
     </section>
 
-    <!-- 2. FLOATING 4 FEATURE CARDS -->
-    <div class="container pabna-features-wrap" aria-label="Keunggulan Utama Sekolah">
-      <div class="pabna-features-grid">
-        <a href="#program" class="pabna-card">
-          <div class="pabna-card-icon pabna-icon-blue" aria-hidden="true">📖</div>
-          <div class="pabna-card-info">
-            <div class="pabna-card-title">Keunggulan Akademik</div>
-            <p class="pabna-card-desc">Kurikulum nasional berkualitas &amp; literasi digital sejak dini.</p>
+    <!-- ==========================================
+         4 FLOATING FEATURE PILL CARDS (Exact Reference Design)
+         ========================================== -->
+    <div class="container flagship-features-wrap" aria-label="Keunggulan Utama SDN Sumberejo 04">
+      <div class="flagship-features-grid">
+        <!-- Kartu 1: Keunggulan Akademik -->
+        <a href="#program" class="flagship-card" data-config="card1Url">
+          <div class="f-card-icon f-icon-blue">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
           </div>
-          <span class="pabna-card-arrow">&rarr;</span>
+          <div class="f-card-body">
+            <h4 class="f-card-title" data-config="card1Title">Keunggulan Akademik</h4>
+            <p class="f-card-desc" data-config="card1Desc">Pendidikan berkualitas berbasis teknologi digital.</p>
+          </div>
+          <div class="f-card-circle-arrow">&rarr;</div>
         </a>
 
-        <a href="#guru" class="pabna-card">
-          <div class="pabna-card-icon pabna-icon-teal" aria-hidden="true">👥</div>
-          <div class="pabna-card-info">
-            <div class="pabna-card-title">Guru Berdedikasi</div>
-            <p class="pabna-card-desc">Didampingi tenaga pendidik berpengalaman &amp; penuh kasih.</p>
+        <!-- Kartu 2: Guru Berdedikasi -->
+        <a href="#guru" class="flagship-card" data-config="card2Url">
+          <div class="f-card-icon f-icon-green">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
           </div>
-          <span class="pabna-card-arrow">&rarr;</span>
+          <div class="f-card-body">
+            <h4 class="f-card-title" data-config="card2Title">Guru Berdedikasi</h4>
+            <p class="f-card-desc" data-config="card2Desc">Tenaga pengajar profesional berpengalaman.</p>
+          </div>
+          <div class="f-card-circle-arrow">&rarr;</div>
         </a>
 
-        <a href="#profil" class="pabna-card">
-          <div class="pabna-card-icon pabna-icon-amber" aria-hidden="true">🏆</div>
-          <div class="pabna-card-info">
-            <div class="pabna-card-title">Prestasi Unggul</div>
-            <p class="pabna-card-desc">Pembinaan intensif bakat sains, seni, dan olahraga juara.</p>
+        <!-- Kartu 3: Prestasi Unggul -->
+        <a href="#profil" class="flagship-card" data-config="card3Url">
+          <div class="f-card-icon f-icon-orange">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
           </div>
-          <span class="pabna-card-arrow">&rarr;</span>
+          <div class="f-card-body">
+            <h4 class="f-card-title" data-config="card3Title">Prestasi Unggul</h4>
+            <p class="f-card-desc" data-config="card3Desc">Siswa berprestasi di berbagai bidang.</p>
+          </div>
+          <div class="f-card-circle-arrow">&rarr;</div>
         </a>
 
-        <a href="#fasilitas" class="pabna-card">
-          <div class="pabna-card-icon pabna-icon-purple" aria-hidden="true">🏛️</div>
-          <div class="pabna-card-info">
-            <div class="pabna-card-title">Fasilitas Lengkap</div>
-            <p class="pabna-card-desc">Ruang kelas nyaman, perpustakaan, UKS &amp; ramah anak.</p>
+        <!-- Kartu 4: Fasilitas Lengkap -->
+        <a href="#fasilitas" class="flagship-card" data-config="card4Url">
+          <div class="f-card-icon f-icon-purple">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
           </div>
-          <span class="pabna-card-arrow">&rarr;</span>
+          <div class="f-card-body">
+            <h4 class="f-card-title" data-config="card4Title">Fasilitas Lengkap</h4>
+            <p class="f-card-desc" data-config="card4Desc">Ruang kelas nyaman, perpustakaan, dan UKS.</p>
+          </div>
+          <div class="f-card-circle-arrow">&rarr;</div>
         </a>
       </div>
     </div>

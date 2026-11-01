@@ -287,12 +287,55 @@
               <div class="form-row two-col">
                 <div class="form-group">
                   <label class="form-label">Jam Operasional Layanan</label>
-                  <input type="text" name="jamLayanan" class="form-control" placeholder="Senin - Jumat, 07:00 - 13:00 WIB">
+                  <input type="text" name="jamLayanan" class="form-control" placeholder="Senin - Kamis, 07:00 - 13:00 WIB">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">URL Embed Peta Google Maps</label>
-                  <input type="url" name="mapEmbedUrl" class="form-control">
+                  <label class="form-label">Slogan Resmi Sekolah</label>
+                  <input type="text" name="taglineSekolah" class="form-control" placeholder="Unggul dalam Prestasi, Santun Berbudi">
                 </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">URL Embed Peta Google Maps</label>
+                <input type="url" name="mapEmbedUrl" class="form-control">
+              </div>
+
+              <!-- Media Sosial Resmi -->
+              <div class="card-header" style="margin-top: 1.25rem; padding-left: 0; padding-right: 0; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <h4 class="card-title" style="font-size: 0.95rem;">🌐 Tautan Saluran Media Sosial</h4>
+              </div>
+              <div class="form-row three-col">
+                <div class="form-group">
+                  <label class="form-label">Tautan YouTube</label>
+                  <input type="url" name="medsosYt" class="form-control" placeholder="https://youtube.com/@...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tautan Facebook</label>
+                  <input type="url" name="medsosFb" class="form-control" placeholder="https://facebook.com/...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tautan Instagram</label>
+                  <input type="url" name="medsosIg" class="form-control" placeholder="https://instagram.com/...">
+                </div>
+              </div>
+
+              <!-- Pengaturan SEO & Meta Tag -->
+              <div class="card-header" style="margin-top: 1.25rem; padding-left: 0; padding-right: 0; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <h4 class="card-title" style="font-size: 0.95rem;">🔍 Pengaturan SEO &amp; Mesin Pencari</h4>
+              </div>
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label class="form-label">Judul Halaman Web (Meta Title)</label>
+                  <input type="text" name="seoTitle" class="form-control" placeholder="SDN Sumberejo 04 Ambulu — Unggul dalam Prestasi, Santun Berbudi">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Kata Kunci (Keywords)</label>
+                  <input type="text" name="seoKeywords" class="form-control" placeholder="sdn sumberejo 04, sd ambulu, sd jember, spmb online sd">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Deskripsi Situs Web (Meta Description)</label>
+                <textarea name="seoDesc" rows="2" class="form-control" placeholder="Website Resmi SDN Sumberejo 04 Ambulu, Kabupaten Jember..."></textarea>
               </div>
             </div>
 
@@ -306,9 +349,162 @@
         <!-- ==================== VIEW 3: HALAMAN BERANDA ==================== -->
         <section id="pane-beranda" class="view-pane" style="display: none;">
           <form id="formBeranda">
-            <div class="card">
+            <!-- 1. PENGATURAN HERO SECTION (TEKS & TOMBOL CTA) -->
+            <div class="card" style="margin-bottom: 1.5rem;">
               <div class="card-header">
-                <h3 class="card-title">Sambutan Kepala Sekolah</h3>
+                <h3 class="card-title">✨ Pengaturan Hero Section (Teks Utama &amp; Tombol)</h3>
+                <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">
+                  Kelola judul sambutan, headline utama, deskripsi, dan tombol aksi di bagian paling atas beranda.
+                </p>
+              </div>
+
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label class="form-label">Label Sambutan Kaligrafi Emas</label>
+                  <input type="text" name="heroWelcome" class="form-control" placeholder="Selamat Datang di">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Judul Lembaga di Hero</label>
+                  <input type="text" name="heroSchoolName" class="form-control" placeholder="SDN SUMBEREJO 04 AMBULU">
+                </div>
+              </div>
+
+              <div class="form-row three-col">
+                <div class="form-group">
+                  <label class="form-label">Headline Baris 1</label>
+                  <input type="text" name="heroHeadline" class="form-control" placeholder="Pendidikan Unggul untuk">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Penekanan Kata Emas</label>
+                  <input type="text" name="heroHeadlineHighlight" class="form-control" placeholder="Masa Depan">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Akhiran Judul</label>
+                  <input type="text" name="heroHeadlineSuffix" class="form-control" placeholder="Gemilang">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Deskripsi Ringkas Hero</label>
+                <textarea name="heroDeskripsi" rows="2" class="form-control" placeholder="Dengan kurikulum berkualitas, penanaman budi pekerti luhur, dan lingkungan belajar yang nyaman."></textarea>
+              </div>
+
+              <div class="form-row two-col" style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-top: 0.5rem;">
+                <div>
+                  <strong style="font-size: 0.85rem; color: var(--primary);">Tombol Utama (CTA Emas)</strong>
+                  <div class="form-group" style="margin-top: 0.4rem; margin-bottom: 0.4rem;">
+                    <label class="form-label" style="font-size: 0.78rem;">Teks Tombol</label>
+                    <input type="text" name="heroCtaText" class="form-control" placeholder="Daftar SPMB Online">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Tautan URL Tujuan</label>
+                    <input type="text" name="heroCtaUrl" class="form-control" placeholder="daftar.html">
+                  </div>
+                </div>
+                <div>
+                  <strong style="font-size: 0.85rem; color: var(--primary);">Tombol Sekunder (Lihat Profil)</strong>
+                  <div class="form-group" style="margin-top: 0.4rem; margin-bottom: 0.4rem;">
+                    <label class="form-label" style="font-size: 0.78rem;">Teks Tombol</label>
+                    <input type="text" name="heroSecText" class="form-control" placeholder="Lihat Profil Sekolah">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Tautan URL Tujuan</label>
+                    <input type="text" name="heroSecUrl" class="form-control" placeholder="#profil">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. PENGATURAN 4 KARTU KEUNGGULAN (FEATURE CARDS) -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+              <div class="card-header">
+                <h3 class="card-title">🌟 Pengaturan 4 Kartu Keunggulan (Feature Cards)</h3>
+                <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">
+                  Kelola judul, deskripsi, dan link tujuan untuk 4 kartu mengambang di bawah hero section.
+                </p>
+              </div>
+
+              <!-- Kartu 1 -->
+              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
+                <strong style="color: #2459C5; font-size: 0.88rem;">Kartu #1 (Biru — Keunggulan Akademik)</strong>
+                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
+                    <input type="text" name="card1Title" class="form-control" placeholder="Keunggulan Akademik">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
+                    <input type="text" name="card1Desc" class="form-control" placeholder="Pendidikan berkualitas berbasis teknologi digital.">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
+                    <input type="text" name="card1Url" class="form-control" placeholder="#program">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kartu 2 -->
+              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
+                <strong style="color: #10B981; font-size: 0.88rem;">Kartu #2 (Hijau — Guru Berdedikasi)</strong>
+                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
+                    <input type="text" name="card2Title" class="form-control" placeholder="Guru Berdedikasi">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
+                    <input type="text" name="card2Desc" class="form-control" placeholder="Tenaga pengajar profesional berpengalaman.">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
+                    <input type="text" name="card2Url" class="form-control" placeholder="#guru">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kartu 3 -->
+              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
+                <strong style="color: #F59E0B; font-size: 0.88rem;">Kartu #3 (Oranye — Prestasi Unggul)</strong>
+                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
+                    <input type="text" name="card3Title" class="form-control" placeholder="Prestasi Unggul">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
+                    <input type="text" name="card3Desc" class="form-control" placeholder="Siswa berprestasi di berbagai bidang.">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
+                    <input type="text" name="card3Url" class="form-control" placeholder="#profil">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kartu 4 -->
+              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+                <strong style="color: #8B5CF6; font-size: 0.88rem;">Kartu #4 (Ungu — Fasilitas Lengkap)</strong>
+                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
+                    <input type="text" name="card4Title" class="form-control" placeholder="Fasilitas Lengkap">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
+                    <input type="text" name="card4Desc" class="form-control" placeholder="Ruang kelas nyaman, perpustakaan, dan UKS.">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
+                    <input type="text" name="card4Url" class="form-control" placeholder="#fasilitas">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. SAMBUTAN KEPALA SEKOLAH & STATISTIK -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+              <div class="card-header">
+                <h3 class="card-title">Sambutan Kepala Sekolah &amp; Statistik</h3>
               </div>
               <div class="form-group">
                 <label class="form-label">Teks Pidato Sambutan <small>(Mendukung paragraf baru)</small></label>
@@ -331,9 +527,24 @@
               </div>
             </div>
 
+            <!-- 4. PENGATURAN FOOTER -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+              <div class="card-header">
+                <h3 class="card-title">📝 Pengaturan Teks Footer &amp; Hak Cipta</h3>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Deskripsi Sekolah di Footer</label>
+                <textarea name="footerDesc" rows="2" class="form-control" placeholder="Lembaga pendidikan dasar negeri di Kecamatan Ambulu, Kabupaten Jember..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Teks Hak Cipta (Copyright)</label>
+                <input type="text" name="footerCopyright" class="form-control" placeholder="© 2026 SDN Sumberejo 04 Ambulu. Hak Cipta Dilindungi Undang-Undang.">
+              </div>
+            </div>
+
             <div class="dirty-bar" id="barBeranda">
-              <div class="dirty-text">💡 Simpan teks sambutan dan statistik beranda.</div>
-              <button type="submit" class="btn btn-secondary">Simpan Perubahan Beranda</button>
+              <div class="dirty-text">💡 Simpan pengaturan untuk langsung memperbarui beranda website.</div>
+              <button type="submit" class="btn btn-secondary">Simpan Pengaturan Beranda</button>
             </div>
           </form>
         </section>

@@ -858,19 +858,33 @@
   }
 
   function populateForms(cfg) {
-    // Identitas
+    // Identitas & SEO & Medsos
     const fId = document.getElementById("formIdentitas");
     if (fId) {
-      ["namaSekolah", "akreditasi", "alamat", "telepon", "whatsapp", "email", "jamLayanan", "mapEmbedUrl"].forEach((k) => {
-        if (fId[k] && cfg[k]) fId[k].value = cfg[k];
+      [
+        "namaSekolah", "akreditasi", "alamat", "telepon", "whatsapp", "email",
+        "jamLayanan", "taglineSekolah", "mapEmbedUrl",
+        "medsosYt", "medsosFb", "medsosIg",
+        "seoTitle", "seoKeywords", "seoDesc"
+      ].forEach((k) => {
+        if (fId[k] && cfg[k] !== undefined && cfg[k] !== "") fId[k].value = cfg[k];
       });
     }
 
-    // Beranda
+    // Beranda: Hero Teks, Tombol, 4 Kartu Keunggulan, Sambutan, Statistik & Footer
     const fBer = document.getElementById("formBeranda");
     if (fBer) {
-      ["sambutanKepsek", "jumlahSiswa", "jumlahGuru", "biayaPendaftaran"].forEach((k) => {
-        if (fBer[k] && cfg[k]) fBer[k].value = cfg[k];
+      [
+        "heroWelcome", "heroSchoolName", "heroHeadline", "heroHeadlineHighlight", "heroHeadlineSuffix",
+        "heroDeskripsi", "heroCtaText", "heroCtaUrl", "heroSecText", "heroSecUrl",
+        "card1Title", "card1Desc", "card1Url",
+        "card2Title", "card2Desc", "card2Url",
+        "card3Title", "card3Desc", "card3Url",
+        "card4Title", "card4Desc", "card4Url",
+        "sambutanKepsek", "jumlahSiswa", "jumlahGuru", "biayaPendaftaran",
+        "footerDesc", "footerCopyright"
+      ].forEach((k) => {
+        if (fBer[k] && cfg[k] !== undefined && cfg[k] !== "") fBer[k].value = cfg[k];
       });
     }
 
@@ -1020,6 +1034,10 @@
   // ==========================================
   const DEFAULT_HERO_SLIDES = [
     {
+      foto: "assets/img/hero-students.jpg",
+      title: "Siswa-Siswi Berprestasi SDN Sumberejo 04 Ambulu"
+    },
+    {
       foto: "assets/img/banner-senapati.jpg",
       title: "Dewan Guru 'The Master' & Senapati Berprestasi"
     },
@@ -1034,10 +1052,6 @@
     {
       foto: "assets/img/pengumuman-rapat-ortu.svg",
       title: "Sinergi Komite Sekolah & Paguyuban Wali Murid"
-    },
-    {
-      foto: "assets/img/banner-senapati.jpg",
-      title: "Visi Misi Sekolah Hebat & Fasilitas Ramah Anak"
     }
   ];
 

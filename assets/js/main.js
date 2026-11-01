@@ -192,7 +192,7 @@ function initNavigation() {
     });
   }
 
-  const navLinks = document.querySelectorAll(".nav-link");
+  const navLinks = document.querySelectorAll(".nav-link, .nav-item-link");
   const isHomePage =
     window.location.pathname.endsWith("index.html") ||
     window.location.pathname === "/" ||
@@ -219,9 +219,9 @@ function initNavigation() {
           });
 
           navLinks.forEach((l) => {
-            if (!l.classList.contains("nav-cta")) l.classList.remove("active");
+            if (!l.classList.contains("nav-cta") && !l.classList.contains("nav-pill-cta")) l.classList.remove("active");
           });
-          if (!link.classList.contains("nav-cta")) {
+          if (!link.classList.contains("nav-cta") && !link.classList.contains("nav-pill-cta")) {
             link.classList.add("active");
           }
 
@@ -239,9 +239,9 @@ function initNavigation() {
     const currentPath = window.location.pathname.split("/").pop();
     navLinks.forEach((link) => {
       const href = link.getAttribute("href");
-      if (href === currentPath && !link.classList.contains("nav-cta")) {
+      if (href === currentPath && !link.classList.contains("nav-cta") && !link.classList.contains("nav-pill-cta")) {
         navLinks.forEach((l) => {
-          if (!l.classList.contains("nav-cta")) l.classList.remove("active");
+          if (!l.classList.contains("nav-cta") && !l.classList.contains("nav-pill-cta")) l.classList.remove("active");
         });
         link.classList.add("active");
       }
@@ -265,7 +265,7 @@ function initScrollSpy() {
   const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
   if (sections.length === 0) return;
 
-  const navLinks = document.querySelectorAll(".nav-menu .nav-link:not(.nav-cta)");
+  const navLinks = document.querySelectorAll(".nav-menu .nav-link:not(.nav-cta), .nav-pill-menu .nav-item-link");
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -308,6 +308,8 @@ function applyConfigToDom(config) {
       } else if (el.tagName === "A" && key === "whatsapp") {
         const cleanWa = valStr.replace(/\D/g, "");
         el.href = `https://wa.me/${cleanWa}?text=Halo%20Admin%20${encodeURIComponent(config.namaSekolah || "SDN Sumberejo 04 Ambulu")},%20saya%20ingin%20bertanya%20informasi%20sekolah.`;
+      } else if (el.tagName === "A" && (key.endsWith("Url") || key.startsWith("medsos") || key === "heroCtaUrl" || key === "heroSecUrl")) {
+        el.href = valStr;
       } else if (el.tagName === "A" && key === "telepon") {
         el.href = `tel:${valStr}`;
         el.textContent = valStr;
@@ -329,6 +331,11 @@ function applyConfigToDom(config) {
         el.textContent = trimmed.startsWith('"') ? trimmed : `"${trimmed}"`;
       } else if (key === "sambutanKepsek") {
         el.innerHTML = formatSambutanHtml(valStr);
+      } else if (key === "seoTitle") {
+        document.title = valStr;
+      } else if (key === "seoDesc") {
+        const m = document.querySelector('meta[name="description"]');
+        if (m) m.content = valStr;
       } else {
         el.textContent = valStr;
       }
@@ -1634,6 +1641,10 @@ function getDefaultFacilityImgHtml() {
 // ==========================================
 const DEFAULT_HERO_SLIDER_ITEMS = [
   {
+    foto: "assets/img/hero-students.jpg",
+    title: "Siswa-Siswi Berprestasi SDN Sumberejo 04 Ambulu"
+  },
+  {
     foto: "assets/img/banner-senapati.jpg",
     title: "Dewan Guru 'The Master' & Senapati Berprestasi"
   },
@@ -1648,10 +1659,6 @@ const DEFAULT_HERO_SLIDER_ITEMS = [
   {
     foto: "assets/img/pengumuman-rapat-ortu.svg",
     title: "Sinergi Komite Sekolah & Paguyuban Wali Murid"
-  },
-  {
-    foto: "assets/img/banner-senapati.jpg",
-    title: "Visi Misi Sekolah Hebat & Fasilitas Ramah Anak"
   }
 ];
 
@@ -1659,14 +1666,15 @@ let heroSliderCurrentIndex = 0;
 let heroSliderTimer = null;
 let heroSliderIntervalMs = 4000;
 let isHeroSliderPaused = false;
+let currentHeroSlidesList = [];
 
 function renderHeroSlider(cfg) {
   const heroTrack = document.getElementById("heroSliderTrack");
   const heroDots = document.getElementById("heroSliderDots");
   const bannerTrack = document.getElementById("bannerSliderTrack");
   const bannerDots = document.getElementById("bannerSliderDots");
-
-  if (!heroTrack && !bannerTrack) return;
+  const heroMainPhoto = document.getElementById("heroMainPhoto");
+  const flagshipDots = document.getElementById("heroFlagshipDots");
 
   let config = cfg;
   if (!config) {
@@ -1688,6 +1696,7 @@ function renderHeroSlider(cfg) {
       title: title
     });
   }
+  currentHeroSlidesList = slides;
 
   heroSliderIntervalMs = parseInt((config && config.heroSliderInterval) || "4000", 10);
   if (isNaN(heroSliderIntervalMs) || heroSliderIntervalMs < 1000) {
@@ -1701,6 +1710,23 @@ function renderHeroSlider(cfg) {
   const badgeBottomEl = document.querySelector('[data-config="heroBadgeBottom"]');
   if (badgeBottomEl && config && config.heroBadgeBottom) {
     badgeBottomEl.textContent = config.heroBadgeBottom;
+  }
+
+  if (heroMainPhoto && slides[heroSliderCurrentIndex]) {
+    heroMainPhoto.src = slides[heroSliderCurrentIndex].foto;
+    heroMainPhoto.alt = slides[heroSliderCurrentIndex].title;
+  }
+
+  if (flagshipDots) {
+    flagshipDots.innerHTML = slides
+      .map((s, idx) => `
+        <span class="f-dot ${idx === heroSliderCurrentIndex ? 'active' : ''}" 
+              onclick="window.goToHeroSlide(${idx})" 
+              style="cursor: pointer;" 
+              title="Foto ${idx + 1}: ${escapeHtml(s.title)}">
+        </span>
+      `)
+      .join("");
   }
 
   if (heroTrack) {
@@ -1774,9 +1800,20 @@ function goToHeroSlide(index) {
   const heroDots = document.querySelectorAll("#heroSliderDots .hero-slider-dot");
   const bannerSlides = document.querySelectorAll("#bannerSliderTrack .banner-slide");
   const bannerDots = document.querySelectorAll("#bannerSliderDots .banner-slider-dot");
+  const heroMainPhoto = document.getElementById("heroMainPhoto");
+  const fDots = document.querySelectorAll("#heroFlagshipDots .f-dot");
 
-  const total = Math.max(heroSlides.length, bannerSlides.length, 5);
+  const total = Math.max(heroSlides.length, bannerSlides.length, fDots.length, 5);
   heroSliderCurrentIndex = (index + total) % total;
+
+  if (heroMainPhoto && currentHeroSlidesList && currentHeroSlidesList[heroSliderCurrentIndex]) {
+    heroMainPhoto.src = currentHeroSlidesList[heroSliderCurrentIndex].foto;
+    heroMainPhoto.alt = currentHeroSlidesList[heroSliderCurrentIndex].title;
+  }
+
+  fDots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === heroSliderCurrentIndex);
+  });
 
   heroSlides.forEach((slide, i) => {
     slide.classList.toggle("active", i === heroSliderCurrentIndex);
