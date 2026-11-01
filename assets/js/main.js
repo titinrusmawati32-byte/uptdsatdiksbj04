@@ -416,7 +416,19 @@ function applyRealtimeBundle(bundle) {
   }
 }
 
+// Ekspor fungsi perender ke global window agar dapat diakses langsung oleh modul Realtime
+window.applyConfigToDom = applyConfigToDom;
+window.applyRealtimeBundle = applyRealtimeBundle;
+window.safeLocalStorageSet = safeLocalStorageSet;
+window.renderPengumumanCards = renderPengumumanCards;
+window.renderGuruCards = renderGuruCards;
+window.renderEkskulCards = renderEkskulCards;
+window.renderFasilitasCards = renderFasilitasCards;
+window.renderGaleriCards = renderGaleriCards;
+window.updateKepsekPhotoFromGuru = updateKepsekPhotoFromGuru;
+
 function initRealtimeSync() {
+  // 1. BroadcastChannel untuk sinkronisasi seketika antar-tab di browser yang sama
   if ("BroadcastChannel" in window) {
     try {
       const bc = new BroadcastChannel("sdn_cms_realtime");
@@ -430,6 +442,38 @@ function initRealtimeSync() {
     } catch (e) {}
   }
 
+  // 2. Active Pulse Engine (Polling Pintar Otomatis)
+  // Menjamin jika ada perangkat HP/tablet yang tidak terjangkau WebSocket/SSE,
+  // data tetap tersinkronisasi otomatis dalam beberapa detik tanpa perlu refresh!
+  let lastCheckedHash = "";
+  async function pollLatestData() {
+    if (document.hidden) return; // Jangan bebankan baterai jika browser diminimalkan
+    try {
+      const bundle = await SchoolAPI.get("getSiteBundle");
+      if (bundle) {
+        const currentHash = JSON.stringify(bundle);
+        if (currentHash !== lastCheckedHash) {
+          lastCheckedHash = currentHash;
+          applyRealtimeBundle(bundle);
+        }
+      }
+    } catch (e) {}
+  }
+
+  // Jalankan polling periodik setiap 6 detik
+  setInterval(pollLatestData, 6000);
+
+  // Periksa langsung ketika layar dibuka kembali / pengguna beralih kembali ke tab
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      pollLatestData();
+    }
+  });
+  window.addEventListener("focus", () => {
+    pollLatestData();
+  });
+
+  // 3. Fallback EventSource (SSE)
   if ("EventSource" in window && window.APP_CONFIG && window.APP_CONFIG.SSE_URL) {
     try {
       const es = new EventSource(window.APP_CONFIG.SSE_URL);
@@ -444,6 +488,7 @@ function initRealtimeSync() {
     } catch (e) {}
   }
 
+  // 4. Fallback Storage Event (antar-tab sesi lokal)
   window.addEventListener("storage", (ev) => {
     if (!ev.key || !ev.newValue) return;
     try {
