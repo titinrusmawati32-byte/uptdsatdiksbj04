@@ -2831,16 +2831,18 @@ img.card-img {
 }
 
 /* ==========================================================================
-   5-TIER COMPREHENSIVE MOBILE-FIRST RESPONSIVE SYSTEM
-   Strict Compliance:
-   - Laptop / Large: >=1440px & 1024px-1439px
-   - Tablet: 768px-1023px
-   - Smartphone: 375px-767px
-   - Small Smartphone: 320px-374px
-   Zero horizontal overflow, banner below text on mobile, no distorted images.
+   5-TIER COMPREHENSIVE RESPONSIVE SYSTEM (DESKTOP MODE ON PHONE & TABLET OPTIMIZED)
+   Precision Breakpoints:
+   - Ultra / Large Desktop: >=1440px
+   - Standard Laptop: 1241px - 1439px
+   - Compact Desktop / Tablet Landscape / Phone Desktop Mode: 961px - 1240px
+   - Tablet Portrait: 768px - 960px
+   - Smartphone: 375px - 767px
+   - Small Smartphone: 320px - 374px
+   Zero horizontal overflow, crisp typography, perfect spacing across all devices.
    ========================================================================== */
 
-/* Large Desktop (>=1440px) */
+/* Ultra / Large Desktop (>=1440px) */
 @media (min-width: 1440px) {
   .container {
     max-width: 1340px;
@@ -2854,19 +2856,209 @@ img.card-img {
   }
 }
 
-/* Tablet (768px - 1023px) */
-@media (max-width: 1023px) {
+/* ==========================================================================
+   COMPACT DESKTOP, TABLET LANDSCAPE & "SITUS DESKTOP" ON MOBILE (961px - 1240px)
+   Crucial: Ensures high-density mobile screens with Desktop Mode toggled
+   render with surgical precision, balanced cards, and no crowded elements.
+   ========================================================================== */
+@media (min-width: 961px) and (max-width: 1240px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* 1. Header & Navigation Precision */
+  .site-header {
+    height: 74px;
+  }
+  .brand-logo {
+    width: 42px;
+    height: 42px;
+  }
+  .brand-title {
+    font-size: 0.95rem;
+  }
+  .brand-sub {
+    font-size: 0.66rem;
+  }
+  .navbar {
+    gap: 0.5rem;
+  }
+  .nav-menu {
+    gap: 0.12rem;
+  }
+  .nav-link {
+    padding: 0.45rem 0.52rem;
+    font-size: 0.8125rem;
+  }
+  .nav-cta {
+    padding: 0.5rem 0.95rem !important;
+    font-size: 0.8125rem !important;
+    margin-left: 0.25rem;
+  }
+
+  /* 2. Hero Section Balanced Sizing */
+  .hero-pabna {
+    padding: 4.5rem 0 5.25rem;
+  }
+  .hero-pabna-grid {
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .hero-pabna-title {
+    font-size: 2.35rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .hero-pabna-sub {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin-bottom: 1.75rem;
+    max-width: 48ch;
+  }
+  .hero-welcome-badge {
+    padding: 0.38rem 0.95rem;
+    font-size: 0.82rem;
+    margin-bottom: 1.15rem;
+  }
+  .btn-pabna-cta,
+  .btn-pabna-secondary {
+    padding: 0.75rem 1.35rem;
+    font-size: 0.88rem;
+  }
+  .hero-pabna-frame {
+    max-width: 430px;
+    height: 340px;
+    border-radius: 20px;
+  }
+  .floating-pill {
+    padding: 0.45rem 0.95rem;
+    font-size: 0.78rem;
+  }
+  .floating-pill-top {
+    top: -12px;
+    right: -8px;
+  }
+  .floating-pill-bottom {
+    bottom: -12px;
+    left: -8px;
+  }
+
+  /* 3. Overlapping 4 Feature Cards Precision (No text wrapping issues) */
+  .pabna-features-wrap {
+    margin-top: -2.75rem;
+    margin-bottom: 3.25rem;
+  }
+  .pabna-features-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+  }
+  .pabna-card {
+    padding: 1.15rem 0.9rem;
+    gap: 0.7rem;
+    border-radius: 16px;
+  }
+  .pabna-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+  }
+  .pabna-card-title {
+    font-size: 0.88rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.25;
+  }
+  .pabna-card-desc {
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+  .pabna-card-arrow {
+    font-size: 0.85rem;
+    margin-left: auto;
+  }
+
+  /* 4. Showcase Banner Section */
+  .banner-senapati-section {
+    padding: 3.75rem 0 4.25rem;
+  }
+  .banner-highlights-bar {
+    padding: 1.15rem 1.5rem;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+  .banner-tag-pill {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  /* 5. Sambutan Kepala Sekolah Box */
+  .sambutan-box {
+    grid-template-columns: 220px 1fr;
+    gap: 2.25rem;
+    padding: 2.25rem 2rem;
+    border-radius: 20px;
+  }
+  .sambutan-photo-frame {
+    width: 220px;
+    height: 275px;
+  }
+  .sambutan-badge-pill {
+    font-size: 0.78rem;
+    padding: 0.45rem 0.65rem;
+  }
+  .sambutan-quote {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* 6. Stats Grid */
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .stat-card {
+    padding: 1.4rem 1rem;
+    border-radius: 18px;
+  }
+  .stat-number {
+    font-size: 2.1rem;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  /* 7. Other Grids */
+  .card-grid.tri-col {
+    gap: 1.25rem;
+  }
+  .steps-grid {
+    gap: 1.25rem;
+  }
+  .footer-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 1.75rem;
+  }
+}
+
+/* ==========================================================================
+   TABLET PORTRAIT (768px - 960px)
+   ========================================================================== */
+@media (min-width: 768px) and (max-width: 960px) {
   .hero-pabna {
     padding: 4.5rem 0 5.5rem;
   }
   .hero-pabna-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.75rem;
   }
-  /* Rule #4: Headline and description on top, banner visual BELOW */
   .hero-pabna-content {
     order: 1;
     text-align: center;
+  }
+  .hero-pabna-title {
+    font-size: 2.4rem;
   }
   .hero-pabna-sub {
     margin-left: auto;
@@ -2878,29 +3070,37 @@ img.card-img {
   .hero-pabna-visual-wrap {
     order: 2;
     width: 100%;
-    max-width: 560px;
+    max-width: 520px;
     margin: 0 auto;
   }
   .hero-pabna-frame {
-    height: 350px;
+    height: 340px;
   }
   .pabna-features-wrap {
     margin-top: -2.75rem;
+    margin-bottom: 3rem;
   }
   .pabna-features-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
+  .pabna-card {
+    padding: 1.25rem 1.15rem;
+  }
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   .sambutan-box {
     grid-template-columns: 1fr;
     text-align: center;
     gap: 2rem;
+    padding: 2.5rem 2rem;
   }
   .sambutan-photo-frame {
     margin: 0 auto;
+    width: 220px;
+    height: 275px;
   }
   .card-grid.tri-col {
     grid-template-columns: repeat(2, 1fr);
@@ -2908,9 +3108,15 @@ img.card-img {
   .steps-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
 }
 
-/* Smartphone (375px - 767px) */
+/* ==========================================================================
+   SMARTPHONE (375px - 767px)
+   ========================================================================== */
 @media (max-width: 767px) {
   .top-bar-inner {
     justify-content: center;
@@ -3028,7 +3234,9 @@ img.card-img {
   }
 }
 
-/* Small Smartphone (320px - 374px) */
+/* ==========================================================================
+   SMALL SMARTPHONE (320px - 374px)
+   ========================================================================== */
 @media (max-width: 374px) {
   .container {
     padding-left: 12px;
@@ -3064,4 +3272,5 @@ img.card-img {
     font-size: 1.2rem;
   }
 }
+
 
