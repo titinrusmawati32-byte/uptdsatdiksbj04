@@ -252,6 +252,7 @@ function initNavigation() {
 function initScrollSpy() {
   const sectionIds = [
     "beranda",
+    "banner-senapati",
     "pengumuman",
     "profil",
     "program",
