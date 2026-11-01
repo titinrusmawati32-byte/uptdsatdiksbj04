@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHomyzTransitions();
   initPageSpecific();
   initRealtimeSync();
+  initGridoraMorphTransitions();
 });
 
 // ==========================================
@@ -2030,4 +2031,121 @@ window.closeProfilLightbox = function () {
 };
 
 window.initProfilMorphingScroll = initProfilMorphingScroll;
+
+// ==========================================
+// 16. GRIDORA MODULIFY MORPHING TRANSITIONS ENGINE
+// Reference: https://gridora.modulify.website/
+// ==========================================
+function initGridoraMorphTransitions() {
+  const headerWrap = document.getElementById("siteHeader") || document.querySelector(".header-nav-floating-wrap");
+  const heroFrame = document.querySelector(".hero-photo-curved-frame");
+  const featureCards = document.querySelectorAll(".flagship-card");
+  const progressBar = document.getElementById("scrollProgressBar");
+  const btnBackToTop = document.getElementById("btnBackToTop");
+
+  // 1. Scroll Handler: Header Capsule Morphing & Hero Visual Expansion
+  const onScroll = () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollY / docHeight) * 100)) : 0;
+
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+
+    if (btnBackToTop) {
+      if (scrollY > 380) {
+        btnBackToTop.classList.add("visible");
+      } else {
+        btnBackToTop.classList.remove("visible");
+      }
+    }
+
+    // Gridora Floating Capsule Navbar Morphing
+    if (headerWrap) {
+      if (scrollY > 24) {
+        headerWrap.classList.add("is-morphed");
+      } else {
+        headerWrap.classList.remove("is-morphed");
+      }
+    }
+
+    // Hero Perspective & Scale Morphing
+    if (heroFrame) {
+      if (scrollY > 40 && scrollY < 650) {
+        heroFrame.classList.add("hero-morphed");
+      } else {
+        heroFrame.classList.remove("hero-morphed");
+      }
+    }
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  if (btnBackToTop) {
+    btnBackToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  // 2. Bento Card Spotlight Tracking Morphing
+  if (featureCards.length > 0) {
+    featureCards.forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.setProperty("--mouse-x", `-500px`);
+        card.style.setProperty("--mouse-y", `-500px`);
+      });
+    });
+  }
+
+  // 3. Gridora Morphing Tabs Slider Indicator (Showcase Tabs)
+  const tabContainer = document.getElementById("showcaseMorphTabs");
+  const sliderPill = document.getElementById("morphTabSliderPill");
+  if (tabContainer && sliderPill) {
+    const tabBtns = tabContainer.querySelectorAll(".gridora-tab-btn");
+
+    function moveSliderPillTo(btn) {
+      if (!btn) return;
+      const left = btn.offsetLeft;
+      const width = btn.offsetWidth;
+      sliderPill.style.transform = `translateX(${left - 6}px)`;
+      sliderPill.style.width = `${width}px`;
+    }
+
+    tabBtns.forEach((btn, idx) => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        moveSliderPillTo(btn);
+
+        // Berikan sinyal rotasi ke showcase jika tombol diklik
+        const dots = document.querySelectorAll("#bannerSliderDots .banner-dot");
+        if (dots && dots[idx % dots.length]) {
+          dots[idx % dots.length].click();
+        }
+      });
+    });
+
+    const activeBtn = tabContainer.querySelector(".gridora-tab-btn.active") || tabBtns[0];
+    if (activeBtn) {
+      setTimeout(() => moveSliderPillTo(activeBtn), 120);
+      window.addEventListener("resize", () => {
+        const currentActive = tabContainer.querySelector(".gridora-tab-btn.active") || tabBtns[0];
+        if (currentActive) moveSliderPillTo(currentActive);
+      });
+    }
+  }
+}
+
+window.initGridoraMorphTransitions = initGridoraMorphTransitions;
+
 
