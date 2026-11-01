@@ -1114,24 +1114,65 @@
     }, 3500);
   }
 
+  async function safeCompressOrRead(file, maxDimension = 1600) {
+    if (window.ImageProcessor && typeof window.ImageProcessor.compressImage === "function") {
+      try {
+        const res = await window.ImageProcessor.compressImage(file, "hero");
+        if (res && (res.dataUrl || res.base64)) {
+          return res.dataUrl || `data:${res.mime || "image/jpeg"};base64,${res.base64}`;
+        }
+      } catch (e) {}
+    }
+    if (window.ImageProcessor && typeof window.ImageProcessor.compress === "function") {
+      try {
+        const res = await window.ImageProcessor.compress(file, "hero");
+        if (res && (res.dataUrl || res.base64)) {
+          return res.dataUrl || `data:${res.mime || "image/jpeg"};base64,${res.base64}`;
+        }
+      } catch (e) {}
+    }
+
+    // Fallback Canvas Compressor Bawaan Browser
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDimension || h > maxDimension) {
+            if (w > h) {
+              h = Math.max(1, Math.round((h * maxDimension) / w));
+              w = maxDimension;
+            } else {
+              w = Math.max(1, Math.round((w * maxDimension) / h));
+              h = maxDimension;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL("image/jpeg", 0.85));
+        };
+        img.onerror = () => resolve(e.target.result);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve("");
+      reader.readAsDataURL(file);
+    });
+  }
+
   window.handleHeroUpload = async function (event, slotIdx) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
     try {
       showToast(`Mengompresi foto ${file.name}...`, "info");
 
-      let dataUrl = "";
-      if (window.ImageProcessor && (typeof window.ImageProcessor.compress === "function" || typeof window.ImageProcessor.compressImage === "function")) {
-        const compressFn = window.ImageProcessor.compress || window.ImageProcessor.compressImage;
-        const res = await compressFn(file, "hero");
-        dataUrl = res.dataUrl || `data:${res.mime || "image/jpeg"};base64,${res.base64}`;
-      } else {
-        dataUrl = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
+      const dataUrl = await safeCompressOrRead(file, 1600);
+      if (!dataUrl) {
+        throw new Error("Gagal membaca berkas gambar.");
       }
 
       const inputUrl = document.getElementById(`inputHeroFoto${slotIdx}`);
@@ -2113,8 +2154,30 @@
 
         try {
           // Kompresi di browser (Mendukung hingga 50 MB, optimal untuk web & database)
-          const compressed = await ImageProcessor.compress(file);
-          const dataUrl = compressed.dataUrl || `data:${compressed.mime || "image/jpeg"};base64,${compressed.base64}`;
+          let dataUrl = "";
+          let compName = file.name;
+          let compSize = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+          let compMime = file.type || "image/jpeg";
+          let compBase64 = "";
+
+          if (window.ImageProcessor && typeof window.ImageProcessor.compress === "function") {
+            try {
+              const compressed = await window.ImageProcessor.compress(file);
+              dataUrl = compressed.dataUrl || `data:${compressed.mime || "image/jpeg"};base64,${compressed.base64}`;
+              compName = compressed.name || file.name;
+              compSize = compressed.sizeFormatted || compSize;
+              compMime = compressed.mime || compMime;
+              compBase64 = compressed.base64 || "";
+            } catch (e) {
+              dataUrl = await safeCompressOrRead(file, 1400);
+            }
+          } else {
+            dataUrl = await safeCompressOrRead(file, 1400);
+          }
+
+          if (!compBase64 && dataUrl.includes(",")) {
+            compBase64 = dataUrl.split(",")[1];
+          }
 
           // Pasang dataUrl ke hidden input dan pratinjau agar gambar instan aktif dan tidak pernah ter-reset ke default
           hiddenVal.value = dataUrl;

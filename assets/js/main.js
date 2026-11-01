@@ -531,6 +531,8 @@ function initPageSpecific() {
 
   if (path === "index.html" || path === "" || path === "pengumuman.html") {
     initHomePage();
+  } else if (path === "profil.html") {
+    initProfilMorphingScroll();
   } else if (path === "guru.html") {
     initGuruPage();
   } else if (path === "program.html") {
@@ -1899,3 +1901,133 @@ function setupHeroSliderInteractions() {
     bannerBox.addEventListener("mouseleave", () => { isHeroSliderPaused = false; });
   }
 }
+
+// ==========================================
+// 15. PROFIL MORPHING SCROLL EXPERIENCE
+// ==========================================
+function initProfilMorphingScroll() {
+  const progressBar = document.getElementById("scrollProgressBar");
+  const btnBackToTop = document.getElementById("btnBackToTop");
+  const visiCard = document.getElementById("morphingVisiCard");
+  const timelineProgress = document.getElementById("timelineProgressBar");
+  const timelineSection = document.getElementById("sejarah");
+
+  // 1. Progress Bar & Back-to-Top Handler
+  const handleScroll = () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollY / docHeight) * 100)) : 0;
+
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+
+    if (btnBackToTop) {
+      if (scrollY > 380) {
+        btnBackToTop.classList.add("visible");
+      } else {
+        btnBackToTop.classList.remove("visible");
+      }
+    }
+
+    // Progress Garis Timeline Sejarah
+    if (timelineProgress && timelineSection) {
+      const rect = timelineSection.getBoundingClientRect();
+      const winH = window.innerHeight;
+      if (rect.top <= winH * 0.75 && rect.bottom >= 0) {
+        const total = rect.height;
+        const current = (winH * 0.75) - rect.top;
+        const pct = Math.min(100, Math.max(0, (current / total) * 100));
+        timelineProgress.style.width = `${pct}%`;
+      }
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll();
+
+  if (btnBackToTop) {
+    btnBackToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  // 2. Intersection Observer untuk Animasi Morphing Visi & Timeline Nodes
+  if ("IntersectionObserver" in window) {
+    if (visiCard) {
+      const visiObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              visiCard.classList.add("in-view");
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      visiObserver.observe(visiCard);
+    }
+
+    const timelineNodes = document.querySelectorAll(".timeline-node-card");
+    if (timelineNodes.length > 0) {
+      const nodeObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      timelineNodes.forEach((node) => nodeObserver.observe(node));
+    }
+
+    // Morphing Stagger untuk Misi Cards & Karakter Cards
+    const morphCards = document.querySelectorAll(".misi-card-item, .karakter-card");
+    if (morphCards.length > 0) {
+      const cardObserver = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      morphCards.forEach((card, idx) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(24px)";
+        card.style.transition = `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.08}s`;
+        cardObserver.observe(card);
+      });
+    }
+  }
+}
+
+// Lightbox Galeri Profil
+window.openProfilLightbox = function (src, caption) {
+  const modal = document.getElementById("modalProfilLightbox");
+  const img = document.getElementById("profilLightboxImg");
+  const text = document.getElementById("profilLightboxText");
+  if (!modal || !img) return;
+
+  img.src = src;
+  if (text) text.textContent = caption || "";
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+};
+
+window.closeProfilLightbox = function () {
+  const modal = document.getElementById("modalProfilLightbox");
+  if (!modal) return;
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+};
+
+window.initProfilMorphingScroll = initProfilMorphingScroll;
+

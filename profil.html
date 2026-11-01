@@ -4,15 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profil Sekolah — SDN Sumberejo 04 Ambulu</title>
-  <meta name="description" content="Profil lengkap, sejarah singkat, visi misi, dan identitas resmi SDN Sumberejo 04 Ambulu, Kabupaten Jember.">
+  <meta name="description" content="Profil lengkap, visi &amp; misi, sejarah perjalanan, identitas resmi, dan nilai karakter SDN Sumberejo 04 Ambulu, Kabupaten Jember.">
   <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body class="profil-page">
 
-  <!-- Top Info Bar -->
+  <!-- Indikator Progress Scroll Emas -->
+  <div id="scrollProgressBar" class="scroll-progress-bar" aria-hidden="true"></div>
+
+  <!-- Tombol Back to Top Melayang -->
+  <button type="button" id="btnBackToTop" class="btn-back-to-top" aria-label="Kembali ke bagian paling atas halaman">&uarr;</button>
+
+  <!-- ==========================================
+       TOP INFORMATION BAR
+       ========================================== -->
   <div class="top-bar">
     <div class="container top-bar-inner">
       <div class="top-info">
@@ -34,12 +42,14 @@
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- ==========================================
+       MAIN NAVIGATION (STICKY HEADER)
+       ========================================== -->
   <header class="site-header" id="siteHeader">
     <div class="container">
       <nav class="navbar" aria-label="Navigasi Utama">
         <a href="index.html" class="brand">
-          <img src="assets/img/logo.svg" alt="Logo SDN Sumberejo 04 Ambulu" class="brand-logo" width="46" height="46">
+          <img src="assets/img/logo.svg" alt="Logo Resmi SDN Sumberejo 04 Ambulu" class="brand-logo" width="46" height="46">
           <div class="brand-text">
             <span class="brand-title" data-config="namaSekolah">SDN SUMBEREJO 04 AMBULU</span>
             <span class="brand-sub">Unggul dalam Prestasi, Santun Berbudi</span>
@@ -77,97 +87,434 @@
   </header>
   <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 
-  <!-- Sub-Header Banner -->
   <main>
-    <section class="hero">
+    <!-- ==========================================
+         SECTION 1: PROFILE INTRO (EDITORIAL 2-KOLOM)
+         ========================================== -->
+    <section class="profil-hero-intro" id="intro">
       <div class="container">
-        <span class="hero-badge" style="margin-bottom: 1rem;">Identitas Resmi Sekolah</span>
-        <h1>Profil &amp; Visi Misi Sekolah</h1>
-        <p>Mengenal lebih dekat sejarah perjalanan, nilai perjuangan, dan arah tujuan pendidikan di SDN Sumberejo 04 Ambulu.</p>
-      </div>
-    </section>
+        <div class="profil-intro-grid">
+          <!-- Kolom Teks -->
+          <div>
+            <div class="profil-badge">
+              <span>🏛️</span>
+              <span>Tentang Sekolah Kami</span>
+            </div>
+            <h1 class="profil-intro-title">
+              Mengenal Lebih Dekat <br><span style="color: #2459C5;">SDN Sumberejo 04 Ambulu</span>
+            </h1>
+            <p class="profil-intro-desc">
+              Lembaga pendidikan dasar negeri yang berkomitmen mencetak generasi unggul, berakhlak mulia, cerdas bernalar kritis, dan berjiwa Pancasila di lingkungan belajar yang asri, aman, dan ramah anak.
+            </p>
 
-    <!-- Sejarah & Identitas -->
-    <section class="section">
-      <div class="container">
-        <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));">
-          <!-- Sejarah Singkat -->
-          <div class="card">
-            <div class="card-body">
-              <h2 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">Sejarah Singkat</h2>
-              <p data-config="sejarahTeks">SD Negeri Sumberejo 04 berdiri sebagai wujud komitmen masyarakat dan pemerintah daerah dalam menyediakan akses pendidikan dasar yang merata dan berkualitas bagi anak-anak di wilayah Desa Sumberejo dan sekitarnya. Sejak awal berdirinya, sekolah ini telah mencetak ribuan alumni yang melanjutkan ke jenjang pendidikan lebih tinggi dengan bekal akademik serta akhlak yang kuat.</p>
-              <p style="margin-bottom: 0;">Seiring perkembangan zaman, SDN Sumberejo 04 Ambulu terus berbenah meningkatkan mutu sarana prasarana, mengadopsi Kurikulum Nasional terkini, serta mengintegrasikan teknologi informasi dalam layanan pembelajaran maupun administrasi sekolah.</p>
+            <div class="profil-pills-row">
+              <div class="profil-mini-pill">
+                <span class="profil-mini-pill-icon">📅</span>
+                <span>Berdiri Sejak <strong>1960</strong></span>
+              </div>
+              <div class="profil-mini-pill">
+                <span class="profil-mini-pill-icon">⭐</span>
+                <span>Akreditasi <strong data-config="akreditasi">A</strong> Unggul</span>
+              </div>
+              <div class="profil-mini-pill">
+                <span class="profil-mini-pill-icon">🏫</span>
+                <span>Status <strong>Sekolah Negeri</strong></span>
+              </div>
+            </div>
+
+            <div>
+              <a href="#visimisi" class="btn-profil-explore">
+                <span>Jelajahi Profil Lengkap</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+              </a>
             </div>
           </div>
 
-          <!-- Tabel Identitas Sekolah -->
-          <div class="card">
-            <div class="card-body">
-              <h2 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">Identitas Satuan Pendidikan</h2>
-              <table class="info-table">
-                <tbody>
-                  <tr>
-                    <th>Nama Sekolah</th>
-                    <td data-config="namaSekolah" style="font-weight: 700; color: var(--primary);">SDN SUMBEREJO 04 AMBULU</td>
-                  </tr>
-                  <tr>
-                    <th>Jenjang / Status</th>
-                    <td>Sekolah Dasar (SD) / Negeri</td>
-                  </tr>
-                  <tr>
-                    <th>Akreditasi</th>
-                    <td>Terakreditasi <strong data-config="akreditasi" style="color: var(--success);">A</strong></td>
-                  </tr>
-                  <tr>
-                    <th>Alamat Lengkap</th>
-                    <td data-config="alamat">Jl. Lapangan No. 88 Krajan Kidul, Sumberejo, Kec. Ambulu, Jember</td>
-                  </tr>
-                  <tr>
-                    <th>Waktu Penyelenggaraan</th>
-                    <td data-config="jamLayanan">Pagi (07.00 - 13.00 WIB)</td>
-                  </tr>
-                  <tr>
-                    <th>Email Resmi</th>
-                    <td data-config="email">sdn.sumberejo04@gmail.com</td>
-                  </tr>
-                </tbody>
-              </table>
+          <!-- Kolom Foto Utama -->
+          <div>
+            <div class="profil-intro-img-frame">
+              <img src="assets/img/hero-students.jpg" alt="Siswa-siswi Berprestasi SDN Sumberejo 04 Ambulu" id="profilMainHeroImg">
+              <div class="profil-floating-badge">
+                <span class="profil-floating-badge-icon">✨</span>
+                <div class="profil-floating-badge-text">
+                  <strong>Senapati Berprestasi:</strong> Mendidik Generasi Juara dengan Karakter Luhur
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Visi & Misi -->
-    <section class="section section-alt">
+    <!-- ==========================================
+         SECTION 2: VISI & MISI (MORPHING SCROLL EXPERIENCE)
+         ========================================== -->
+    <section class="profil-visimisi-section" id="visimisi">
+      <div class="container">
+        <!-- Panel Visi (Morphing saat in-view) -->
+        <div class="morphing-visi-card" id="morphingVisiCard">
+          <div class="morphing-visi-watermark" aria-hidden="true">“</div>
+          <span class="morphing-visi-badge">🎯 Visi Utama Sekolah</span>
+          <blockquote class="morphing-visi-quote" data-config="visiTeks">
+            "Terwujudnya Peserta Didik yang Beriman, Cerdas, Terampil, Mandiri, dan Berwawasan Lingkungan."
+          </blockquote>
+          <p class="morphing-visi-sub">
+            Visi luhur ini menjadi kompas abadi bagi dewan guru, staf, dan orang tua dalam menuntun setiap langkah peserta didik menuju masa depan gemilang.
+          </p>
+        </div>
+
+        <!-- Misi Sekolah (Cards Berurutan Bernomor Gold) -->
+        <div class="misi-header-wrap">
+          <span class="section-tag">Arah &amp; Langkah Strategis</span>
+          <h2 class="section-title">5 Misi Pokok Sekolah</h2>
+          <p class="section-subtitle">Komitmen terukur dalam mewujudkan visi pendidikan yang holistik dan berdaya saing</p>
+        </div>
+
+        <div class="misi-morphing-grid" id="misiMorphingGrid">
+          <div class="misi-card-item">
+            <div class="misi-number-badge">01</div>
+            <p class="misi-card-text">
+              Menanamkan keimanan dan ketakwaan kepada Tuhan Yang Maha Esa melalui pembiasaan ibadah dan pengamalan ajaran agama dalam kehidupan sehari-hari.
+            </p>
+          </div>
+          <div class="misi-card-item">
+            <div class="misi-number-badge">02</div>
+            <p class="misi-card-text">
+              Melaksanakan kegiatan belajar mengajar yang aktif, inovatif, kreatif, efektif, menyenangkan (PAIKEM), serta berbasis teknologi informasi.
+            </p>
+          </div>
+          <div class="misi-card-item">
+            <div class="misi-number-badge">03</div>
+            <p class="misi-card-text">
+              Mengembangkan potensi minat, bakat sains, seni budaya, serta ketangkasan olahraga peserta didik secara terarah melalui bimbingan intensif.
+            </p>
+          </div>
+          <div class="misi-card-item">
+            <div class="misi-number-badge">04</div>
+            <p class="misi-card-text">
+              Membudayakan sikap santun, disiplin, peduli sesama, dan budaya Senyum, Sapa, Salam, Sopan, Santun (5S) di lingkungan sekolah maupun masyarakat.
+            </p>
+          </div>
+          <div class="misi-card-item">
+            <div class="misi-number-badge">05</div>
+            <p class="misi-card-text">
+              Mewujudkan lingkungan sekolah yang bersih, hijau, sehat, asri, dan aman sebagai sarana menumbuhkan kecintaan terhadap kelestarian alam.
+            </p>
+          </div>
+        </div>
+
+        <!-- Hidden container untuk sinkronisasi teks dinamis jika diubah di CMS -->
+        <ol style="display: none;" data-config="misiTeks"></ol>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3: TIMELINE PERJALANAN & SEJARAH SEKOLAH
+         ========================================== -->
+    <section class="profil-timeline-section" id="sejarah">
       <div class="container">
         <div class="section-header">
-          <span class="section-tag">Arah Pendidikan</span>
-          <h2 class="section-title">Visi &amp; Misi</h2>
-          <p class="section-subtitle">Landasan cita-cita bersama dalam membina peserta didik yang unggul dan berbudi pekerti luhur</p>
+          <span class="section-tag">Jejak Langkah &amp; Transformasi</span>
+          <h2 class="section-title">Sejarah Perjalanan Sekolah</h2>
+          <p class="section-subtitle">Dedikasi tanpa henti selama lebih dari enam dekade mengabdi untuk kemajuan anak bangsa</p>
         </div>
 
-        <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));">
-          <div class="card" style="border-top: 4px solid var(--primary);">
-            <div class="card-body">
-              <h3 class="card-title" style="color: var(--primary); font-size: 1.4rem;">🎯 Visi Sekolah</h3>
-              <p style="font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--primary); font-style: italic; margin-top: 1rem;" data-config="visiTeks">
-                "Terwujudnya Peserta Didik yang Beriman, Cerdas, Terampil, Mandiri, dan Berwawasan Lingkungan."
-              </p>
-              <p style="margin-top: 0.75rem; margin-bottom: 0;">Visi ini menjadi kompas utama dalam setiap perancangan kegiatan belajar-mengajar di dalam maupun di luar kelas.</p>
+        <!-- Narasi Lengkap Sejarah dari CMS -->
+        <div class="sejarah-narrative-card">
+          <h3>Kilasan Perjalanan SDN Sumberejo 04 Ambulu</h3>
+          <p data-config="sejarahTeks">
+            SD Negeri Sumberejo 04 berdiri sebagai wujud komitmen masyarakat dan pemerintah daerah dalam menyediakan akses pendidikan dasar yang merata dan berkualitas bagi anak-anak di wilayah Desa Sumberejo dan sekitarnya. Sejak awal berdirinya, sekolah ini telah melahirkan ribuan alumni sukses yang melanjutkan ke jenjang pendidikan lebih tinggi dengan bekal akademik serta akhlak yang kokoh.
+          </p>
+          <p>
+            Seiring laju modernisasi, SDN Sumberejo 04 Ambulu terus berbenah meningkatkan mutu sarana prasarana, ruang kelas ramah anak, integrasi perpustakaan digital, serta penguatan kompetensi dewan guru guna menyongsong era Kurikulum Merdeka.
+          </p>
+        </div>
+
+        <!-- Timeline Dinamis -->
+        <div class="timeline-track-wrap">
+          <div class="timeline-horizontal-line" aria-hidden="true"></div>
+          <div class="timeline-horizontal-progress" id="timelineProgressBar" aria-hidden="true"></div>
+
+          <div class="timeline-horizontal-desktop">
+            <!-- Node 1 -->
+            <div class="timeline-node-card active">
+              <div class="timeline-node-dot">1960</div>
+              <div class="timeline-node-content">
+                <span class="timeline-node-year">Tahun 1960</span>
+                <h4 class="timeline-node-title">Pendirian Awal</h4>
+                <p class="timeline-node-desc">Didirikan atas prakarsa tokoh masyarakat dan pemerintah desa di Krajan Kidul guna memperluas jangkauan pendidikan dasar.</p>
+              </div>
+            </div>
+
+            <!-- Node 2 -->
+            <div class="timeline-node-card">
+              <div class="timeline-node-dot">1985</div>
+              <div class="timeline-node-content">
+                <span class="timeline-node-year">Tahun 1985</span>
+                <h4 class="timeline-node-title">Perluasan Sarana</h4>
+                <p class="timeline-node-desc">Pembangunan gedung ruang kelas permanen, lapangan upacara, dan penataan halaman asri sekolah yang ramah anak.</p>
+              </div>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="timeline-node-card">
+              <div class="timeline-node-dot">2010</div>
+              <div class="timeline-node-content">
+                <span class="timeline-node-year">Tahun 2010</span>
+                <h4 class="timeline-node-title">Era Prestasi &amp; Mutu</h4>
+                <p class="timeline-node-desc">Meraih status Akreditasi A serta mencatatkan puluhan prestasi bergengsi dalam lomba sains, pramuka, dan kesenian.</p>
+              </div>
+            </div>
+
+            <!-- Node 4 -->
+            <div class="timeline-node-card">
+              <div class="timeline-node-dot">2026</div>
+              <div class="timeline-node-content">
+                <span class="timeline-node-year">Masa Kini</span>
+                <h4 class="timeline-node-title">Transformasi Digital</h4>
+                <p class="timeline-node-desc">Penerapan Kurikulum Merdeka, portal administrasi modern, pembelajaran interaktif, dan keterbukaan informasi digital.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 4: IDENTITAS RESMI SATUAN PENDIDIKAN
+         ========================================== -->
+    <section class="profil-identitas-section" id="identitas">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Data Legalitas &amp; Kelembagaan</span>
+          <h2 class="section-title">Identitas Resmi Sekolah</h2>
+          <p class="section-subtitle">Informasi kelembagaan terverifikasi Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi</p>
+        </div>
+
+        <div class="identitas-modern-grid">
+          <!-- Item 1: Nama Satuan Pendidikan -->
+          <div class="identitas-item-card">
+            <div class="identitas-icon-box">🏫</div>
+            <div class="identitas-content">
+              <div class="identitas-label">Nama Satuan Pendidikan</div>
+              <div class="identitas-value" data-config="namaSekolah">SDN SUMBEREJO 04 AMBULU</div>
             </div>
           </div>
 
-          <div class="card" style="border-top: 4px solid var(--accent-gold);">
-            <div class="card-body">
-              <h3 class="card-title" style="color: var(--primary); font-size: 1.4rem;">🚀 Misi Sekolah</h3>
-              <ol style="padding-left: 1.25rem; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem; color: var(--body-text);" data-config="misiTeks">
-                <li>Menanamkan keimanan dan ketakwaan melalui pengamalan ajaran agama yang dianut.</li>
-                <li>Melaksanakan pembelajaran aktif, inovatif, kreatif, efektif, dan menyenangkan (PAIKEM).</li>
-                <li>Mengembangkan potensi akademik, bakat seni, dan olahraga siswa secara optimal.</li>
-                <li>Membiasakan budaya senyum, sapa, salam, sopan, dan santun (5S) di lingkungan sekolah.</li>
-                <li>Menumbuhkan kepedulian terhadap kebersihan, keindahan, dan kelestarian lingkungan.</li>
-              </ol>
+          <!-- Item 2: NPSN -->
+          <div class="identitas-item-card">
+            <div class="identitas-icon-box">🔢</div>
+            <div class="identitas-content">
+              <div class="identitas-label">Nomor Pokok Sekolah Nasional (NPSN)</div>
+              <div class="identitas-value">20523821</div>
+            </div>
+          </div>
+
+          <!-- Item 3: Status Sekolah -->
+          <div class="identitas-item-card">
+            <div class="identitas-icon-box">🏛️</div>
+            <div class="identitas-content">
+              <div class="identitas-label">Bentuk Pendidikan &amp; Status</div>
+              <div class="identitas-value">Sekolah Dasar (SD) / Negeri</div>
+            </div>
+          </div>
+
+          <!-- Item 4: Akreditasi -->
+          <div class="identitas-item-card">
+            <div class="identitas-icon-box">⭐</div>
+            <div class="identitas-content">
+              <div class="identitas-label">Status Akreditasi</div>
+              <div class="identitas-value" style="color: #10B981;">Terakreditasi <strong data-config="akreditasi">A</strong> (Amat Baik)</div>
+            </div>
+          </div>
+
+          <!-- Item 5: Kurikulum -->
+          <div class="identitas-item-card">
+            <div class="identitas-icon-box">📚</div>
+            <div class="identitas-content">
+              <div class="identitas-label">Kurikulum Pembelajaran</div>
+              <div class="identitas-value">Kurikulum Merdeka</div>
+            </div>
+          </div>
+
+          <!-- Item 6: Waktu Penyelenggaraan -->
+          <div class="identitas-item-card">
+            <div class="identitas-icon-box">⏰</div>
+            <div class="identitas-content">
+              <div class="identitas-label">Waktu Belajar Mengajar</div>
+              <div class="identitas-value" data-config="jamLayanan">Pagi (07.00 - 13.00 WIB)</div>
+            </div>
+          </div>
+
+          <!-- Item 7: Alamat Lengkap -->
+          <div class="identitas-item-card" style="grid-column: 1 / -1;">
+            <div class="identitas-icon-box">📍</div>
+            <div class="identitas-content">
+              <div class="identitas-label">Alamat Geografis Resmi</div>
+              <div class="identitas-value" data-config="alamat">Jl. Lapangan No. 88 Krajan Kidul, Desa Sumberejo, Kec. Ambulu, Kab. Jember, Jawa Timur</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 5: SAMBUTAN KEPALA SEKOLAH EDITORIAL
+         ========================================== -->
+    <section class="profil-sambutan-section" id="sambutan">
+      <div class="container">
+        <div class="sambutan-editorial-card">
+          <div class="sambutan-editorial-grid">
+            <!-- Foto & Identitas Kepsek -->
+            <div class="sambutan-photo-frame">
+              <div class="sambutan-photo-wrap">
+                <img src="https://lh3.googleusercontent.com/d/1TlbVqCuEIaYKvwiSiO_6veO4wPNQ1zyO" alt="Foto Resmi Kepala Sekolah SDN Sumberejo 04 Ambulu" id="profilKepsekPhoto" onerror="this.onerror=null; this.src='assets/img/logo.svg';">
+              </div>
+              <h3 class="sambutan-name-title" data-config="namaKepsek">Kepala Sekolah</h3>
+              <p class="sambutan-nip-sub">NIP. 19680512 199303 1 008</p>
+              <div style="display: inline-block; background: rgba(221, 174, 53, 0.2); border: 1px solid rgba(221, 174, 53, 0.4); padding: 0.25rem 0.85rem; border-radius: 999px; font-size: 0.76rem; color: #F5C74E; font-weight: 700; margin-top: 0.35rem;">
+                UPTD Satdik SDN Sumberejo 04
+              </div>
+            </div>
+
+            <!-- Teks Sambutan -->
+            <div class="sambutan-text-content">
+              <div class="sambutan-quote-icon" aria-hidden="true">“</div>
+              <h2 class="sambutan-title">Sinergi Sekolah dan Keluarga untuk Masa Depan Anak Bangsa</h2>
+              <div class="sambutan-body" data-config="sambutanKepsek">
+                <p>
+                  Assalamu’alaikum Warahmatullahi Wabarakatuh. Puji dan syukur kita panjatkan ke hadirat Allah SWT Tuhan Yang Maha Esa. Selamat datang di portal resmi SDN Sumberejo 04 Ambulu.
+                </p>
+                <p>
+                  Pendidikan di era sekarang bukan hanya sekadar mentransfer ilmu pengetahuan, melainkan proses menumbuhkembangkan potensi fitrah setiap anak dengan kasih sayang, keteladanan budi pekerti, serta kesiapan menyongsong abad ke-21. Kami membuka pintu selebar-lebarnya bagi kemitraan bersama orang tua untuk mengantarkan putra-putri tercinta menjadi generasi yang membanggakan bangsa dan agama.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 6: 6 NILAI & KARAKTER UTAMA SEKOLAH
+         ========================================== -->
+    <section class="profil-karakter-section" id="karakter">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Pilar Budaya Sekolah</span>
+          <h2 class="section-title">6 Nilai Utama SDN Sumberejo 04</h2>
+          <p class="section-subtitle">Prinsip dasar pembentukan karakter yang ditanamkan secara konsisten dalam setiap denyut kehidupan sekolah</p>
+        </div>
+
+        <div class="karakter-grid-6">
+          <!-- 1. Religius -->
+          <div class="karakter-card">
+            <div class="karakter-card-top">
+              <div class="karakter-icon-wrap">🤲</div>
+              <span class="karakter-num">01</span>
+            </div>
+            <h3 class="karakter-title">Religius &amp; Berakhlak Mulia</h3>
+            <p class="karakter-desc">Menjadikan nilai-nilai keimanan, ketakwaan, dan kesopanan budi pekerti sebagai fondasi utama dalam bertutur kata dan bertindak.</p>
+          </div>
+
+          <!-- 2. Disiplin -->
+          <div class="karakter-card">
+            <div class="karakter-card-top">
+              <div class="karakter-icon-wrap">⏱️</div>
+              <span class="karakter-num">02</span>
+            </div>
+            <h3 class="karakter-title">Disiplin &amp; Bertanggung Jawab</h3>
+            <p class="karakter-desc">Melatih kepatuhan terhadap tata tertib waktu, konsistensi dalam tugas, serta rasa tanggung jawab atas amanah yang diemban.</p>
+          </div>
+
+          <!-- 3. Kreatif -->
+          <div class="karakter-card">
+            <div class="karakter-card-top">
+              <div class="karakter-icon-wrap">💡</div>
+              <span class="karakter-num">03</span>
+            </div>
+            <h3 class="karakter-title">Kreatif &amp; Inovatif</h3>
+            <p class="karakter-desc">Mendorong keberanian daya pikir orisinal, daya cipta dalam karya seni dan proyek literasi, serta keterampilan memecahkan masalah.</p>
+          </div>
+
+          <!-- 4. Berprestasi (Senapati) -->
+          <div class="karakter-card">
+            <div class="karakter-card-top">
+              <div class="karakter-icon-wrap">🏆</div>
+              <span class="karakter-num">04</span>
+            </div>
+            <h3 class="karakter-title">Semangat Berprestasi</h3>
+            <p class="karakter-desc">Menumbuhkan mental pejuang juara (Senapati) yang tekun, gigih, dan tidak mudah menyerah dalam menggapai cita-cita luhur.</p>
+          </div>
+
+          <!-- 5. Gotong Royong -->
+          <div class="karakter-card">
+            <div class="karakter-card-top">
+              <div class="karakter-icon-wrap">🤝</div>
+              <span class="karakter-num">05</span>
+            </div>
+            <h3 class="karakter-title">Gotong Royong &amp; Empati</h3>
+            <p class="karakter-desc">Membina kerukunan persaudaraan, kebiasaan saling membantu tanpa membeda-bedakan, serta menumbuhkan empati sosial yang tulus.</p>
+          </div>
+
+          <!-- 6. Peduli Lingkungan -->
+          <div class="karakter-card">
+            <div class="karakter-card-top">
+              <div class="karakter-icon-wrap">🌱</div>
+              <span class="karakter-num">06</span>
+            </div>
+            <h3 class="karakter-title">Peduli &amp; Cinta Lingkungan</h3>
+            <p class="karakter-desc">Mewujudkan lingkungan belajar bersih, sehat, bebas sampah plastik, dan membiasakan hemat energi demi kelestarian alam bersama.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 7: GALERI PROFIL & SUDUT SEKOLAH
+         ========================================== -->
+    <section class="profil-galeri-section" id="galeri-profil">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Dokumentasi Lingkungan</span>
+          <h2 class="section-title">Sudut Kehidupan &amp; Prestasi Sekolah</h2>
+          <p class="section-subtitle">Potret kehangatan keluarga besar SDN Sumberejo 04 Ambulu, aktivitas siswa, dan kebersamaan dewan guru</p>
+        </div>
+
+        <div class="profil-galeri-editorial-grid">
+          <!-- Foto 1: Banner Senapati Showcase (Wide) -->
+          <div class="profil-galeri-item item-wide" onclick="openProfilLightbox('assets/img/banner-senapati.jpg', 'Dewan Guru The Master &amp; Prestasi Senapati Siswa SDN Sumberejo 04 Ambulu')">
+            <span class="profil-galeri-badge">🌟 Foto Showcase Utama</span>
+            <img src="assets/img/banner-senapati.jpg" alt="Dewan Guru &amp; Siswa Berprestasi" loading="lazy">
+            <div class="profil-galeri-caption">
+              Dewan Guru "The Master", Siswa Juara, dan Fasilitas SDN Sumberejo 04 Ambulu
+            </div>
+          </div>
+
+          <!-- Foto 2: Siswa Berprestasi -->
+          <div class="profil-galeri-item" onclick="openProfilLightbox('assets/img/hero-students.jpg', 'Generasi Emas SDN Sumberejo 04 Ambulu — Penuh Semangat dan Ceria')">
+            <span class="profil-galeri-badge">🎓 Peserta Didik</span>
+            <img src="assets/img/hero-students.jpg" alt="Peserta Didik Berprestasi" loading="lazy">
+            <div class="profil-galeri-caption">
+              Siswa-siswi Berprestasi di Lingkungan Sekolah
+            </div>
+          </div>
+
+          <!-- Foto 3: Bangunan Gedung Sekolah -->
+          <div class="profil-galeri-item" onclick="openProfilLightbox('assets/img/gedung-sekolah.png', 'Gedung dan Ruang Belajar Nyaman SDN Sumberejo 04 Ambulu')">
+            <span class="profil-galeri-badge">🏫 Sarana Gedung</span>
+            <img src="assets/img/gedung-sekolah.png" alt="Gedung Sekolah SDN Sumberejo 04" loading="lazy">
+            <div class="profil-galeri-caption">
+              Gedung Belajar dengan Halaman Nyaman &amp; Asri
+            </div>
+          </div>
+
+          <!-- Foto 4: Fasilitas & Pembelajaran -->
+          <div class="profil-galeri-item item-wide" onclick="openProfilLightbox('assets/img/banner-senapati.jpg', 'Aktivitas Belajar dan Kebersamaan di Lingkungan SDN Sumberejo 04 Ambulu')">
+            <span class="profil-galeri-badge">📖 Suasana Sekolah</span>
+            <img src="assets/img/banner-senapati.jpg" alt="Suasana Sekolah" loading="lazy">
+            <div class="profil-galeri-caption">
+              Komitmen Pengabdian Dewan Pendidik untuk Prestasi Terbaik Siswa
             </div>
           </div>
         </div>
@@ -175,7 +522,19 @@
     </section>
   </main>
 
-  <!-- Floating WA -->
+  <!-- Modal Lightbox Galeri Profil -->
+  <div class="profil-lightbox-modal" id="modalProfilLightbox" onclick="if(event.target===this) closeProfilLightbox()">
+    <div class="profil-lightbox-box">
+      <button type="button" class="profil-lightbox-close" onclick="closeProfilLightbox()" aria-label="Tutup pratinjau gambar">✕</button>
+      <img id="profilLightboxImg" src="" alt="Pratinjau Foto">
+      <div class="profil-lightbox-caption">
+        <span id="profilLightboxText"></span>
+        <button type="button" onclick="closeProfilLightbox()" class="btn btn-outline btn-sm" style="color: #FFFFFF; border-color: rgba(255,255,255,0.4);">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating WhatsApp -->
   <a href="https://wa.me/6281234567890" class="float-wa" id="floatingWa" target="_blank" rel="noopener" aria-label="Hubungi kami di WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.35.49 1.199.534 1.286.044.087.073.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.087-.179.182-.077.357.101.174.453.748.971 1.21.666.593 1.229.777 1.402.864.174.087.275.073.376-.044.101-.116.433-.506.549-.68.116-.174.232-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.073.045.419-.099.824z"/>
@@ -183,7 +542,9 @@
     </svg>
   </a>
 
-  <!-- Footer -->
+  <!-- ==========================================
+       SITE FOOTER
+       ========================================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -200,7 +561,7 @@
         <div class="footer-col">
           <h4>Tautan Cepat</h4>
           <ul class="footer-links">
-            <li><a href="index.html">Beranda</a></li>
+            <li><a href="index.html#beranda">Beranda</a></li>
             <li><a href="profil.html">Profil Sekolah</a></li>
             <li><a href="guru.html">Guru &amp; Tenaga Didik</a></li>
             <li><a href="program.html">Program Sekolah</a></li>
