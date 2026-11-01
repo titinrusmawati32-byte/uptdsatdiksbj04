@@ -40,49 +40,143 @@
   </div>
 
   <!-- ==========================================
-       MAIN NAVIGATION (STICKY HEADER)
+       MAIN NAVIGATION & OFFICIAL HEADER BANNER
+       Sesuai Desain Resmi (Banner Biru Royal + Medali Emas + Foto Gedung Sekolah)
        ========================================== -->
-  <header class="site-header" id="siteHeader">
-    <div class="container">
-      <nav class="navbar" aria-label="Navigasi Utama">
-        <a href="#beranda" class="brand">
-          <img src="assets/img/logo.svg" alt="Logo Resmi SDN Sumberejo 04 Ambulu" class="brand-logo" width="46" height="46">
-          <div class="brand-text">
-            <span class="brand-title" data-config="namaSekolah">SDN SUMBEREJO 04 AMBULU</span>
-            <span class="brand-sub">Unggul dalam Prestasi, Santun Berbudi</span>
-          </div>
-        </a>
-
-        <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka navigasi menu" aria-expanded="false" aria-controls="navMenu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <ul class="nav-menu" id="navMenu">
-          <li class="nav-drawer-header">
-            <div style="display: flex; align-items: center; gap: 0.65rem;">
-              <img src="assets/img/logo.svg" alt="Logo" width="34" height="34">
-              <div>
-                <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.88rem; color: var(--primary);">SDN SUMBEREJO 04</div>
-                <div style="font-size: 0.7rem; color: var(--muted-text);">Menu Navigasi</div>
-              </div>
+  <header class="header-pabna-banner" id="siteHeader">
+    <div class="container header-banner-container">
+      <div class="header-banner-card">
+        <!-- Bagian Atas: Identitas, Medali Logo, Foto Bangunan Sekolah & Pita Slogan -->
+        <div class="header-banner-top">
+          <div class="header-banner-brand">
+            <!-- Medali Emas Logo Sekolah -->
+            <a href="#beranda" class="header-logo-badge" aria-label="Beranda SDN Sumberejo 04 Ambulu">
+              <img src="assets/img/logo.svg" alt="Logo Resmi SDN Sumberejo 04 Ambulu" class="header-logo-img" width="56" height="56">
+            </a>
+            <div class="header-brand-divider" aria-hidden="true"></div>
+            <div class="header-brand-text">
+              <a href="#beranda" class="header-school-link">
+                <span class="header-school-name">
+                  <span data-config="namaSekolahPrefix">SDN SUMBEREJO</span> <span class="gold-num-badge">04</span> <span data-config="namaSekolahSuffix">AMBULU</span>
+                </span>
+                <span class="header-school-tagline">Unggul dalam Prestasi, Santun Berbudi</span>
+              </a>
             </div>
-            <button type="button" class="nav-drawer-close" id="navCloseBtn" aria-label="Tutup menu navigasi">✕</button>
-          </li>
-          <li><a href="#beranda" class="nav-link active">Beranda</a></li>
-          <li><a href="#profil" class="nav-link">Profil</a></li>
-          <li><a href="#guru" class="nav-link">Guru</a></li>
-          <li><a href="#program" class="nav-link">Program</a></li>
-          <li><a href="#fasilitas" class="nav-link">Fasilitas</a></li>
-          <li><a href="#pengumuman" class="nav-link">Pengumuman</a></li>
-          <li><a href="#banner-senapati" class="nav-link">Showcase</a></li>
-          <li><a href="#galeri" class="nav-link">Galeri</a></li>
-          <li><a href="#spmb" class="nav-link">SPMB</a></li>
-          <li><a href="#kontak" class="nav-link">Kontak</a></li>
-          <li><a href="daftar.html" class="nav-link nav-cta">Daftar Sekarang</a></li>
-        </ul>
-      </nav>
+          </div>
+
+          <!-- Latar Belakang Gedung Sekolah SDN Sumberejo 04 Ambulu -->
+          <div class="header-banner-visual" aria-hidden="true">
+            <img src="assets/img/gedung-sekolah.png" alt="Gedung SDN Sumberejo 04 Ambulu" class="header-building-img" onerror="this.src='assets/img/banner-senapati.jpg'">
+          </div>
+
+          <!-- Pita Emas Slogan Kaligrafi Sekolah -->
+          <div class="header-ribbon-wrap" aria-hidden="true">
+            <div class="header-ribbon-text">
+              <span class="ribbon-line-1">Pendidikan Berkualitas</span>
+              <span class="ribbon-line-2">untuk Masa Depan Gemilang</span>
+            </div>
+          </div>
+
+          <!-- Tombol Menu Mobile / Tablet -->
+          <button class="nav-toggle header-banner-toggle" id="navToggle" type="button" aria-label="Buka navigasi menu" aria-expanded="false" aria-controls="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        <!-- Bagian Bawah: Bar Navigasi Kapsul Mengambang (Floating Glossy Nav Pill Bar) -->
+        <nav class="header-nav-pillbar" aria-label="Navigasi Utama">
+          <ul class="nav-menu" id="navMenu">
+            <li class="nav-drawer-header">
+              <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <img src="assets/img/logo.svg" alt="Logo" width="36" height="36">
+                <div>
+                  <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.88rem; color: #FFFFFF;">SDN SUMBEREJO 04</div>
+                  <div style="font-size: 0.7rem; color: #E4B12B;">Menu Navigasi</div>
+                </div>
+              </div>
+              <button type="button" class="nav-drawer-close" id="navCloseBtn" aria-label="Tutup menu navigasi">✕</button>
+            </li>
+            <li>
+              <a href="#beranda" class="nav-link active">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Beranda</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#profil" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>Profil</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#guru" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>Guru</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#program" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zM4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1z"/></svg>
+                <span>Program</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#fasilitas" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <span>Fasilitas</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#pengumuman" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2v3h-2V3h-3V1h3a2 2 0 0 1 2 2zm-8 2a7 7 0 0 0-7 7v4H3v2h2.09A7.002 7.002 0 0 0 12 21a7.002 7.002 0 0 0 6.91-6H21v-2h-2v-4a7 7 0 0 0-7-7zm0 2c2.76 0 5 2.24 5 5v5H7v-5c0-2.76 2.24-5 5-5z"/></svg>
+                <span>Pengumuman</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#banner-senapati" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                <span>Showcase</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#galeri" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/></svg>
+                <span>Galeri</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#spmb" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <span>SPMB</span>
+              </a>
+            </li>
+            <li class="nav-sep" aria-hidden="true">|</li>
+            <li>
+              <a href="#kontak" class="nav-link">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.36-.67.25-1.02A11.36 11.36 0 0 1 8.5 4.31c0-.55-.45-1-1-1H4.01c-.55 0-1 .45-1 1 0 9.39 7.63 17.02 17 17.02.55 0 1-.45 1-1v-3.45c0-.55-.45-1-1-1z"/></svg>
+                <span>Kontak</span>
+              </a>
+            </li>
+            <li class="nav-cta-item">
+              <a href="daftar.html" class="nav-link nav-cta">
+                <svg class="nav-pill-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M13.13 2.06c-.6-.4-1.39-.17-1.74.45L8.52 7.74c-.45.8-.18 1.81.61 2.26l.48.27-2.6 4.5c-.34.58-.2 1.33.33 1.74l1.39 1.07c.52.4 1.25.32 1.68-.18l2.64-3.08.48.27c.8.45 1.81.18 2.26-.61l2.87-4.97c.39-.67.14-1.54-.53-1.92l-4.63-2.66zm6.81 16.51l-3.5-2.02.87-1.51 3.5 2.02-.87 1.51zM4.06 18.57l3.5 2.02-.87 1.51-3.5-2.02.87-1.51z"/></svg>
+                <span>Daftar Sekarang</span>
+                <span class="cta-arrow" aria-hidden="true">&gt;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </header>
   <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
