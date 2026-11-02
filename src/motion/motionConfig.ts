@@ -39,7 +39,7 @@ export const STORY_CHAPTERS: StoryChapter[] = [
       "Pojok Baca aktif di seluruh ruang kelas I s.d. VI",
       "Jurnal membaca harian terpantau wali kelas"
     ],
-    imageUrl: "/assets/aistudio/image_65df5734.png",
+    imageUrl: "/assets/img/hero-pagi.jpg",
     imageAlt: "Suasana Pagi Akademik di Gedung Utama SDN Sumberejo 04 Ambulu",
     accentColor: "#176C2D",
     themeMode: "day"
@@ -102,7 +102,7 @@ export const STORY_CHAPTERS: StoryChapter[] = [
       "Ekstrakurikuler seni tari tradisional, olahraga, dan keagamaan",
       "Sinergi paguyuban wali murid dalam mendukung tumbuh kembang karakter"
     ],
-    imageUrl: "/assets/aistudio/image_e537deb1.png",
+    imageUrl: "/assets/img/hero-malam.jpg",
     imageAlt: "Suasana Malam Karakter di Kampus SDN Sumberejo 04 Ambulu",
     accentColor: "#34D399",
     themeMode: "night"

@@ -68,8 +68,8 @@ test("getResponsiveMotionTier respects prefers-reduced-motion and breakpoints", 
 
 test("STORY_CHAPTERS and FAQ_ITEMS contain complete content for SDN Sumberejo 04", () => {
   assert.equal(STORY_CHAPTERS.length, 4);
-  assert.equal(STORY_CHAPTERS[0].imageUrl, "/assets/aistudio/image_65df5734.png");
-  assert.equal(STORY_CHAPTERS[3].imageUrl, "/assets/aistudio/image_e537deb1.png");
+  assert.equal(STORY_CHAPTERS[0].imageUrl, "/assets/img/hero-pagi.jpg");
+  assert.equal(STORY_CHAPTERS[3].imageUrl, "/assets/img/hero-malam.jpg");
   assert.equal(FAQ_ITEMS.length, 4);
 });
 
