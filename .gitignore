@@ -4,6 +4,6 @@ node_modules/
 *.local
 .DS_Store
 Thumbs.db
-public/
 test.txt
 dist/
+powershell.cmd

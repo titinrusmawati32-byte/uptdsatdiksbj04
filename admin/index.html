@@ -97,9 +97,6 @@
         <a class="nav-item role-item-konten" data-view="beranda">
           <span class="nav-icon">🏠</span> Halaman Beranda
         </a>
-        <a class="nav-item role-item-konten" data-view="heroSlider">
-          <span class="nav-icon">🖼️</span> Slider Hero & Banner
-        </a>
         <a class="nav-item role-item-konten" data-view="profil">
           <span class="nav-icon">📜</span> Profil & Visi Misi
         </a>
@@ -216,8 +213,70 @@
                 </p>
               </div>
               <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <button type="button" class="btn btn-outline btn-sm" onclick="window.backupDatabaseJson()">💾 Cadangkan Database (JSON)</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="window.backupDatabaseJson()" title="Unduh seluruh database dalam format JSON">💾 Cadangkan (JSON)</button>
+                <input type="file" id="inputRestoreJson" accept=".json" style="display: none;" onchange="window.restoreDatabaseJson(event)">
+                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('inputRestoreJson').click()" title="Pulihkan database dari file JSON cadangan">📥 Pulihkan (JSON)</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="AppRouter.navigate('pendaftar')">📝 Kelola Pendaftar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Status Distribution Grid -->
+          <div class="form-row two-col" style="margin-bottom: 1.5rem;">
+            <!-- Distribusi Status SPMB -->
+            <div class="card" style="margin-bottom: 0;">
+              <div class="card-header" style="padding-bottom: 0.5rem;">
+                <h3 class="card-title" style="font-size: 0.95rem;">📊 Distribusi Status Pendaftar SPMB</h3>
+                <span id="dashTotalBadge" style="font-size: 0.78rem; font-weight: 700; background: var(--primary-light); color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 999px;">0 Pendaftar</span>
+              </div>
+              <div style="padding: 0.5rem 0;">
+                <div style="display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: #e2e8f0; margin-bottom: 1rem;" id="dashStatusBar">
+                  <div id="barBaru" style="width: 0%; background: #3b82f6;" title="Baru"></div>
+                  <div id="barDiproses" style="width: 0%; background: #f59e0b;" title="Diproses"></div>
+                  <div id="barDiterima" style="width: 0%; background: #10b981;" title="Diterima"></div>
+                  <div id="barDitolak" style="width: 0%; background: #ef4444;" title="Ditolak"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; font-size: 0.85rem;">
+                  <div style="display: flex; align-items: center; gap: 0.45rem;">
+                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #3b82f6;"></span>
+                    <span>Baru: <strong id="lblCountBaru">0</strong></span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.45rem;">
+                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b;"></span>
+                    <span>Diproses: <strong id="lblCountDiproses">0</strong></span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.45rem;">
+                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span>
+                    <span>Diterima: <strong id="lblCountDiterima">0</strong></span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.45rem;">
+                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444;"></span>
+                    <span>Ditolak / Batal: <strong id="lblCountDitolak">0</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Akses Pintas & Ringkasan Konten -->
+            <div class="card" style="margin-bottom: 0;">
+              <div class="card-header" style="padding-bottom: 0.5rem;">
+                <h3 class="card-title" style="font-size: 0.95rem;">⚡ Aksi Cepat Pengelolaan</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.25rem;">
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-outline btn-sm" onclick="AppCollections.openModal('Pengumuman')" style="flex: 1; min-width: 130px;">📢 + Pengumuman</button>
+                  <button type="button" class="btn btn-outline btn-sm" onclick="AppCollections.openModal('Guru')" style="flex: 1; min-width: 130px;">👨‍🏫 + Guru Baru</button>
+                </div>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-outline btn-sm" onclick="AppPendaftar.cetakRekap()" style="flex: 1; min-width: 130px;">🖨️ Cetak Rekap SPMB</button>
+                  <button type="button" class="btn btn-outline btn-sm" onclick="AppRouter.navigate('spmbConfig')" style="flex: 1; min-width: 130px;">⚙️ Atur Kuota SPMB</button>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem; display: flex; justify-content: space-between; border-top: 1px dashed var(--border); padding-top: 0.4rem;">
+                  <span>Guru: <strong id="sumGuru">0</strong></span>
+                  <span>Fasilitas: <strong id="sumFasilitas">0</strong></span>
+                  <span>Ekskul: <strong id="sumEkskul">0</strong></span>
+                  <span>Galeri: <strong id="sumGaleri">0</strong></span>
+                </div>
               </div>
             </div>
           </div>
@@ -287,55 +346,12 @@
               <div class="form-row two-col">
                 <div class="form-group">
                   <label class="form-label">Jam Operasional Layanan</label>
-                  <input type="text" name="jamLayanan" class="form-control" placeholder="Senin - Kamis, 07:00 - 13:00 WIB">
+                  <input type="text" name="jamLayanan" class="form-control" placeholder="Senin - Jumat, 07:00 - 13:00 WIB">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Slogan Resmi Sekolah</label>
-                  <input type="text" name="taglineSekolah" class="form-control" placeholder="Unggul dalam Prestasi, Santun Berbudi">
+                  <label class="form-label">URL Embed Peta Google Maps</label>
+                  <input type="url" name="mapEmbedUrl" class="form-control">
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">URL Embed Peta Google Maps</label>
-                <input type="url" name="mapEmbedUrl" class="form-control">
-              </div>
-
-              <!-- Media Sosial Resmi -->
-              <div class="card-header" style="margin-top: 1.25rem; padding-left: 0; padding-right: 0; border-top: 1px solid var(--border); padding-top: 1rem;">
-                <h4 class="card-title" style="font-size: 0.95rem;">🌐 Tautan Saluran Media Sosial</h4>
-              </div>
-              <div class="form-row three-col">
-                <div class="form-group">
-                  <label class="form-label">Tautan YouTube</label>
-                  <input type="url" name="medsosYt" class="form-control" placeholder="https://youtube.com/@...">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Tautan Facebook</label>
-                  <input type="url" name="medsosFb" class="form-control" placeholder="https://facebook.com/...">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Tautan Instagram</label>
-                  <input type="url" name="medsosIg" class="form-control" placeholder="https://instagram.com/...">
-                </div>
-              </div>
-
-              <!-- Pengaturan SEO & Meta Tag -->
-              <div class="card-header" style="margin-top: 1.25rem; padding-left: 0; padding-right: 0; border-top: 1px solid var(--border); padding-top: 1rem;">
-                <h4 class="card-title" style="font-size: 0.95rem;">🔍 Pengaturan SEO &amp; Mesin Pencari</h4>
-              </div>
-              <div class="form-row two-col">
-                <div class="form-group">
-                  <label class="form-label">Judul Halaman Web (Meta Title)</label>
-                  <input type="text" name="seoTitle" class="form-control" placeholder="SDN Sumberejo 04 Ambulu — Unggul dalam Prestasi, Santun Berbudi">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Kata Kunci (Keywords)</label>
-                  <input type="text" name="seoKeywords" class="form-control" placeholder="sdn sumberejo 04, sd ambulu, sd jember, spmb online sd">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Deskripsi Situs Web (Meta Description)</label>
-                <textarea name="seoDesc" rows="2" class="form-control" placeholder="Website Resmi SDN Sumberejo 04 Ambulu, Kabupaten Jember..."></textarea>
               </div>
             </div>
 
@@ -349,162 +365,9 @@
         <!-- ==================== VIEW 3: HALAMAN BERANDA ==================== -->
         <section id="pane-beranda" class="view-pane" style="display: none;">
           <form id="formBeranda">
-            <!-- 1. PENGATURAN HERO SECTION (TEKS & TOMBOL CTA) -->
-            <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card">
               <div class="card-header">
-                <h3 class="card-title">✨ Pengaturan Hero Section (Teks Utama &amp; Tombol)</h3>
-                <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">
-                  Kelola judul sambutan, headline utama, deskripsi, dan tombol aksi di bagian paling atas beranda.
-                </p>
-              </div>
-
-              <div class="form-row two-col">
-                <div class="form-group">
-                  <label class="form-label">Label Sambutan Kaligrafi Emas</label>
-                  <input type="text" name="heroWelcome" class="form-control" placeholder="Selamat Datang di">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Judul Lembaga di Hero</label>
-                  <input type="text" name="heroSchoolName" class="form-control" placeholder="SDN SUMBEREJO 04 AMBULU">
-                </div>
-              </div>
-
-              <div class="form-row three-col">
-                <div class="form-group">
-                  <label class="form-label">Headline Baris 1</label>
-                  <input type="text" name="heroHeadline" class="form-control" placeholder="Pendidikan Unggul untuk">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Penekanan Kata Emas</label>
-                  <input type="text" name="heroHeadlineHighlight" class="form-control" placeholder="Masa Depan">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Akhiran Judul</label>
-                  <input type="text" name="heroHeadlineSuffix" class="form-control" placeholder="Gemilang">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Deskripsi Ringkas Hero</label>
-                <textarea name="heroDeskripsi" rows="2" class="form-control" placeholder="Dengan kurikulum berkualitas, penanaman budi pekerti luhur, dan lingkungan belajar yang nyaman."></textarea>
-              </div>
-
-              <div class="form-row two-col" style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-top: 0.5rem;">
-                <div>
-                  <strong style="font-size: 0.85rem; color: var(--primary);">Tombol Utama (CTA Emas)</strong>
-                  <div class="form-group" style="margin-top: 0.4rem; margin-bottom: 0.4rem;">
-                    <label class="form-label" style="font-size: 0.78rem;">Teks Tombol</label>
-                    <input type="text" name="heroCtaText" class="form-control" placeholder="Daftar SPMB Online">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Tautan URL Tujuan</label>
-                    <input type="text" name="heroCtaUrl" class="form-control" placeholder="daftar.html">
-                  </div>
-                </div>
-                <div>
-                  <strong style="font-size: 0.85rem; color: var(--primary);">Tombol Sekunder (Lihat Profil)</strong>
-                  <div class="form-group" style="margin-top: 0.4rem; margin-bottom: 0.4rem;">
-                    <label class="form-label" style="font-size: 0.78rem;">Teks Tombol</label>
-                    <input type="text" name="heroSecText" class="form-control" placeholder="Lihat Profil Sekolah">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Tautan URL Tujuan</label>
-                    <input type="text" name="heroSecUrl" class="form-control" placeholder="#profil">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2. PENGATURAN 4 KARTU KEUNGGULAN (FEATURE CARDS) -->
-            <div class="card" style="margin-bottom: 1.5rem;">
-              <div class="card-header">
-                <h3 class="card-title">🌟 Pengaturan 4 Kartu Keunggulan (Feature Cards)</h3>
-                <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">
-                  Kelola judul, deskripsi, dan link tujuan untuk 4 kartu mengambang di bawah hero section.
-                </p>
-              </div>
-
-              <!-- Kartu 1 -->
-              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
-                <strong style="color: #2459C5; font-size: 0.88rem;">Kartu #1 (Biru — Keunggulan Akademik)</strong>
-                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
-                    <input type="text" name="card1Title" class="form-control" placeholder="Keunggulan Akademik">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
-                    <input type="text" name="card1Desc" class="form-control" placeholder="Pendidikan berkualitas berbasis teknologi digital.">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
-                    <input type="text" name="card1Url" class="form-control" placeholder="#program">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Kartu 2 -->
-              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
-                <strong style="color: #10B981; font-size: 0.88rem;">Kartu #2 (Hijau — Guru Berdedikasi)</strong>
-                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
-                    <input type="text" name="card2Title" class="form-control" placeholder="Guru Berdedikasi">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
-                    <input type="text" name="card2Desc" class="form-control" placeholder="Tenaga pengajar profesional berpengalaman.">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
-                    <input type="text" name="card2Url" class="form-control" placeholder="#guru">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Kartu 3 -->
-              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
-                <strong style="color: #F59E0B; font-size: 0.88rem;">Kartu #3 (Oranye — Prestasi Unggul)</strong>
-                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
-                    <input type="text" name="card3Title" class="form-control" placeholder="Prestasi Unggul">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
-                    <input type="text" name="card3Desc" class="form-control" placeholder="Siswa berprestasi di berbagai bidang.">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
-                    <input type="text" name="card3Url" class="form-control" placeholder="#profil">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Kartu 4 -->
-              <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
-                <strong style="color: #8B5CF6; font-size: 0.88rem;">Kartu #4 (Ungu — Fasilitas Lengkap)</strong>
-                <div class="form-row three-col" style="margin-top: 0.4rem; margin-bottom: 0;">
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Judul Kartu</label>
-                    <input type="text" name="card4Title" class="form-control" placeholder="Fasilitas Lengkap">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Deskripsi Singkat</label>
-                    <input type="text" name="card4Desc" class="form-control" placeholder="Ruang kelas nyaman, perpustakaan, dan UKS.">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" style="font-size: 0.78rem;">Link Tujuan</label>
-                    <input type="text" name="card4Url" class="form-control" placeholder="#fasilitas">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. SAMBUTAN KEPALA SEKOLAH & STATISTIK -->
-            <div class="card" style="margin-bottom: 1.5rem;">
-              <div class="card-header">
-                <h3 class="card-title">Sambutan Kepala Sekolah &amp; Statistik</h3>
+                <h3 class="card-title">Sambutan Kepala Sekolah</h3>
               </div>
               <div class="form-group">
                 <label class="form-label">Teks Pidato Sambutan <small>(Mendukung paragraf baru)</small></label>
@@ -527,271 +390,9 @@
               </div>
             </div>
 
-            <!-- 4. PENGATURAN FOOTER -->
-            <div class="card" style="margin-bottom: 1.5rem;">
-              <div class="card-header">
-                <h3 class="card-title">📝 Pengaturan Teks Footer &amp; Hak Cipta</h3>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Deskripsi Sekolah di Footer</label>
-                <textarea name="footerDesc" rows="2" class="form-control" placeholder="Lembaga pendidikan dasar negeri di Kecamatan Ambulu, Kabupaten Jember..."></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Teks Hak Cipta (Copyright)</label>
-                <input type="text" name="footerCopyright" class="form-control" placeholder="© 2026 SDN Sumberejo 04 Ambulu. Hak Cipta Dilindungi Undang-Undang.">
-              </div>
-            </div>
-
             <div class="dirty-bar" id="barBeranda">
-              <div class="dirty-text">💡 Simpan pengaturan untuk langsung memperbarui beranda website.</div>
-              <button type="submit" class="btn btn-secondary">Simpan Pengaturan Beranda</button>
-            </div>
-          </form>
-        </section>
-
-        <!-- ==================== VIEW: SLIDER HERO & BANNER ==================== -->
-        <section id="pane-heroSlider" class="view-pane" style="display: none;">
-          <form id="formHeroSlider">
-            <!-- Pratinjau Langsung (Live Visual Preview) -->
-            <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #0B1F3A 0%, #173863 100%); color: #FFFFFF; border: none; overflow: hidden;">
-              <div class="card-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.15); padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
-                <div>
-                  <h3 class="card-title" style="color: #FFFFFF; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-                    <span>✨</span> Pratinjau Tampilan Slider Hero &amp; Banner
-                  </h3>
-                  <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: rgba(255, 255, 255, 0.75);">
-                    Simulasi 5 foto berotasi otomatis di halaman depan SDN Sumberejo 04 Ambulu.
-                  </p>
-                </div>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                  <span id="adminSliderIndicator" style="background: rgba(255, 255, 255, 0.2); padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: #FDE047;">Slide 1 / 5</span>
-                </div>
-              </div>
-              <div style="padding: 1.75rem 1.5rem; display: flex; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.22);">
-                <!-- Frame Pratinjau -->
-                <div style="position: relative; width: 100%; max-width: 460px; height: 320px; border-radius: 26px; overflow: hidden; box-shadow: 0 20px 48px rgba(0,0,0,0.45); background: #071A30; border: 1.5px solid rgba(255, 255, 255, 0.25);">
-                  <div id="adminHeroPreviewTrack" style="width: 100%; height: 100%; position: relative;">
-                    <img id="adminHeroPreviewImg" src="/assets/img/banner-senapati.jpg" alt="Preview Foto" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.4s ease;">
-                  </div>
-                  <!-- Floating Badge Top Preview -->
-                  <div id="adminBadgeTopPreview" style="position: absolute; top: 12px; right: 12px; z-index: 5; background: rgba(11, 31, 58, 0.9); color: #FDE047; border: 1.5px solid rgba(253, 224, 71, 0.5); padding: 0.4rem 0.85rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                    ✨ Small Steps, Big Dreams
-                  </div>
-                  <!-- Floating Badge Bottom Preview -->
-                  <div id="adminBadgeBottomPreview" style="position: absolute; bottom: 14px; left: 14px; z-index: 5; background: rgba(255, 255, 255, 0.95); color: #0F172A; border: 1.5px solid rgba(255, 255, 255, 0.9); padding: 0.4rem 0.85rem; border-radius: 999px; font-size: 0.78rem; font-weight: 800; display: flex; align-items: center; gap: 0.45rem; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
-                    <span>Senapati Berprestasi</span>
-                  </div>
-                  <!-- Dot indicator preview -->
-                  <div id="adminDotsPreview" style="position: absolute; bottom: 14px; right: 14px; z-index: 5; display: flex; gap: 5px; background: rgba(11, 31, 58, 0.65); padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2);">
-                    <span class="admin-prev-dot active" style="width: 18px; height: 6px; border-radius: 999px; background: #FDE047; display: inline-block;"></span>
-                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
-                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
-                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
-                    <span class="admin-prev-dot" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); display: inline-block;"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pengaturan Umum Slider -->
-            <div class="card" style="margin-bottom: 1.5rem;">
-              <div class="card-header">
-                <h3 class="card-title">⚙️ Durasi Rotasi &amp; Teks Lencana (Badges)</h3>
-              </div>
-              <div class="form-row three-col">
-                <div class="form-group">
-                  <label class="form-label">Kecepatan Rotasi Otomatis</label>
-                  <select name="heroSliderInterval" id="heroSliderInterval" class="form-control">
-                    <option value="3000">Cepat (3 Detik)</option>
-                    <option value="4000" selected>Standar (4 Detik) - Direkomendasikan</option>
-                    <option value="5000">Tenang (5 Detik)</option>
-                    <option value="7000">Santai (7 Detik)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Teks Lencana Atas</label>
-                  <input type="text" name="heroBadgeTop" id="inputHeroBadgeTop" class="form-control" value="✨ Small Steps, Big Dreams" placeholder="✨ Small Steps, Big Dreams">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Teks Lencana Bawah</label>
-                  <input type="text" name="heroBadgeBottom" id="inputHeroBadgeBottom" class="form-control" value="Senapati Berprestasi" placeholder="Senapati Berprestasi">
-                </div>
-              </div>
-            </div>
-
-            <!-- Daftar 5 Foto Slider -->
-            <div class="card" style="margin-bottom: 1.5rem;">
-              <div class="card-header">
-                <h3 class="card-title">📸 Pengaturan 5 Foto Slider</h3>
-                <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">
-                  Kelola 5 foto yang akan tampil bergantian secara otomatis. Anda dapat mengunggah file foto baru dari perangkat atau memasukkan URL gambar.
-                </p>
-              </div>
-
-              <!-- 5 Slot Cards -->
-              <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
-                <!-- Slot 1 -->
-                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
-                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
-                    <img id="thumbHeroFoto1" src="/assets/img/banner-senapati.jpg" alt="Foto 1" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#1 UTAMA</span>
-                  </div>
-                  <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #1 (Slide Utama)</strong>
-                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(1)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
-                    </div>
-                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
-                        <input type="text" name="heroFoto1Title" id="inputHeroFoto1Title" class="form-control" value="Dewan Guru 'The Master' &amp; Senapati Berprestasi" placeholder="Judul foto 1">
-                      </div>
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
-                        <input type="text" name="heroFoto1" id="inputHeroFoto1" class="form-control" value="assets/img/banner-senapati.jpg" placeholder="assets/img/... atau https://...">
-                      </div>
-                    </div>
-                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
-                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
-                        📁 Unggah Foto Baru
-                        <input type="file" id="fileHeroFoto1" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 1)">
-                      </label>
-                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Slot 2 -->
-                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
-                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
-                    <img id="thumbHeroFoto2" src="/assets/img/pengumuman-sumpah-pemuda.svg" alt="Foto 2" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#2</span>
-                  </div>
-                  <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #2 (Slide 2)</strong>
-                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(2)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
-                    </div>
-                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
-                        <input type="text" name="heroFoto2Title" id="inputHeroFoto2Title" class="form-control" value="Peringatan Hari Sumpah Pemuda &amp; Budaya Nusantara" placeholder="Judul foto 2">
-                      </div>
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
-                        <input type="text" name="heroFoto2" id="inputHeroFoto2" class="form-control" value="assets/img/pengumuman-sumpah-pemuda.svg" placeholder="assets/img/... atau https://...">
-                      </div>
-                    </div>
-                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
-                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
-                        📁 Unggah Foto Baru
-                        <input type="file" id="fileHeroFoto2" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 2)">
-                      </label>
-                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Slot 3 -->
-                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
-                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
-                    <img id="thumbHeroFoto3" src="/assets/img/pengumuman-pts.svg" alt="Foto 3" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#3</span>
-                  </div>
-                  <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #3 (Slide 3)</strong>
-                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(3)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
-                    </div>
-                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
-                        <input type="text" name="heroFoto3Title" id="inputHeroFoto3Title" class="form-control" value="Pembelajaran Berkualitas &amp; Literasi Digital Siswa" placeholder="Judul foto 3">
-                      </div>
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
-                        <input type="text" name="heroFoto3" id="inputHeroFoto3" class="form-control" value="assets/img/pengumuman-pts.svg" placeholder="assets/img/... atau https://...">
-                      </div>
-                    </div>
-                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
-                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
-                        📁 Unggah Foto Baru
-                        <input type="file" id="fileHeroFoto3" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 3)">
-                      </label>
-                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Slot 4 -->
-                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
-                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
-                    <img id="thumbHeroFoto4" src="/assets/img/pengumuman-rapat-ortu.svg" alt="Foto 4" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#4</span>
-                  </div>
-                  <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #4 (Slide 4)</strong>
-                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(4)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
-                    </div>
-                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
-                        <input type="text" name="heroFoto4Title" id="inputHeroFoto4Title" class="form-control" value="Sinergi Komite Sekolah &amp; Paguyuban Wali Murid" placeholder="Judul foto 4">
-                      </div>
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
-                        <input type="text" name="heroFoto4" id="inputHeroFoto4" class="form-control" value="assets/img/pengumuman-rapat-ortu.svg" placeholder="assets/img/... atau https://...">
-                      </div>
-                    </div>
-                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
-                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
-                        📁 Unggah Foto Baru
-                        <input type="file" id="fileHeroFoto4" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 4)">
-                      </label>
-                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Slot 5 -->
-                <div class="hero-slot-item" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: grid; grid-template-columns: 140px 1fr; gap: 1.25rem; align-items: center;">
-                  <div style="width: 140px; height: 105px; border-radius: 10px; overflow: hidden; background: #E2E8F0; border: 1.5px solid var(--border); position: relative; flex-shrink: 0;">
-                    <img id="thumbHeroFoto5" src="/assets/img/banner-senapati.jpg" alt="Foto 5" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                    <span style="position: absolute; top: 6px; left: 6px; background: rgba(11, 31, 58, 0.88); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">#5</span>
-                  </div>
-                  <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                      <strong style="color: var(--primary); font-size: 0.95rem;">Foto #5 (Slide 5)</strong>
-                      <button type="button" class="btn btn-outline btn-sm" onclick="window.resetHeroSlot(5)" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">🔄 Reset Standar</button>
-                    </div>
-                    <div class="form-row two-col" style="margin-bottom: 0.4rem;">
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Judul / Keterangan Foto</label>
-                        <input type="text" name="heroFoto5Title" id="inputHeroFoto5Title" class="form-control" value="Visi Misi Sekolah Hebat &amp; Fasilitas Ramah Anak" placeholder="Judul foto 5">
-                      </div>
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 0.78rem;">Tautan URL / Lokasi Berkas</label>
-                        <input type="text" name="heroFoto5" id="inputHeroFoto5" class="form-control" value="assets/img/banner-senapati.jpg" placeholder="assets/img/... atau https://...">
-                      </div>
-                    </div>
-                    <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem;">
-                      <label class="btn btn-outline btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; background: #fff;">
-                        📁 Unggah Foto Baru
-                        <input type="file" id="fileHeroFoto5" accept="image/*" style="display: none;" onchange="window.handleHeroUpload(event, 5)">
-                      </label>
-                      <small style="color: var(--text-muted); font-size: 0.75rem;">Otomatis dikompresi ringan &amp; tajam (Web-Optimized).</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Dirty Bar Simpan -->
-            <div class="dirty-bar" id="barHeroSlider">
-              <div class="dirty-text">💡 Perubahan 5 foto slider hero akan langsung aktif seketika di website.</div>
-              <button type="submit" class="btn btn-secondary">Simpan Pengaturan Slider Hero</button>
+              <div class="dirty-text">💡 Simpan teks sambutan dan statistik beranda.</div>
+              <button type="submit" class="btn btn-secondary">Simpan Perubahan Beranda</button>
             </div>
           </form>
         </section>
@@ -872,16 +473,17 @@
         <!-- ==================== VIEW 6: DATA PENDAFTAR SPMB ==================== -->
         <section id="pane-pendaftar" class="view-pane" style="display: none;">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
               <h3 class="card-title">Daftar Formulir Masuk</h3>
-              <div style="display: flex; gap: 0.5rem;">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" id="btnCetakRekapPendaftar" class="btn btn-outline btn-sm" onclick="AppPendaftar.cetakRekap()">🖨️ Cetak Rekap (Buku Induk)</button>
                 <button type="button" id="btnExportCsv" class="btn btn-outline btn-sm">📥 Ekspor CSV</button>
                 <button type="button" id="btnRefreshPendaftar" class="btn btn-primary btn-sm">🔄 Muat Ulang</button>
               </div>
             </div>
 
-            <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-              <select id="filterStatusPendaftar" class="form-control" style="max-width: 200px;">
+            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
+              <select id="filterStatusPendaftar" class="form-control" style="max-width: 180px;">
                 <option value="">-- Semua Status --</option>
                 <option value="baru">Baru</option>
                 <option value="diproses">Diproses</option>
@@ -890,7 +492,15 @@
                 <option value="dibatalkan">Dibatalkan</option>
               </select>
 
-              <input type="text" id="searchPendaftar" class="form-control" placeholder="Cari nama murid atau nomor pendaftaran..." style="max-width: 320px;">
+              <select id="filterGenderPendaftar" class="form-control" style="max-width: 170px;">
+                <option value="">-- Semua Gender --</option>
+                <option value="L">Laki-Laki (L)</option>
+                <option value="P">Perempuan (P)</option>
+              </select>
+
+              <input type="text" id="searchPendaftar" class="form-control" placeholder="Cari nama murid atau no. registrasi..." style="max-width: 280px;">
+
+              <span id="counterPendaftarInfo" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-left: auto;"></span>
             </div>
 
             <div class="table-responsive">
@@ -1130,8 +740,12 @@
         <!-- ==================== VIEW 14: LOG AKTIVITAS ==================== -->
         <section id="pane-log" class="view-pane" style="display: none;">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
               <h3 class="card-title">Rekam Jejak Aktivitas Sistem</h3>
+              <div style="display: flex; gap: 0.5rem; align-items: center; margin-left: auto;">
+                <input type="text" id="searchLogInput" class="form-control" placeholder="🔍 Cari aktivitas..." style="max-width: 200px; padding: 0.35rem 0.6rem; font-size: 0.85rem;" oninput="window.filterAuditLog(this.value)">
+                <button type="button" class="btn btn-outline btn-sm" onclick="window.exportAuditLogCsv()">📥 Unduh Log</button>
+              </div>
             </div>
             <div class="table-responsive">
               <table class="data-table">

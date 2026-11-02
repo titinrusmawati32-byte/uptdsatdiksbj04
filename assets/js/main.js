@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initHomyzTransitions();
   initPageSpecific();
   initRealtimeSync();
-  initGridoraMorphTransitions();
 });
 
 // ==========================================
@@ -52,7 +51,7 @@ function initNavbarScrollEffect() {
 
 function triggerHomyzReveal() {
   const targets = document.querySelectorAll(
-    ".section, .card, .pillar-card, .pengumuman-card, .galeri-card, .stat-card, .section-header, .steps-grid > *, .hero-badge, .cta-banner, .footer-col, .homyz-reveal"
+    ".section, .card, .pillar-card, .galeri-card, .stat-card, .section-header, .steps-grid > *, .hero-badge, .cta-banner, .footer-col, .homyz-reveal"
   );
 
   if (!("IntersectionObserver" in window)) {
@@ -189,17 +188,22 @@ function initNavigation() {
         closePengumumanModal();
         closeAllPengumumanModal();
         closeGaleriLightbox();
+        if (typeof closeSpmbModal === "function") closeSpmbModal();
+        if (typeof closeSpmbSuccessModal === "function") closeSpmbSuccessModal();
+        if (typeof closeCekStatusModal === "function") closeCekStatusModal();
       }
     });
   }
 
-  const navLinks = document.querySelectorAll(".nav-link, .nav-item-link");
+  const scrollAnchors = document.querySelectorAll(
+    '.nav-link, .footer-links a[href^="#"], a.gridora-link-arrow[href^="#"], a.gridora-ws-search-pill[href^="#"]'
+  );
   const isHomePage =
     window.location.pathname.endsWith("index.html") ||
     window.location.pathname === "/" ||
     window.location.pathname.split("/").pop() === "";
 
-  navLinks.forEach((link) => {
+  scrollAnchors.forEach((link) => {
     link.addEventListener("click", (e) => {
       const href = link.getAttribute("href") || "";
       const isAnchor = href.startsWith("#") || (isHomePage && href.includes("#"));
@@ -219,10 +223,11 @@ function initNavigation() {
             behavior: "smooth"
           });
 
+          const navLinks = document.querySelectorAll(".nav-link");
           navLinks.forEach((l) => {
-            if (!l.classList.contains("nav-cta") && !l.classList.contains("nav-pill-cta")) l.classList.remove("active");
+            if (!l.classList.contains("nav-cta")) l.classList.remove("active");
           });
-          if (!link.classList.contains("nav-cta") && !link.classList.contains("nav-pill-cta")) {
+          if (link.classList.contains("nav-link") && !link.classList.contains("nav-cta")) {
             link.classList.add("active");
           }
 
@@ -240,9 +245,9 @@ function initNavigation() {
     const currentPath = window.location.pathname.split("/").pop();
     navLinks.forEach((link) => {
       const href = link.getAttribute("href");
-      if (href === currentPath && !link.classList.contains("nav-cta") && !link.classList.contains("nav-pill-cta")) {
+      if (href === currentPath && !link.classList.contains("nav-cta")) {
         navLinks.forEach((l) => {
-          if (!l.classList.contains("nav-cta") && !l.classList.contains("nav-pill-cta")) l.classList.remove("active");
+          if (!l.classList.contains("nav-cta")) l.classList.remove("active");
         });
         link.classList.add("active");
       }
@@ -253,7 +258,6 @@ function initNavigation() {
 function initScrollSpy() {
   const sectionIds = [
     "beranda",
-    "banner-senapati",
     "pengumuman",
     "profil",
     "program",
@@ -266,7 +270,7 @@ function initScrollSpy() {
   const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
   if (sections.length === 0) return;
 
-  const navLinks = document.querySelectorAll(".nav-menu .nav-link:not(.nav-cta), .nav-pill-menu .nav-item-link");
+  const navLinks = document.querySelectorAll(".nav-menu .nav-link:not(.nav-cta)");
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -309,8 +313,6 @@ function applyConfigToDom(config) {
       } else if (el.tagName === "A" && key === "whatsapp") {
         const cleanWa = valStr.replace(/\D/g, "");
         el.href = `https://wa.me/${cleanWa}?text=Halo%20Admin%20${encodeURIComponent(config.namaSekolah || "SDN Sumberejo 04 Ambulu")},%20saya%20ingin%20bertanya%20informasi%20sekolah.`;
-      } else if (el.tagName === "A" && (key.endsWith("Url") || key.startsWith("medsos") || key === "heroCtaUrl" || key === "heroSecUrl")) {
-        el.href = valStr;
       } else if (el.tagName === "A" && key === "telepon") {
         el.href = `tel:${valStr}`;
         el.textContent = valStr;
@@ -332,11 +334,6 @@ function applyConfigToDom(config) {
         el.textContent = trimmed.startsWith('"') ? trimmed : `"${trimmed}"`;
       } else if (key === "sambutanKepsek") {
         el.innerHTML = formatSambutanHtml(valStr);
-      } else if (key === "seoTitle") {
-        document.title = valStr;
-      } else if (key === "seoDesc") {
-        const m = document.querySelector('meta[name="description"]');
-        if (m) m.content = valStr;
       } else {
         el.textContent = valStr;
       }
@@ -359,9 +356,6 @@ function applyConfigToDom(config) {
       badge.innerHTML = `<strong>Pendaftaran Ditutup.</strong> ${config.spmbJadwalBerikutnya || "Nantikan informasi pembukaan gelombang berikutnya."}`;
     }
   });
-
-  // Sinkronkan slider 5 foto dengan konfigurasi terbaru
-  renderHeroSlider(config);
 }
 
 function initGlobalData() {
@@ -424,19 +418,7 @@ function applyRealtimeBundle(bundle) {
   }
 }
 
-// Ekspor fungsi perender ke global window agar dapat diakses langsung oleh modul Realtime
-window.applyConfigToDom = applyConfigToDom;
-window.applyRealtimeBundle = applyRealtimeBundle;
-window.safeLocalStorageSet = safeLocalStorageSet;
-window.renderPengumumanCards = renderPengumumanCards;
-window.renderGuruCards = renderGuruCards;
-window.renderEkskulCards = renderEkskulCards;
-window.renderFasilitasCards = renderFasilitasCards;
-window.renderGaleriCards = renderGaleriCards;
-window.updateKepsekPhotoFromGuru = updateKepsekPhotoFromGuru;
-
 function initRealtimeSync() {
-  // 1. BroadcastChannel untuk sinkronisasi seketika antar-tab di browser yang sama
   if ("BroadcastChannel" in window) {
     try {
       const bc = new BroadcastChannel("sdn_cms_realtime");
@@ -450,38 +432,6 @@ function initRealtimeSync() {
     } catch (e) {}
   }
 
-  // 2. Active Pulse Engine (Polling Pintar Otomatis)
-  // Menjamin jika ada perangkat HP/tablet yang tidak terjangkau WebSocket/SSE,
-  // data tetap tersinkronisasi otomatis dalam beberapa detik tanpa perlu refresh!
-  let lastCheckedHash = "";
-  async function pollLatestData() {
-    if (document.hidden) return; // Jangan bebankan baterai jika browser diminimalkan
-    try {
-      const bundle = await SchoolAPI.get("getSiteBundle");
-      if (bundle) {
-        const currentHash = JSON.stringify(bundle);
-        if (currentHash !== lastCheckedHash) {
-          lastCheckedHash = currentHash;
-          applyRealtimeBundle(bundle);
-        }
-      }
-    } catch (e) {}
-  }
-
-  // Jalankan polling periodik setiap 6 detik
-  setInterval(pollLatestData, 6000);
-
-  // Periksa langsung ketika layar dibuka kembali / pengguna beralih kembali ke tab
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) {
-      pollLatestData();
-    }
-  });
-  window.addEventListener("focus", () => {
-    pollLatestData();
-  });
-
-  // 3. Fallback EventSource (SSE)
   if ("EventSource" in window && window.APP_CONFIG && window.APP_CONFIG.SSE_URL) {
     try {
       const es = new EventSource(window.APP_CONFIG.SSE_URL);
@@ -496,7 +446,6 @@ function initRealtimeSync() {
     } catch (e) {}
   }
 
-  // 4. Fallback Storage Event (antar-tab sesi lokal)
   window.addEventListener("storage", (ev) => {
     if (!ev.key || !ev.newValue) return;
     try {
@@ -528,25 +477,8 @@ function initRealtimeSync() {
 // 4. LOGIKA TIAP HALAMAN
 // ==========================================
 function initPageSpecific() {
-  const path = window.location.pathname.split("/").pop() || "index.html";
-
-  if (path === "index.html" || path === "" || path === "pengumuman.html") {
-    initHomePage();
-  } else if (path === "profil.html") {
-    initProfilMorphingScroll();
-  } else if (path === "guru.html") {
-    initGuruPage();
-  } else if (path === "program.html") {
-    initProgramPage();
-  } else if (path === "fasilitas.html") {
-    initFasilitasPage();
-  } else if (path === "spmb.html") {
-    initSpmbPage();
-  } else if (path === "daftar.html") {
-    initDaftarPage();
-  } else if (path === "kontak.html") {
-    initKontakPage();
-  }
+  initHomePage();
+  initDaftarPage();
 }
 
 // ------------------------------------------
@@ -661,6 +593,7 @@ function normalizePengumumanList(rawList) {
       item.url ||
       item.urlFoto ||
       "";
+    // Nilai database Firestore/CMS adalah prioritas utama
     const rawUploaded = (dbPhoto && !String(dbPhoto).endsWith(".svg"))
       ? dbPhoto
       : ((localSavedPhoto && !String(localSavedPhoto).endsWith(".svg")) ? localSavedPhoto : (dbPhoto || localSavedPhoto || ""));
@@ -721,14 +654,14 @@ function renderPengumumanCards(container, list) {
   const items = normalizePengumumanList(list);
   currentAllPengumumanList = items;
 
-  const displayItems = items.slice(0, 3);
+  const displayItems = items;
 
   container.innerHTML = displayItems
     .map((item) => {
       const driveId = extractDriveId(item.rawPhoto || item.bannerUrl);
       const fallbackSvg = item.fallbackSvg || "assets/img/pengumuman-sumpah-pemuda.svg";
       return `
-    <article class="pengumuman-card is-revealed">
+    <article class="pengumuman-card is-revealed" data-pengumuman-id="${escapeHtml(item.id)}" data-pengumuman-origin="true">
       <div class="pengumuman-thumb-wrap">
         <img src="${escapeHtml(item.bannerUrl)}" 
              alt="${escapeHtml(item.judul)}" 
@@ -750,7 +683,7 @@ function renderPengumumanCards(container, list) {
         <h3 class="pengumuman-title">${escapeHtml(item.judul)}</h3>
         <p class="pengumuman-excerpt">${escapeHtml(item.isi)}</p>
         <div class="pengumuman-card-footer">
-          <button type="button" class="btn-read-more" onclick="openPengumumanModal('${item.id}')">
+          <button type="button" class="btn-read-more" data-pengumuman-id="${escapeHtml(item.id)}" onclick="openPengumumanModal('${escapeHtml(item.id)}')">
             <span>Baca Selengkapnya</span>
             <span style="font-size: 1.1rem; font-weight: 700; line-height: 1;">&rarr;</span>
           </button>
@@ -761,8 +694,14 @@ function renderPengumumanCards(container, list) {
     })
     .join("");
 
+  window.dispatchEvent(
+    new CustomEvent("pengumuman:updated", {
+      detail: { count: displayItems.length }
+    })
+  );
   triggerHomyzReveal();
 }
+window.renderPengumumanCards = renderPengumumanCards;
 
 function openPengumumanModal(id) {
   const item = currentAllPengumumanList.find((x) => String(x.id) === String(id));
@@ -992,9 +931,6 @@ function updateKepsekPhotoFromGuru(list) {
 }
 
 async function initHomePage() {
-  // Inisialisasi slider foto hero & showcase segera
-  renderHeroSlider();
-
   const pContainer = document.getElementById("pengumumanContainer");
   const gContainer = document.getElementById("guruContainer");
   const eContainer = document.getElementById("ekskulContainer");
@@ -1489,6 +1425,111 @@ function hideFormAlert(container) {
 
 function initKontakPage() {}
 
+function openSpmbModal() {
+  const modal = document.getElementById("modalSpmbRegister");
+  if (modal) {
+    modal.classList.add("active");
+    const form = document.getElementById("spmbForm");
+    const submitBtn = document.getElementById("btnSubmitDaftar");
+    const alertContainer = document.getElementById("formAlertContainer");
+    checkPeriodOnDaftar(form, submitBtn, alertContainer);
+  }
+}
+window.openSpmbModal = openSpmbModal;
+
+function closeSpmbModal() {
+  const modal = document.getElementById("modalSpmbRegister");
+  if (modal) modal.classList.remove("active");
+}
+window.closeSpmbModal = closeSpmbModal;
+
+function closeSpmbSuccessModal() {
+  const modal = document.getElementById("successModal");
+  if (modal) modal.classList.remove("active");
+}
+window.closeSpmbSuccessModal = closeSpmbSuccessModal;
+
+function openCekStatusModal() {
+  const modal = document.getElementById("modalCekStatusSpmb");
+  if (modal) {
+    modal.classList.add("active");
+    const input = document.getElementById("inputCekQuery");
+    if (input) setTimeout(() => input.focus(), 150);
+  }
+}
+window.openCekStatusModal = openCekStatusModal;
+
+function closeCekStatusModal() {
+  const modal = document.getElementById("modalCekStatusSpmb");
+  if (modal) modal.classList.remove("active");
+}
+window.closeCekStatusModal = closeCekStatusModal;
+
+async function handleCekStatusSubmit(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById("inputCekQuery");
+  const resultBox = document.getElementById("hasilCekStatus");
+  const btn = document.getElementById("btnCariStatus");
+  if (!input || !resultBox) return;
+
+  const query = input.value.trim();
+  if (!query) {
+    resultBox.innerHTML = `<div class="alert alert-danger" style="margin-top: 1rem;">Masukkan nomor pendaftaran atau NIK calon murid.</div>`;
+    return;
+  }
+
+  btn.disabled = true;
+  resultBox.innerHTML = `<div style="text-align: center; color: var(--muted-text); padding: 1rem;"><span class="spinner"></span> Memeriksa data pendaftaran...</div>`;
+
+  try {
+    const res = await SchoolAPI.get("getSiteBundle");
+    const registrations = res?.pendaftaran || [];
+    const match = registrations.find(
+      (r) =>
+        (r.nomorPendaftaran && r.nomorPendaftaran.toLowerCase() === query.toLowerCase()) ||
+        (r.nik && r.nik === query)
+    );
+
+    if (match) {
+      const statusBadgeClass =
+        match.status === "Diterima"
+          ? "badge-cat-green"
+          : match.status === "Ditolak"
+          ? "badge-cat-amber"
+          : "badge-cat-blue";
+
+      resultBox.innerHTML = `
+        <div style="background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <strong style="color: var(--primary); font-size: 1.1rem;">${escapeHtml(match.nomorPendaftaran || query)}</strong>
+            <span class="pengumuman-category-badge ${statusBadgeClass}">${escapeHtml(match.status || "Menunggu Verifikasi")}</span>
+          </div>
+          <table style="width: 100%; font-size: 0.88rem; border-collapse: collapse;">
+            <tr><td style="padding: 4px 0; color: var(--muted-text); width: 140px;">Nama Calon Murid:</td><td><strong>${escapeHtml(match.namaMurid || "-")}</strong></td></tr>
+            <tr><td style="padding: 4px 0; color: var(--muted-text);">NIK:</td><td>${escapeHtml(match.nik || "-")}</td></tr>
+            <tr><td style="padding: 4px 0; color: var(--muted-text);">Wali Murid:</td><td>${escapeHtml(match.namaOrtu || "-")}</td></tr>
+            <tr><td style="padding: 4px 0; color: var(--muted-text);">Tanggal Daftar:</td><td>${escapeHtml(match.tanggalDaftar || "-")}</td></tr>
+          </table>
+          <p style="margin: 0.75rem 0 0; font-size: 0.82rem; color: var(--muted-text);">
+            ${match.catatan ? `Catatan Panitia: <em>${escapeHtml(match.catatan)}</em>` : "Berkas sedang dalam antrean verifikasi panitia SPMB."}
+          </p>
+        </div>
+      `;
+    } else {
+      resultBox.innerHTML = `
+        <div class="alert alert-warning" style="margin: 0;">
+          Data pendaftaran dengan kata kunci "<strong>${escapeHtml(query)}</strong>" tidak ditemukan. Pastikan nomor pendaftaran atau NIK sudah benar.
+        </div>
+      `;
+    }
+  } catch (err) {
+    resultBox.innerHTML = `<div class="alert alert-danger">Terjadi kendala saat memeriksa status: ${escapeHtml(err.message || "Koneksi terganggu")}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+window.handleCekStatusSubmit = handleCekStatusSubmit;
+
 // ==========================================
 // 5. HELPER & FORMATTER
 // ==========================================
@@ -1505,17 +1546,20 @@ function formatDateId(dateStr) {
 
 function formatSambutanHtml(rawText) {
   if (!rawText) return "";
+  // Bersihkan heading markdown seperti "# SAMBUTAN KEPALA SEKOLAH" atau "### SDN SUMBEREJO 04"
   const cleaned = String(rawText)
     .replace(/#+\s*SAMBUTAN KEPALA SEKOLAH\s*/gi, "")
     .replace(/#+\s*SDN SUMBEREJO 04(\s*AMBULU)?\s*/gi, "")
     .replace(/^#+\s+/gm, "")
     .trim();
 
+  // Pecah menjadi paragraf yang nyaman dibaca
   let paragraphs = cleaned
     .split(/\n{2,}|\r\n{2,}/)
     .map((p) => p.trim())
     .filter(Boolean);
 
+  // Jika seluruh teks berada dalam 1 baris panjang, pecah setiap ~3 kalimat agar mudah dipindai
   if (paragraphs.length === 1 && paragraphs[0].length > 360) {
     const sentences = paragraphs[0].match(/[^.!?]+[.!?]+(\s|$)/g) || [paragraphs[0]];
     paragraphs = [];
@@ -1569,8 +1613,8 @@ function escapeHtml(str) {
 function getDefaultAvatarHtml(nama) {
   const initial = (nama || "G").charAt(0).toUpperCase();
   return `
-    <div class="guru-photo-wrap" style="background: linear-gradient(145deg, #0B1F3A 0%, #164E8A 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #FFFFFF;">
-      <div style="font-family: var(--font-display); font-size: 4.25rem; font-weight: 800; line-height: 1; color: var(--accent-gold); text-shadow: 0 4px 12px rgba(0,0,0,0.2);">${initial}</div>
+    <div class="guru-photo-wrap" style="background: linear-gradient(145deg, #0B2414 0%, #176C2D 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #FFFFFF;">
+      <div style="font-family: var(--font-display); font-size: 4.25rem; font-weight: 800; line-height: 1; color: #86EFAC; text-shadow: 0 4px 12px rgba(0,0,0,0.2);">${initial}</div>
       <div style="font-size: 0.78rem; opacity: 0.9; margin-top: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">Pendidik SDN 04</div>
     </div>
   `;
@@ -1640,512 +1684,293 @@ function getDefaultFacilityImgHtml() {
 }
 
 // ==========================================
-// 6. SLIDER HERO & BANNER OTOMATIS (5 FOTO)
+// 11. GRIDORA KINETIC & ARCHITECTURAL MORPH SYSTEM
 // ==========================================
-const DEFAULT_HERO_SLIDER_ITEMS = [
-  {
-    foto: "assets/img/hero-students.jpg",
-    title: "Siswa-Siswi Berprestasi SDN Sumberejo 04 Ambulu"
-  },
-  {
-    foto: "assets/img/banner-senapati.jpg",
-    title: "Dewan Guru 'The Master' & Senapati Berprestasi"
-  },
-  {
-    foto: "assets/img/pengumuman-sumpah-pemuda.svg",
-    title: "Peringatan Hari Sumpah Pemuda & Budaya Nusantara"
-  },
-  {
-    foto: "assets/img/pengumuman-pts.svg",
-    title: "Pembelajaran Berkualitas & Literasi Digital Siswa"
-  },
-  {
-    foto: "assets/img/pengumuman-rapat-ortu.svg",
-    title: "Sinergi Komite Sekolah & Paguyuban Wali Murid"
-  }
-];
+window.switchGridoraHeroMode = function switchGridoraHeroMode(mode) {
+  const heroEl = document.getElementById("beranda");
+  const dockEl = document.getElementById("heroSwitcherDock");
+  const btnMorning = document.getElementById("btnHeroModeMorning");
+  const btnAfternoon = document.getElementById("btnHeroModeAfternoon");
+  const headingsBox = document.getElementById("heroHeadingsMorphBox");
+  const headlinePrimary = document.getElementById("heroHeadlinePrimary");
+  const headlineSecondary = document.getElementById("heroHeadlineSecondary");
+  const captionEl = document.getElementById("heroModeCaption");
 
-let heroSliderCurrentIndex = 0;
-let heroSliderTimer = null;
-let heroSliderIntervalMs = 4000;
-let isHeroSliderPaused = false;
-let currentHeroSlidesList = [];
+  const isAfternoon = mode === "afternoon";
+  const nextMode = isAfternoon ? "afternoon" : "morning";
 
-function renderHeroSlider(cfg) {
-  const heroTrack = document.getElementById("heroSliderTrack");
-  const heroDots = document.getElementById("heroSliderDots");
-  const bannerTrack = document.getElementById("bannerSliderTrack");
-  const bannerDots = document.getElementById("bannerSliderDots");
-  const heroMainPhoto = document.getElementById("heroMainPhoto");
-  const flagshipDots = document.getElementById("heroFlagshipDots");
-
-  let config = cfg;
-  if (!config) {
-    try {
-      config = JSON.parse(localStorage.getItem("sdn_site_config") || "{}");
-    } catch (e) {
-      config = {};
-    }
+  if (heroEl && heroEl.getAttribute("data-hero-mode") === nextMode) {
+    return;
   }
 
-  const slides = [];
-  for (let i = 1; i <= 5; i++) {
-    const rawFoto = (config && config[`heroFoto${i}`]) || DEFAULT_HERO_SLIDER_ITEMS[i - 1].foto;
-    const title = (config && config[`heroFoto${i}Title`]) || DEFAULT_HERO_SLIDER_ITEMS[i - 1].title;
-    slides.push({
-      index: i - 1,
-      foto: formatPhotoUrl(rawFoto),
-      rawFoto: rawFoto,
-      title: title
-    });
-  }
-  currentHeroSlidesList = slides;
-
-  heroSliderIntervalMs = parseInt((config && config.heroSliderInterval) || "4000", 10);
-  if (isNaN(heroSliderIntervalMs) || heroSliderIntervalMs < 1000) {
-    heroSliderIntervalMs = 4000;
+  // Trigger elastic pill stretch morph on switcher dock
+  if (dockEl) {
+    dockEl.classList.add("is-stretching");
+    dockEl.setAttribute("data-active-mode", nextMode);
+    setTimeout(() => {
+      dockEl.classList.remove("is-stretching");
+    }, 240);
   }
 
-  const badgeTopEl = document.querySelector('[data-config="heroBadgeTop"]');
-  if (badgeTopEl && config && config.heroBadgeTop) {
-    badgeTopEl.textContent = config.heroBadgeTop;
-  }
-  const badgeBottomEl = document.querySelector('[data-config="heroBadgeBottom"]');
-  if (badgeBottomEl && config && config.heroBadgeBottom) {
-    badgeBottomEl.textContent = config.heroBadgeBottom;
+  if (heroEl) {
+    heroEl.setAttribute("data-hero-mode", nextMode);
   }
 
-  if (heroMainPhoto && slides[heroSliderCurrentIndex]) {
-    heroMainPhoto.src = slides[heroSliderCurrentIndex].foto;
-    heroMainPhoto.alt = slides[heroSliderCurrentIndex].title;
+  if (btnMorning && btnAfternoon) {
+    btnMorning.classList.toggle("active", !isAfternoon);
+    btnMorning.setAttribute("aria-selected", String(!isAfternoon));
+    btnAfternoon.classList.toggle("active", isAfternoon);
+    btnAfternoon.setAttribute("aria-selected", String(isAfternoon));
+  }
+  if (document.body) {
+    document.body.setAttribute("data-hero-mode", isAfternoon ? "afternoon" : "morning");
   }
 
-  if (flagshipDots) {
-    flagshipDots.innerHTML = slides
-      .map((s, idx) => `
-        <span class="f-dot ${idx === heroSliderCurrentIndex ? 'active' : ''}" 
-              onclick="window.goToHeroSlide(${idx})" 
-              style="cursor: pointer;" 
-              title="Foto ${idx + 1}: ${escapeHtml(s.title)}">
-        </span>
-      `)
-      .join("");
-  }
+  // Choreographed Blur-Scale Text Morph
+  if (headingsBox) headingsBox.classList.add("is-morphing");
+  if (captionEl) captionEl.classList.add("is-morphing");
 
-  if (heroTrack) {
-    heroTrack.innerHTML = slides
-      .map((s, idx) => {
-        const driveId = extractDriveId(s.rawFoto);
-        return `
-          <div class="hero-slide ${idx === heroSliderCurrentIndex ? 'active' : ''}" data-index="${idx}">
-            <img src="${escapeHtml(s.foto)}" 
-                 alt="${escapeHtml(s.title)}" 
-                 class="hero-slide-img" 
-                 loading="${idx === 0 ? 'eager' : 'lazy'}" 
-                 referrerpolicy="no-referrer"
-                 onerror="handleThumbError(this, '${driveId || ''}', 'assets/img/banner-senapati.jpg')">
-          </div>
-        `;
-      })
-      .join("");
-  }
-
-  if (heroDots) {
-    heroDots.innerHTML = slides
-      .map((s, idx) => `
-        <button type="button" 
-                class="hero-slider-dot ${idx === heroSliderCurrentIndex ? 'active' : ''}" 
-                data-index="${idx}" 
-                aria-label="Pindah ke Foto ${idx + 1}: ${escapeHtml(s.title)}" 
-                onclick="window.goToHeroSlide(${idx})">
-        </button>
-      `)
-      .join("");
-  }
-
-  if (bannerTrack) {
-    bannerTrack.innerHTML = slides
-      .map((s, idx) => {
-        const driveId = extractDriveId(s.rawFoto);
-        return `
-          <div class="banner-slide ${idx === heroSliderCurrentIndex ? 'active' : ''}" data-index="${idx}">
-            <img src="${escapeHtml(s.foto)}" 
-                 alt="${escapeHtml(s.title)}" 
-                 class="banner-main-img" 
-                 loading="${idx === 0 ? 'eager' : 'lazy'}" 
-                 referrerpolicy="no-referrer"
-                 onerror="handleThumbError(this, '${driveId || ''}', 'assets/img/banner-senapati.jpg')">
-          </div>
-        `;
-      })
-      .join("");
-  }
-
-  if (bannerDots) {
-    bannerDots.innerHTML = slides
-      .map((s, idx) => `
-        <button type="button" 
-                class="banner-slider-dot ${idx === heroSliderCurrentIndex ? 'active' : ''}" 
-                data-index="${idx}" 
-                aria-label="Foto Banner ${idx + 1}" 
-                onclick="window.goToHeroSlide(${idx})">
-        </button>
-      `)
-      .join("");
-  }
-
-  setupHeroSliderInteractions();
-}
-window.renderHeroSlider = renderHeroSlider;
-
-function goToHeroSlide(index) {
-  const heroSlides = document.querySelectorAll("#heroSliderTrack .hero-slide");
-  const heroDots = document.querySelectorAll("#heroSliderDots .hero-slider-dot");
-  const bannerSlides = document.querySelectorAll("#bannerSliderTrack .banner-slide");
-  const bannerDots = document.querySelectorAll("#bannerSliderDots .banner-slider-dot");
-  const heroMainPhoto = document.getElementById("heroMainPhoto");
-  const fDots = document.querySelectorAll("#heroFlagshipDots .f-dot");
-
-  const total = Math.max(heroSlides.length, bannerSlides.length, fDots.length, 5);
-  heroSliderCurrentIndex = (index + total) % total;
-
-  if (heroMainPhoto && currentHeroSlidesList && currentHeroSlidesList[heroSliderCurrentIndex]) {
-    heroMainPhoto.src = currentHeroSlidesList[heroSliderCurrentIndex].foto;
-    heroMainPhoto.alt = currentHeroSlidesList[heroSliderCurrentIndex].title;
-  }
-
-  fDots.forEach((dot, i) => {
-    dot.classList.toggle("active", i === heroSliderCurrentIndex);
-  });
-
-  heroSlides.forEach((slide, i) => {
-    slide.classList.toggle("active", i === heroSliderCurrentIndex);
-  });
-  heroDots.forEach((dot, i) => {
-    dot.classList.toggle("active", i === heroSliderCurrentIndex);
-  });
-  bannerSlides.forEach((slide, i) => {
-    slide.classList.toggle("active", i === heroSliderCurrentIndex);
-  });
-  bannerDots.forEach((dot, i) => {
-    dot.classList.toggle("active", i === heroSliderCurrentIndex);
-  });
-}
-window.goToHeroSlide = goToHeroSlide;
-
-function nextHeroSlide() {
-  goToHeroSlide(heroSliderCurrentIndex + 1);
-}
-window.nextHeroSlide = nextHeroSlide;
-
-function prevHeroSlide() {
-  goToHeroSlide(heroSliderCurrentIndex - 1);
-}
-window.prevHeroSlide = prevHeroSlide;
-
-function startHeroSliderTimer() {
-  if (heroSliderTimer) clearInterval(heroSliderTimer);
-  heroSliderTimer = setInterval(() => {
-    if (!isHeroSliderPaused) {
-      nextHeroSlide();
-    }
-  }, heroSliderIntervalMs);
-}
-
-function setupHeroSliderInteractions() {
-  startHeroSliderTimer();
-
-  const btnPrev = document.getElementById("heroSlidePrev");
-  const btnNext = document.getElementById("heroSlideNext");
-  if (btnPrev) {
-    btnPrev.onclick = (e) => {
-      e.preventDefault();
-      prevHeroSlide();
-      startHeroSliderTimer();
-    };
-  }
-  if (btnNext) {
-    btnNext.onclick = (e) => {
-      e.preventDefault();
-      nextHeroSlide();
-      startHeroSliderTimer();
-    };
-  }
-
-  const heroFrame = document.getElementById("heroSliderFrame");
-  if (heroFrame && !heroFrame._hasSliderEvents) {
-    heroFrame._hasSliderEvents = true;
-    heroFrame.addEventListener("mouseenter", () => { isHeroSliderPaused = true; });
-    heroFrame.addEventListener("mouseleave", () => { isHeroSliderPaused = false; });
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-    heroFrame.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    heroFrame.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      if (touchEndX < touchStartX - 40) {
-        nextHeroSlide();
-        startHeroSliderTimer();
-      } else if (touchEndX > touchStartX + 40) {
-        prevHeroSlide();
-        startHeroSliderTimer();
-      }
-    }, { passive: true });
-  }
-
-  const bannerBox = document.getElementById("bannerShowcaseBox");
-  if (bannerBox && !bannerBox._hasSliderEvents) {
-    bannerBox._hasSliderEvents = true;
-    bannerBox.addEventListener("mouseenter", () => { isHeroSliderPaused = true; });
-    bannerBox.addEventListener("mouseleave", () => { isHeroSliderPaused = false; });
-  }
-}
-
-// ==========================================
-// 15. PROFIL MORPHING SCROLL EXPERIENCE
-// ==========================================
-function initProfilMorphingScroll() {
-  const progressBar = document.getElementById("scrollProgressBar");
-  const btnBackToTop = document.getElementById("btnBackToTop");
-  const visiCard = document.getElementById("morphingVisiCard");
-  const timelineProgress = document.getElementById("timelineProgressBar");
-  const timelineSection = document.getElementById("sejarah");
-
-  // 1. Progress Bar & Back-to-Top Handler
-  const handleScroll = () => {
-    const scrollY = window.scrollY || window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollY / docHeight) * 100)) : 0;
-
-    if (progressBar) {
-      progressBar.style.width = `${progress}%`;
-    }
-
-    if (btnBackToTop) {
-      if (scrollY > 380) {
-        btnBackToTop.classList.add("visible");
+  setTimeout(() => {
+    if (headlinePrimary && headlineSecondary) {
+      if (isAfternoon) {
+        headlinePrimary.textContent = "Eksplorasi bakat.";
+        headlineSecondary.textContent = "Tumbuh berkarakter.";
       } else {
-        btnBackToTop.classList.remove("visible");
+        headlinePrimary.textContent = "Cerdas di kelas.";
+        headlineSecondary.textContent = "Santun di masyarakat.";
       }
     }
+    if (captionEl) {
+      captionEl.textContent = isAfternoon
+        ? "Mode Malam Karakter: Pembinaan budi pekerti, Pramuka, olahraga, seni budaya, dan kepedulian lingkungan sekolah ramah anak."
+        : "Mode Pagi Akademik: Pembelajaran intrakurikuler Kurikulum Nasional, penguatan literasi-numerasi, serta eksperimen sains dasar.";
+    }
+    if (headingsBox) headingsBox.classList.remove("is-morphing");
+    if (captionEl) captionEl.classList.remove("is-morphing");
+  }, 190);
+};
 
-    // Progress Garis Timeline Sejarah
-    if (timelineProgress && timelineSection) {
-      const rect = timelineSection.getBoundingClientRect();
-      const winH = window.innerHeight;
-      if (rect.top <= winH * 0.75 && rect.bottom >= 0) {
-        const total = rect.height;
-        const current = (winH * 0.75) - rect.top;
-        const pct = Math.min(100, Math.max(0, (current / total) * 100));
-        timelineProgress.style.width = `${pct}%`;
-      }
+window.switchWorkspaceTab = function switchWorkspaceTab(tabKey) {
+  const wsCard = document.getElementById("gridoraWorkspaceCard");
+  const panelsContainer = document.getElementById("wsPanelsContainer");
+  const tabs = document.querySelectorAll(".gridora-ws-tab");
+  tabs.forEach((btn) => {
+    const isMatch = btn.getAttribute("data-ws-tab") === tabKey;
+    btn.classList.toggle("active", isMatch);
+    btn.setAttribute("aria-selected", String(isMatch));
+  });
+
+  const rangeBtns = document.querySelectorAll(".gridora-range-btn");
+  rangeBtns.forEach((btn) => {
+    const rangeAttr = btn.getAttribute("data-ws-range");
+    const isMatch = rangeAttr
+      ? rangeAttr === tabKey
+      : (tabKey === "sambutan" && btn.textContent.includes("Sambutan")) ||
+        (tabKey === "visimisi" && btn.textContent.includes("Visi")) ||
+        (tabKey === "identitas" && btn.textContent.includes("Data"));
+    btn.classList.toggle("active", isMatch);
+  });
+
+  if (wsCard) {
+    wsCard.setAttribute("data-active-ws", tabKey);
+  }
+
+  // Data Bar & Sparkline Morph Configurations per Workspace Tab
+  const mixPresets = {
+    sambutan: {
+      title: "Komposisi Fokus Pendidikan",
+      sub: "Proporsi harian",
+      bars: [42, 28, 18, 12],
+      guruBar: "92%",
+      spark1: "M4 22 L22 18 L40 15 L58 9 L76 5",
+      spark2: "M4 20 L24 16 L44 14 L60 10 L76 6",
+    },
+    visimisi: {
+      title: "Pilar Visi & Profil Pancasila",
+      sub: "Target capaian",
+      bars: [34, 36, 18, 12],
+      guruBar: "96%",
+      spark1: "M4 24 L22 16 L40 11 L58 7 L76 4",
+      spark2: "M4 22 L24 18 L44 11 L60 8 L76 5",
+    },
+    identitas: {
+      title: "Indeks Standar Pelayanan",
+      sub: "Rekam jejak 1960–2026",
+      bars: [48, 24, 16, 12],
+      guruBar: "100%",
+      spark1: "M4 20 L22 19 L40 13 L58 8 L76 4",
+      spark2: "M4 23 L24 15 L44 12 L60 7 L76 4",
+    },
+  };
+
+  const preset = mixPresets[tabKey] || mixPresets.sambutan;
+
+  const applyWorkspaceMorph = () => {
+    const titleEl = document.getElementById("wsMixTitle");
+    const subEl = document.getElementById("wsMixSub");
+    if (titleEl) titleEl.textContent = preset.title;
+    if (subEl) subEl.textContent = preset.sub;
+
+    preset.bars.forEach((pct, i) => {
+      const seg = document.getElementById(`mixSeg${i + 1}`);
+      const val = document.getElementById(`mixVal${i + 1}`);
+      if (seg) seg.style.width = `${pct}%`;
+      if (val) val.textContent = `${pct}%`;
+    });
+
+    const guruFill = document.getElementById("kpiGuruBarFill");
+    if (guruFill) guruFill.style.width = preset.guruBar;
+
+    const sp1 = document.getElementById("sparkPath1");
+    const sp2 = document.getElementById("sparkPath2");
+    if (sp1) sp1.setAttribute("d", preset.spark1);
+    if (sp2) sp2.setAttribute("d", preset.spark2);
+
+    const panelSambutan = document.getElementById("wsPanelSambutan");
+    const cardMisi = document.getElementById("wsCardMisi");
+    const cardIdentitas = document.getElementById("wsCardIdentitas");
+
+    [panelSambutan, cardMisi, cardIdentitas].forEach((el) => {
+      if (el) el.classList.remove("ws-morph-focused");
+    });
+
+    const targetEl =
+      tabKey === "visimisi" ? cardMisi : tabKey === "identitas" ? cardIdentitas : panelSambutan;
+    if (targetEl) {
+      targetEl.classList.add("ws-morph-focused");
     }
   };
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  handleScroll();
-
-  if (btnBackToTop) {
-    btnBackToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+  if (panelsContainer) {
+    panelsContainer.classList.add("is-morphing");
+    setTimeout(() => {
+      applyWorkspaceMorph();
+      panelsContainer.classList.remove("is-morphing");
+    }, 150);
+  } else {
+    applyWorkspaceMorph();
   }
-
-  // 2. Intersection Observer untuk Animasi Morphing Visi & Timeline Nodes
-  if ("IntersectionObserver" in window) {
-    if (visiCard) {
-      const visiObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              visiCard.classList.add("in-view");
-            }
-          });
-        },
-        { threshold: 0.2 }
-      );
-      visiObserver.observe(visiCard);
-    }
-
-    const timelineNodes = document.querySelectorAll(".timeline-node-card");
-    if (timelineNodes.length > 0) {
-      const nodeObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("active");
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
-      timelineNodes.forEach((node) => nodeObserver.observe(node));
-    }
-
-    // Morphing Stagger untuk Misi Cards & Karakter Cards
-    const morphCards = document.querySelectorAll(".misi-card-item, .karakter-card");
-    if (morphCards.length > 0) {
-      const cardObserver = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = "1";
-              entry.target.style.transform = "translateY(0)";
-              obs.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.15 }
-      );
-
-      morphCards.forEach((card, idx) => {
-        card.style.opacity = "0";
-        card.style.transform = "translateY(24px)";
-        card.style.transition = `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.08}s`;
-        cardObserver.observe(card);
-      });
-    }
-  }
-}
-
-// Lightbox Galeri Profil
-window.openProfilLightbox = function (src, caption) {
-  const modal = document.getElementById("modalProfilLightbox");
-  const img = document.getElementById("profilLightboxImg");
-  const text = document.getElementById("profilLightboxText");
-  if (!modal || !img) return;
-
-  img.src = src;
-  if (text) text.textContent = caption || "";
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
 };
 
-window.closeProfilLightbox = function () {
-  const modal = document.getElementById("modalProfilLightbox");
-  if (!modal) return;
-  modal.classList.remove("active");
-  document.body.style.overflow = "";
+window.switchProgramPhase = function switchProgramPhase(phaseIdx) {
+  const idx = Number(phaseIdx) || 0;
+  const lineEl = document.getElementById("programStepperLine");
+  const nodes = document.querySelectorAll(".gridora-step-node[data-step-idx]");
+  const cards = document.querySelectorAll("#programBentoGrid .gridora-bento-card");
+
+  const widths = ["34%", "68%", "100%"];
+  if (lineEl) {
+    lineEl.style.width = widths[idx] || "68%";
+  }
+
+  nodes.forEach((node) => {
+    const nIdx = Number(node.getAttribute("data-step-idx")) || 0;
+    node.classList.toggle("active", nIdx <= idx);
+  });
+
+  cards.forEach((card) => {
+    const cIdx = Number(card.getAttribute("data-bento-phase"));
+    card.classList.toggle("is-active-phase", cIdx === idx);
+  });
 };
 
-window.initProfilMorphingScroll = initProfilMorphingScroll;
+function initGridoraMorphSystem() {
+  // 1. Liquid Navigation Capsule Glider inside .gridora-nav-menu
+  const navMenu = document.querySelector(".gridora-nav-menu");
+  if (navMenu && !navMenu.querySelector(".gridora-nav-glider")) {
+    const glider = document.createElement("span");
+    glider.className = "gridora-nav-glider";
+    glider.setAttribute("aria-hidden", "true");
+    navMenu.prepend(glider);
+    navMenu.classList.add("has-glider");
 
-// ==========================================
-// 16. GRIDORA MODULIFY MORPHING TRANSITIONS ENGINE
-// Reference: https://gridora.modulify.website/
-// ==========================================
-function initGridoraMorphTransitions() {
-  const headerWrap = document.getElementById("siteHeader") || document.querySelector(".header-nav-floating-wrap");
-  const heroFrame = document.querySelector(".hero-photo-curved-frame");
-  const featureCards = document.querySelectorAll(".flagship-card");
-  const progressBar = document.getElementById("scrollProgressBar");
-  const btnBackToTop = document.getElementById("btnBackToTop");
+    const navLinks = Array.from(
+      navMenu.querySelectorAll(".nav-link:not(.nav-cta)")
+    );
 
-  // 1. Scroll Handler: Header Capsule Morphing & Hero Visual Expansion
-  const onScroll = () => {
-    const scrollY = window.scrollY || window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollY / docHeight) * 100)) : 0;
-
-    if (progressBar) {
-      progressBar.style.width = `${progress}%`;
-    }
-
-    if (btnBackToTop) {
-      if (scrollY > 380) {
-        btnBackToTop.classList.add("visible");
-      } else {
-        btnBackToTop.classList.remove("visible");
+    const moveGliderTo = (linkEl) => {
+      if (!linkEl || window.innerWidth <= 960) {
+        glider.style.opacity = "0";
+        return;
       }
-    }
+      const menuRect = navMenu.getBoundingClientRect();
+      const linkRect = linkEl.getBoundingClientRect();
+      const offsetLeft = linkRect.left - menuRect.left;
+      glider.style.width = `${linkRect.width}px`;
+      glider.style.transform = `translate3d(${offsetLeft}px, -50%, 0)`;
+      glider.style.opacity = "1";
+    };
 
-    // Gridora Floating Capsule Navbar Morphing
-    if (headerWrap) {
-      if (scrollY > 24) {
-        headerWrap.classList.add("is-morphed");
-      } else {
-        headerWrap.classList.remove("is-morphed");
-      }
-    }
+    const syncToActiveLink = () => {
+      const activeLink =
+        navMenu.querySelector(".nav-link.active:not(.nav-cta)") || navLinks[0];
+      if (activeLink) moveGliderTo(activeLink);
+    };
 
-    // Hero Perspective & Scale Morphing
-    if (heroFrame) {
-      if (scrollY > 40 && scrollY < 650) {
-        heroFrame.classList.add("hero-morphed");
-      } else {
-        heroFrame.classList.remove("hero-morphed");
-      }
-    }
-  };
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  if (btnBackToTop) {
-    btnBackToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-
-  // 2. Bento Card Spotlight Tracking Morphing
-  if (featureCards.length > 0) {
-    featureCards.forEach((card) => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty("--mouse-x", `${x}px`);
-        card.style.setProperty("--mouse-y", `${y}px`);
-      });
-
-      card.addEventListener("mouseleave", () => {
-        card.style.setProperty("--mouse-x", `-500px`);
-        card.style.setProperty("--mouse-y", `-500px`);
+    navLinks.forEach((link) => {
+      link.addEventListener("mouseenter", () => moveGliderTo(link));
+      link.addEventListener("focus", () => moveGliderTo(link));
+      link.addEventListener("click", () => {
+        navLinks.forEach((l) => l.classList.remove("active"));
+        link.classList.add("active");
+        moveGliderTo(link);
       });
     });
+
+    navMenu.addEventListener("mouseleave", syncToActiveLink);
+    window.addEventListener("resize", syncToActiveLink, { passive: true });
+    setTimeout(syncToActiveLink, 120);
   }
 
-  // 3. Gridora Morphing Tabs Slider Indicator (Showcase Tabs)
-  const tabContainer = document.getElementById("showcaseMorphTabs");
-  const sliderPill = document.getElementById("morphTabSliderPill");
-  if (tabContainer && sliderPill) {
-    const tabBtns = tabContainer.querySelectorAll(".gridora-tab-btn");
+  // 2. Scroll-Driven Organic SVG Wave Curve Morph (#morphWaveTopPath)
+  const wavePath = document.getElementById("morphWaveTopPath");
+  const dividerEl = document.querySelector(".gridora-morph-divider");
+  if (wavePath && dividerEl) {
+    let ticking = false;
+    const updateWaveMorph = () => {
+      const rect = dividerEl.getBoundingClientRect();
+      const vh = window.innerHeight || 900;
+      // Progress 0 when divider enters bottom of viewport, 1 when it reaches upper third
+      const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.75)));
+      // Interpolate quadratic control point Y from 6 (deep arch) to 84 (flattening horizon)
+      const controlY = Math.round(6 + progress * 78);
+      wavePath.setAttribute(
+        "d",
+        `M0,96 Q720,${controlY} 1440,96 L1440,96 L0,96 Z`
+      );
+      ticking = false;
+    };
 
-    function moveSliderPillTo(btn) {
-      if (!btn) return;
-      const left = btn.offsetLeft;
-      const width = btn.offsetWidth;
-      sliderPill.style.transform = `translateX(${left - 6}px)`;
-      sliderPill.style.width = `${width}px`;
-    }
-
-    tabBtns.forEach((btn, idx) => {
-      btn.addEventListener("click", () => {
-        tabBtns.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        moveSliderPillTo(btn);
-
-        // Berikan sinyal rotasi ke showcase jika tombol diklik
-        const dots = document.querySelectorAll("#bannerSliderDots .banner-dot");
-        if (dots && dots[idx % dots.length]) {
-          dots[idx % dots.length].click();
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateWaveMorph);
+          ticking = true;
         }
-      });
-    });
-
-    const activeBtn = tabContainer.querySelector(".gridora-tab-btn.active") || tabBtns[0];
-    if (activeBtn) {
-      setTimeout(() => moveSliderPillTo(activeBtn), 120);
-      window.addEventListener("resize", () => {
-        const currentActive = tabContainer.querySelector(".gridora-tab-btn.active") || tabBtns[0];
-        if (currentActive) moveSliderPillTo(currentActive);
-      });
-    }
+      },
+      { passive: true }
+    );
+    updateWaveMorph();
   }
+
+  // 3. Radial Cursor Spotlight Morph on Bento Cards
+  const bentoCards = document.querySelectorAll(".gridora-bento-card");
+  bentoCards.forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    });
+  });
 }
 
-window.initGridoraMorphTransitions = initGridoraMorphTransitions;
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initGridoraMorphSystem);
+} else {
+  initGridoraMorphSystem();
+}
 
 

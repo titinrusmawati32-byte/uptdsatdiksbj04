@@ -1,0 +1,23 @@
+# Netlify Configuration for SDN Sumberejo 04
+[build]
+  publish = "."
+
+# Clean routing for Admin CMS
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/"
+  to = "/admin/index.html"
+  status = 200
+
+# Security headers for protected Admin CMS portal
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    Pragma = "no-cache"
+    Referrer-Policy = "no-referrer"

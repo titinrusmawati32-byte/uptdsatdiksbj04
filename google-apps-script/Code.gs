@@ -82,23 +82,76 @@ function setupDatabaseSheets() {
  */
 function doGet(e) {
   setupDatabaseSheets();
-  const action = (e && e.parameter && e.parameter.action) || "getSiteBundle";
+  const params = (e && e.parameter) || {};
+  const action = params.action || "getSiteBundle";
 
   try {
     if (action === "setup") {
       return jsonResponse({ ok: true, message: "Seluruh sheet database berhasil dibuat!" });
     }
 
-    if (action === "getSiteBundle") {
-      return jsonResponse({
-        ok: true,
-        data: readAllDataBundle(),
-        message: "Berhasil mengambil data dari Google Sheets",
-        time: new Date().toISOString()
+    const bundle = readAllDataBundle();
+    const cols = bundle.collections || {};
+    const filterPublic = function(arr) {
+      return (arr || []).filter(function(r) {
+        return r.tampil === true || String(r.tampil).toUpperCase() === "TRUE";
       });
-    }
+    };
 
-    return jsonResponse({ ok: false, message: "Aksi GET '" + action + "' tidak dikenali." });
+    switch (action) {
+      case "getSiteBundle":
+        return jsonResponse({
+          ok: true,
+          data: {
+            config: bundle.config || {},
+            pengumuman: filterPublic(cols.Pengumuman).slice(0, 10),
+            guru: filterPublic(cols.Guru),
+            ekskul: filterPublic(cols.Ekstrakurikuler),
+            fasilitas: filterPublic(cols.Fasilitas),
+            galeri: filterPublic(cols.Galeri).slice(0, 12),
+            collections: cols,
+            pendaftar: bundle.pendaftar || []
+          },
+          message: "Berhasil mengambil data dari Google Sheets",
+          time: new Date().toISOString()
+        });
+      case "getSiteConfig":
+        return jsonResponse({ ok: true, data: bundle.config || {}, message: "Berhasil", time: new Date().toISOString() });
+      case "getPengumuman": {
+        const limit = Math.max(1, parseInt(params.limit, 10) || 10);
+        return jsonResponse({ ok: true, data: filterPublic(cols.Pengumuman).slice(0, limit), message: "Berhasil", time: new Date().toISOString() });
+      }
+      case "getGuru":
+        return jsonResponse({ ok: true, data: filterPublic(cols.Guru), message: "Berhasil", time: new Date().toISOString() });
+      case "getEkskul":
+        return jsonResponse({ ok: true, data: filterPublic(cols.Ekstrakurikuler), message: "Berhasil", time: new Date().toISOString() });
+      case "getFasilitas":
+        return jsonResponse({ ok: true, data: filterPublic(cols.Fasilitas), message: "Berhasil", time: new Date().toISOString() });
+      case "getGaleri": {
+        const limit = Math.max(1, parseInt(params.limit, 10) || 20);
+        return jsonResponse({ ok: true, data: filterPublic(cols.Galeri).slice(0, limit), message: "Berhasil", time: new Date().toISOString() });
+      }
+      case "cekStatus": {
+        const nomor = String(params.nomor || "").trim().toUpperCase();
+        const found = (bundle.pendaftar || []).find(function(p) {
+          return String(p.nomorPendaftaran || "").trim().toUpperCase() === nomor;
+        });
+        if (!found) {
+          return jsonResponse({ ok: true, data: { ditemukan: false, message: "Nomor pendaftaran tidak ditemukan." } });
+        }
+        return jsonResponse({
+          ok: true,
+          data: {
+            ditemukan: true,
+            nomorPendaftaran: found.nomorPendaftaran,
+            namaMurid: found.namaMurid,
+            status: found.status || "diproses"
+          }
+        });
+      }
+      default:
+        return jsonResponse({ ok: false, message: "Aksi GET '" + action + "' tidak dikenali." });
+    }
   } catch (err) {
     return jsonResponse({ ok: false, message: err.toString() });
   }
@@ -165,6 +218,14 @@ function doPost(e) {
       });
     }
 
+    if (action === "admin_getBundle") {
+      return jsonResponse({ ok: true, data: readAllDataBundle() });
+    }
+    if (action === "admin_getCollection") {
+      const sheetName = body.sheetName || "";
+      const b = readAllDataBundle();
+      return jsonResponse({ ok: true, data: (b.collections && b.collections[sheetName]) || [] });
+    }
     if (action === "admin_logout") {
       return jsonResponse({ ok: true });
     }

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="110 115 830 510" fill="none">
+  <defs>
+    <linearGradient id="skyMist" x1="525" y1="115" x2="525" y2="625" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F4F5F1"/>
+      <stop offset="45%" stop-color="#E6EDE2"/>
+      <stop offset="80%" stop-color="#DAE4D6"/>
+      <stop offset="100%" stop-color="#F4F5F1"/>
+    </linearGradient>
+    <linearGradient id="hillMist" x1="0" y1="310" x2="0" y2="560" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#B8C8B4" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#DCE5D8" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="bottomFade" x1="525" y1="515" x2="525" y2="625" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F4F5F1" stop-opacity="0"/>
+      <stop offset="65%" stop-color="#F4F5F1" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#F4F5F1" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect x="110" y="115" width="830" height="510" fill="url(#skyMist)"/>
+  <path d="M110 380 Q240 315 390 365 T940 335 L940 580 L110 580 Z" fill="url(#hillMist)"/>
+  <image href="/assets/aistudio/AAGVtcZw2Jk_1783667429758_ed26f4c2.png" x="0" y="0" width="1000" height="750"/>
+  <rect x="110" y="515" width="830" height="110" fill="url(#bottomFade)"/>
+</svg>

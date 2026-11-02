@@ -705,7 +705,7 @@
   function canRoleAccessView(role, viewName) {
     if (viewName === "dashboard") return true;
     if (role === "superadmin") return true;
-    const kontenViews = ["identitas", "beranda", "heroSlider", "profil", "pengumuman", "guru", "ekskul", "fasilitas", "galeri", "media"];
+    const kontenViews = ["identitas", "beranda", "profil", "pengumuman", "guru", "ekskul", "fasilitas", "galeri", "media"];
     const spmbViews = ["spmbConfig", "pendaftar"];
     if (role === "editor") return kontenViews.includes(viewName);
     if (role === "admin_spmb") return spmbViews.includes(viewName);
@@ -778,7 +778,6 @@
         dashboard: "Dasbor Operasional",
         identitas: "Identitas Lembaga Sekolah",
         beranda: "Konten Halaman Beranda",
-        heroSlider: "Pengaturan Slider Hero & Banner",
         profil: "Visi, Misi & Sejarah",
         spmbConfig: "Pengaturan Jadwal SPMB",
         pendaftar: "Verifikasi Pendaftar SPMB",
@@ -794,10 +793,6 @@
       document.getElementById("topPageTitle").textContent = titles[viewName] || "Admin Panel";
 
       // Muat data khusus view jika diperlukan
-      if (viewName === "heroSlider") {
-        updateHeroAdminPreviews();
-        startAdminPreviewTicker();
-      }
       if (viewName === "media") loadMediaLibrary();
       if (viewName === "pendaftar") loadPendaftarTable();
       if (viewName === "pengumuman") loadCollection("Pengumuman");
@@ -854,56 +849,31 @@
       renderDashboard(bundle);
     } catch (e) {
       console.warn("Gagal memuat bundle lengkap admin:", e);
+      try {
+        const rawCfg = localStorage.getItem("sdn_site_config");
+        if (rawCfg) {
+          AppState.siteConfig = JSON.parse(rawCfg);
+          populateForms(AppState.siteConfig);
+        }
+      } catch (errCfg) {}
     }
   }
 
   function populateForms(cfg) {
-    // Identitas & SEO & Medsos
+    // Identitas
     const fId = document.getElementById("formIdentitas");
     if (fId) {
-      [
-        "namaSekolah", "akreditasi", "alamat", "telepon", "whatsapp", "email",
-        "jamLayanan", "taglineSekolah", "mapEmbedUrl",
-        "medsosYt", "medsosFb", "medsosIg",
-        "seoTitle", "seoKeywords", "seoDesc"
-      ].forEach((k) => {
-        if (fId[k] && cfg[k] !== undefined && cfg[k] !== "") fId[k].value = cfg[k];
+      ["namaSekolah", "akreditasi", "alamat", "telepon", "whatsapp", "email", "jamLayanan", "mapEmbedUrl"].forEach((k) => {
+        if (fId[k] && cfg[k]) fId[k].value = cfg[k];
       });
     }
 
-    // Beranda: Hero Teks, Tombol, 4 Kartu Keunggulan, Sambutan, Statistik & Footer
+    // Beranda
     const fBer = document.getElementById("formBeranda");
     if (fBer) {
-      [
-        "heroWelcome", "heroSchoolName", "heroHeadline", "heroHeadlineHighlight", "heroHeadlineSuffix",
-        "heroDeskripsi", "heroCtaText", "heroCtaUrl", "heroSecText", "heroSecUrl",
-        "card1Title", "card1Desc", "card1Url",
-        "card2Title", "card2Desc", "card2Url",
-        "card3Title", "card3Desc", "card3Url",
-        "card4Title", "card4Desc", "card4Url",
-        "sambutanKepsek", "jumlahSiswa", "jumlahGuru", "biayaPendaftaran",
-        "footerDesc", "footerCopyright"
-      ].forEach((k) => {
-        if (fBer[k] && cfg[k] !== undefined && cfg[k] !== "") fBer[k].value = cfg[k];
+      ["sambutanKepsek", "jumlahSiswa", "jumlahGuru", "biayaPendaftaran"].forEach((k) => {
+        if (fBer[k] && cfg[k]) fBer[k].value = cfg[k];
       });
-    }
-
-    // Hero Slider (5 Foto)
-    const fHero = document.getElementById("formHeroSlider");
-    if (fHero) {
-      [
-        "heroBadgeTop", "heroBadgeBottom", "heroSliderInterval",
-        "heroFoto1", "heroFoto1Title",
-        "heroFoto2", "heroFoto2Title",
-        "heroFoto3", "heroFoto3Title",
-        "heroFoto4", "heroFoto4Title",
-        "heroFoto5", "heroFoto5Title"
-      ].forEach((k) => {
-        if (fHero[k] && cfg[k] !== undefined && cfg[k] !== "") {
-          fHero[k].value = cfg[k];
-        }
-      });
-      updateHeroAdminPreviews();
     }
 
     // Profil
@@ -928,11 +898,51 @@
     const config = bundle.config || {};
 
     const baruCount = pendaftar.filter((p) => p.status === "baru").length;
+    const diprosesCount = pendaftar.filter((p) => p.status === "diproses").length;
+    const diterimaCount = pendaftar.filter((p) => p.status === "diterima").length;
+    const ditolakCount = pendaftar.filter((p) => p.status === "ditolak" || p.status === "dibatalkan").length;
+    const totalCount = pendaftar.length;
+
     document.getElementById("statPendaftarBaru").textContent = baruCount;
-    document.getElementById("statTotalPendaftar").textContent = pendaftar.length;
+    document.getElementById("statTotalPendaftar").textContent = totalCount;
     if (bundle.pengumumanCount !== undefined) {
       document.getElementById("statPengumumanTayang").textContent = bundle.pengumumanCount;
     }
+
+    // Perbarui Distribusi Status & Progress Bar
+    const dashTotalEl = document.getElementById("dashTotalBadge");
+    if (dashTotalEl) dashTotalEl.textContent = `${totalCount} Pendaftar`;
+
+    const lblBaru = document.getElementById("lblCountBaru");
+    if (lblBaru) lblBaru.textContent = baruCount;
+    const lblDip = document.getElementById("lblCountDiproses");
+    if (lblDip) lblDip.textContent = diprosesCount;
+    const lblDit = document.getElementById("lblCountDiterima");
+    if (lblDit) lblDit.textContent = diterimaCount;
+    const lblTol = document.getElementById("lblCountDitolak");
+    if (lblTol) lblTol.textContent = ditolakCount;
+
+    const bBaru = document.getElementById("barBaru");
+    const bDip = document.getElementById("barDiproses");
+    const bDit = document.getElementById("barDiterima");
+    const bTol = document.getElementById("barDitolak");
+    if (totalCount > 0 && bBaru && bDip && bDit && bTol) {
+      bBaru.style.width = `${(baruCount / totalCount) * 100}%`;
+      bDip.style.width = `${(diprosesCount / totalCount) * 100}%`;
+      bDit.style.width = `${(diterimaCount / totalCount) * 100}%`;
+      bTol.style.width = `${(ditolakCount / totalCount) * 100}%`;
+    }
+
+    // Perbarui Ringkasan Konten Sekolah
+    const cols = AppState.collections || {};
+    const sumG = document.getElementById("sumGuru");
+    if (sumG) sumG.textContent = (cols.Guru || []).length;
+    const sumF = document.getElementById("sumFasilitas");
+    if (sumF) sumF.textContent = (cols.Fasilitas || []).length;
+    const sumE = document.getElementById("sumEkskul");
+    if (sumE) sumE.textContent = (cols.Ekstrakurikuler || []).length;
+    const sumGal = document.getElementById("sumGaleri");
+    if (sumGal) sumGal.textContent = (cols.Galeri || []).length;
 
     const statusEl = document.getElementById("statStatusSpmb");
     statusEl.textContent = (config.spmbStatus || "tutup").toUpperCase();
@@ -973,12 +983,11 @@
   }
 
   // ==========================================
-  // 5. PENYIMPANAN FORMULIR (IDENTITAS, HERO, DLL)
+  // 5. PENYIMPANAN FORMULIR (IDENTITAS, DLL)
   // ==========================================
   function initForms() {
     setupGenericForm("formIdentitas", "barIdentitas", "Identitas Sekolah");
     setupGenericForm("formBeranda", "barBeranda", "Halaman Beranda");
-    setupGenericForm("formHeroSlider", "barHeroSlider", "Slider Hero & Banner");
     setupGenericForm("formProfil", "barProfil", "Profil Sekolah");
     setupGenericForm("formSpmbConfig", "barSpmb", "Pengaturan SPMB");
   }
@@ -1030,187 +1039,6 @@
   }
 
   // ==========================================
-  // SLIDER HERO & BANNER ADMIN LOGIC (5 FOTO)
-  // ==========================================
-  const DEFAULT_HERO_SLIDES = [
-    {
-      foto: "assets/img/hero-students.jpg",
-      title: "Siswa-Siswi Berprestasi SDN Sumberejo 04 Ambulu"
-    },
-    {
-      foto: "assets/img/banner-senapati.jpg",
-      title: "Dewan Guru 'The Master' & Senapati Berprestasi"
-    },
-    {
-      foto: "assets/img/pengumuman-sumpah-pemuda.svg",
-      title: "Peringatan Hari Sumpah Pemuda & Budaya Nusantara"
-    },
-    {
-      foto: "assets/img/pengumuman-pts.svg",
-      title: "Pembelajaran Berkualitas & Literasi Digital Siswa"
-    },
-    {
-      foto: "assets/img/pengumuman-rapat-ortu.svg",
-      title: "Sinergi Komite Sekolah & Paguyuban Wali Murid"
-    }
-  ];
-
-  let adminHeroPreviewIdx = 0;
-  let adminHeroPreviewTimer = null;
-
-  function updateHeroAdminPreviews() {
-    const f = document.getElementById("formHeroSlider");
-    if (!f) return;
-
-    for (let i = 1; i <= 5; i++) {
-      const input = document.getElementById(`inputHeroFoto${i}`);
-      const thumb = document.getElementById(`thumbHeroFoto${i}`);
-      const val = (input && input.value) ? input.value : DEFAULT_HERO_SLIDES[i - 1].foto;
-      if (thumb && thumb.src !== val) {
-        thumb.src = val;
-      }
-    }
-
-    const bTop = document.getElementById("inputHeroBadgeTop");
-    const bBot = document.getElementById("inputHeroBadgeBottom");
-    const pTop = document.getElementById("adminBadgeTopPreview");
-    const pBot = document.getElementById("adminBadgeBottomPreview");
-    if (bTop && pTop) pTop.textContent = bTop.value || "✨ Small Steps, Big Dreams";
-    if (bBot && pBot) {
-      pBot.innerHTML = `<span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span> <span>${escapeHtml(bBot.value || "Senapati Berprestasi")}</span>`;
-    }
-
-    renderCurrentAdminPreviewSlide();
-  }
-
-  function renderCurrentAdminPreviewSlide() {
-    const input = document.getElementById(`inputHeroFoto${adminHeroPreviewIdx + 1}`);
-    const img = document.getElementById("adminHeroPreviewImg");
-    const indicator = document.getElementById("adminSliderIndicator");
-    const dots = document.querySelectorAll("#adminDotsPreview .admin-prev-dot");
-
-    const val = (input && input.value) ? input.value : DEFAULT_HERO_SLIDES[adminHeroPreviewIdx].foto;
-    if (img) img.src = val;
-    if (indicator) indicator.textContent = `Slide ${adminHeroPreviewIdx + 1} / 5`;
-
-    dots.forEach((dot, idx) => {
-      if (idx === adminHeroPreviewIdx) {
-        dot.style.background = "#FDE047";
-        dot.style.width = "18px";
-        dot.style.borderRadius = "999px";
-      } else {
-        dot.style.background = "rgba(255,255,255,0.45)";
-        dot.style.width = "6px";
-        dot.style.borderRadius = "50%";
-      }
-    });
-  }
-
-  function startAdminPreviewTicker() {
-    if (adminHeroPreviewTimer) clearInterval(adminHeroPreviewTimer);
-    adminHeroPreviewTimer = setInterval(() => {
-      adminHeroPreviewIdx = (adminHeroPreviewIdx + 1) % 5;
-      renderCurrentAdminPreviewSlide();
-    }, 3500);
-  }
-
-  async function safeCompressOrRead(file, maxDimension = 1600) {
-    if (window.ImageProcessor && typeof window.ImageProcessor.compressImage === "function") {
-      try {
-        const res = await window.ImageProcessor.compressImage(file, "hero");
-        if (res && (res.dataUrl || res.base64)) {
-          return res.dataUrl || `data:${res.mime || "image/jpeg"};base64,${res.base64}`;
-        }
-      } catch (e) {}
-    }
-    if (window.ImageProcessor && typeof window.ImageProcessor.compress === "function") {
-      try {
-        const res = await window.ImageProcessor.compress(file, "hero");
-        if (res && (res.dataUrl || res.base64)) {
-          return res.dataUrl || `data:${res.mime || "image/jpeg"};base64,${res.base64}`;
-        }
-      } catch (e) {}
-    }
-
-    // Fallback Canvas Compressor Bawaan Browser
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          let w = img.width;
-          let h = img.height;
-          if (w > maxDimension || h > maxDimension) {
-            if (w > h) {
-              h = Math.max(1, Math.round((h * maxDimension) / w));
-              w = maxDimension;
-            } else {
-              w = Math.max(1, Math.round((w * maxDimension) / h));
-              h = maxDimension;
-            }
-          }
-          const canvas = document.createElement("canvas");
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, w, h);
-          resolve(canvas.toDataURL("image/jpeg", 0.85));
-        };
-        img.onerror = () => resolve(e.target.result);
-        img.src = e.target.result;
-      };
-      reader.onerror = () => resolve("");
-      reader.readAsDataURL(file);
-    });
-  }
-
-  window.handleHeroUpload = async function (event, slotIdx) {
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
-    try {
-      showToast(`Mengompresi foto ${file.name}...`, "info");
-
-      const dataUrl = await safeCompressOrRead(file, 1600);
-      if (!dataUrl) {
-        throw new Error("Gagal membaca berkas gambar.");
-      }
-
-      const inputUrl = document.getElementById(`inputHeroFoto${slotIdx}`);
-      const thumb = document.getElementById(`thumbHeroFoto${slotIdx}`);
-      if (inputUrl) {
-        inputUrl.value = dataUrl;
-        inputUrl.dispatchEvent(new Event("input", { bubbles: true }));
-      }
-      if (thumb) thumb.src = dataUrl;
-
-      adminHeroPreviewIdx = slotIdx - 1;
-      updateHeroAdminPreviews();
-      showToast(`Foto #${slotIdx} siap! Klik 'Simpan Pengaturan Slider Hero' di bawah.`, "success");
-    } catch (err) {
-      showToast(`Gagal mengunggah foto: ${err.message}`, "error");
-    }
-  };
-
-  window.resetHeroSlot = function (slotIdx) {
-    const def = DEFAULT_HERO_SLIDES[slotIdx - 1];
-    const inputUrl = document.getElementById(`inputHeroFoto${slotIdx}`);
-    const inputTitle = document.getElementById(`inputHeroFoto${slotIdx}Title`);
-    const thumb = document.getElementById(`thumbHeroFoto${slotIdx}`);
-    if (inputUrl) {
-      inputUrl.value = def.foto;
-      inputUrl.dispatchEvent(new Event("input", { bubbles: true }));
-    }
-    if (inputTitle) {
-      inputTitle.value = def.title;
-      inputTitle.dispatchEvent(new Event("input", { bubbles: true }));
-    }
-    if (thumb) thumb.src = def.foto;
-    adminHeroPreviewIdx = slotIdx - 1;
-    updateHeroAdminPreviews();
-    showToast(`Foto #${slotIdx} direset ke gambar standar sekolah.`, "info");
-  };
-
-  // ==========================================
   // 6. MODUL PENDAFTAR SPMB
   // ==========================================
   const AppPendaftar = {
@@ -1221,6 +1049,9 @@
       document.getElementById("mPendaftarNomor").textContent = `Pendaftaran: ${p.nomorPendaftaran}`;
       const body = document.getElementById("mPendaftarBody");
 
+      const cleanHp = String(p.hp || "").replace(/\D/g, "");
+      const waNumber = cleanHp.startsWith("0") ? "62" + cleanHp.slice(1) : cleanHp;
+
       body.innerHTML = `
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.9rem;">
           <div><span style="color: var(--text-muted);">Nama Calon Murid:</span><br><strong>${escapeHtml(p.namaMurid)}</strong></div>
@@ -1228,7 +1059,7 @@
           <div><span style="color: var(--text-muted);">Tempat, Tgl Lahir:</span><br>${escapeHtml(p.tempatLahir)}, ${p.tanggalLahir}</div>
           <div><span style="color: var(--text-muted);">Jenis Kelamin:</span><br>${escapeHtml(p.jenisKelamin)}</div>
           <div><span style="color: var(--text-muted);">Nama Orang Tua/Wali:</span><br><strong>${escapeHtml(p.namaOrtu)}</strong></div>
-          <div><span style="color: var(--text-muted);">No. WhatsApp / HP:</span><br><a href="https://wa.me/${String(p.hp).replace(/\D/g, '')}" target="_blank">${escapeHtml(p.hp)} 💬</a></div>
+          <div><span style="color: var(--text-muted);">No. WhatsApp / HP:</span><br><a href="https://wa.me/${waNumber}" target="_blank" style="color: #16a34a; font-weight: 700; text-decoration: none;">${escapeHtml(p.hp)} 💬</a></div>
           <div style="grid-column: 1/-1;"><span style="color: var(--text-muted);">Alamat Sesuai KK:</span><br>${escapeHtml(p.alamat)}</div>
           <div><span style="color: var(--text-muted);">Asal TK/PAUD:</span><br>${escapeHtml(p.asalTk || '-')}</div>
           <div><span style="color: var(--text-muted);">Waktu Masuk:</span><br>${p.waktuDaftar}</div>
@@ -1257,7 +1088,80 @@
           <label class="form-label">Catatan Admin / Verifikator:</label>
           <textarea id="modalCatatanAdmin" rows="2" class="form-control" placeholder="Tuliskan catatan hasil verifikasi berkas...">${escapeHtml(p.catatanAdmin || '')}</textarea>
         </div>
+
+        <!-- Modul WhatsApp Blast & Notifikasi Otomatis -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius); padding: 1rem; margin-top: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+            <strong style="color: #166534; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>💬</span> Notifikasi WhatsApp ke Wali Murid
+            </strong>
+            <span style="font-size: 0.78rem; color: #15803d; font-weight: 600;">Tujuan: ${escapeHtml(p.hp)}</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0.6rem;">
+            <label class="form-label" style="font-size: 0.8rem; color: #166534;">Template Pesan:</label>
+            <select id="waTemplateSelect" class="form-control" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;">
+              <option value="diterima">🟢 Pemberitahuan Diterima (Lulus Verifikasi)</option>
+              <option value="perbaikan">🟡 Pemberitahuan Perbaikan / Kelengkapan Berkas</option>
+              <option value="verifikasi_fisik">📅 Undangan Verifikasi Fisik di Sekolah</option>
+              <option value="kustom">✏️ Pesan Kustom Bebas</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <textarea id="waMessagePreview" rows="4" class="form-control" style="font-size: 0.82rem; font-family: inherit; line-height: 1.4; background: #ffffff;"></textarea>
+          </div>
+
+          <button type="button" id="btnSendWaToOrtu" class="btn btn-sm" style="background: #22c55e; color: #ffffff; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border: none; cursor: pointer; padding: 0.6rem; border-radius: 6px;">
+            <span>💬</span> Kirim Notifikasi via WhatsApp Web / App
+          </button>
+        </div>
       `;
+
+      // Helper update pesan WhatsApp template
+      const updateWaTemplate = (tplKey) => {
+        const txtEl = document.getElementById("waMessagePreview");
+        if (!txtEl) return;
+        const currentCatatan = document.getElementById("modalCatatanAdmin").value.trim();
+
+        if (tplKey === "diterima") {
+          txtEl.value = `Yth. Bapak/Ibu ${p.namaOrtu},\n\nKami Panitia SPMB UPTD Satuan Pendidikan SDN Sumberejo 04 Ambulu menginformasikan bahwa pendaftaran calon peserta didik:\nNama: ${p.namaMurid}\nNo. Registrasi: ${p.nomorPendaftaran}\n\nDinyatakan DITERIMA. Silakan membawa lembar cetak bukti pendaftaran dan berkas fisik (KK, Akta Kelahiran, pas foto) saat daftar ulang ke kantor sekolah.\n\nTerima kasih.\nPanitia SPMB SDN Sumberejo 04`;
+        } else if (tplKey === "perbaikan") {
+          txtEl.value = `Yth. Bapak/Ibu ${p.namaOrtu},\n\nTerkait pendaftaran calon peserta didik atas nama ${p.namaMurid} (No. Registrasi: ${p.nomorPendaftaran}) di SDN Sumberejo 04 Ambulu, terdapat catatan berkas yang perlu dilengkapi/diperbaiki:\n👉 "${currentCatatan || 'Mohon lengkapi fotokopi KK / Akta Kelahiran yang jelas'}"\n\nMohon segera melengkapi ke pihak panitia. Terima kasih.`;
+        } else if (tplKey === "verifikasi_fisik") {
+          txtEl.value = `Yth. Bapak/Ibu ${p.namaOrtu},\n\nKami mengundang Bapak/Ibu hadir ke kantor UPTD Satuan Pendidikan SDN Sumberejo 04 Ambulu bersama calon peserta didik ${p.namaMurid} (No: ${p.nomorPendaftaran}) untuk verifikasi berkas fisik dan pengukuran seragam.\nJam Layanan: Senin - Jumat, 07:00 - 12:00 WIB.\n\nTerima kasih.\nPanitia SPMB`;
+        } else {
+          txtEl.value = `Yth. Bapak/Ibu ${p.namaOrtu},\n\n[Tulis pesan informasi sekolah di sini]\n\nSalam hormat,\nSDN Sumberejo 04 Ambulu`;
+        }
+      };
+
+      const selectWaTpl = document.getElementById("waTemplateSelect");
+      if (selectWaTpl) {
+        selectWaTpl.value = p.status === "diterima" ? "diterima" : (p.status === "diproses" ? "verifikasi_fisik" : "diterima");
+        updateWaTemplate(selectWaTpl.value);
+        selectWaTpl.onchange = (e) => updateWaTemplate(e.target.value);
+      }
+
+      const modalCatatanEl = document.getElementById("modalCatatanAdmin");
+      if (modalCatatanEl) {
+        modalCatatanEl.oninput = () => {
+          if (selectWaTpl && selectWaTpl.value === "perbaikan") {
+            updateWaTemplate("perbaikan");
+          }
+        };
+      }
+
+      const btnSendWa = document.getElementById("btnSendWaToOrtu");
+      if (btnSendWa) {
+        btnSendWa.onclick = () => {
+          const msg = document.getElementById("waMessagePreview").value.trim();
+          if (!msg) {
+            showToast("Teks pesan WhatsApp tidak boleh kosong.", "error");
+            return;
+          }
+          window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, "_blank");
+        };
+      }
 
       document.getElementById("modalDetailPendaftar").classList.add("active");
 
@@ -1282,6 +1186,11 @@
           showToast(`Status pendaftaran ${p.nomorPendaftaran} berhasil diubah!`, "success");
           AppPendaftar.closeModal();
           loadPendaftarTable();
+          renderDashboard({
+            pendaftar: AppState.pendaftarList,
+            config: AppState.siteConfig,
+            collections: AppState.collections
+          });
         } catch (e) {
           showToast("Gagal memperbarui status: " + e.message, "error");
         }
@@ -1372,55 +1281,190 @@
         </html>
       `);
       printWin.document.close();
+    },
+
+    cetakRekap: function () {
+      const list = AppState.pendaftarList || [];
+      if (list.length === 0) {
+        showToast("Belum ada data pendaftar untuk dicetak.", "error");
+        return;
+      }
+      const cfg = AppState.siteConfig || {};
+      const printWin = window.open("", "_blank", "width=1050,height=800");
+
+      const rowsHtml = list.map((p, idx) => `
+        <tr>
+          <td style="text-align: center;">${idx + 1}</td>
+          <td><code>${escapeHtml(p.nomorPendaftaran)}</code></td>
+          <td><strong>${escapeHtml(p.namaMurid)}</strong></td>
+          <td>${escapeHtml(p.nik || "-")}</td>
+          <td style="text-align: center;">${p.jenisKelamin === 'L' ? 'L' : (p.jenisKelamin === 'P' ? 'P' : escapeHtml(p.jenisKelamin || '-'))}</td>
+          <td>${escapeHtml(p.tempatLahir || "")}, ${escapeHtml(p.tanggalLahir || "")}</td>
+          <td>${escapeHtml(p.namaOrtu || "-")}</td>
+          <td>${escapeHtml(p.hp || "-")}</td>
+          <td><small>${escapeHtml(p.alamat || "-")}</small></td>
+          <td style="text-align: center; font-weight: bold; text-transform: uppercase;">${escapeHtml(p.status || "baru")}</td>
+        </tr>
+      `).join("");
+
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Rekapitulasi Pendaftar SPMB - SDN Sumberejo 04 Ambulu</title>
+          <style>
+            @page { size: landscape; margin: 1cm; }
+            body { font-family: 'Times New Roman', Times, serif; padding: 1.5rem; color: #000; line-height: 1.3; font-size: 11pt; }
+            .kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 0.6rem; margin-bottom: 1.2rem; }
+            .kop h3 { margin: 0; font-size: 1.15rem; text-transform: uppercase; font-weight: normal; }
+            .kop h2 { margin: 0.2rem 0; font-size: 1.4rem; text-transform: uppercase; }
+            .kop p { margin: 0; font-size: 0.9rem; font-style: italic; }
+            .title { text-align: center; margin: 1rem 0 0.25rem; font-weight: bold; text-decoration: underline; font-size: 1.25rem; text-transform: uppercase; }
+            .sub-title { text-align: center; margin-bottom: 1.2rem; font-size: 0.95rem; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+            th, td { border: 1px solid #000; padding: 0.4rem 0.5rem; vertical-align: middle; font-size: 9.5pt; }
+            th { background: #f0f0f0; text-align: center; font-weight: bold; }
+            .ttd-wrap { display: flex; justify-content: space-between; margin-top: 2rem; page-break-inside: avoid; }
+            .ttd-box { text-align: center; width: 40%; }
+            .ttd-space { height: 70px; }
+            @media print { body { padding: 0; } }
+          </style>
+        </head>
+        <body>
+          <div class="kop">
+            <h3>PEMERINTAH KABUPATEN JEMBER &bull; DINAS PENDIDIKAN</h3>
+            <h2>UPTD SATUAN PENDIDIKAN ${escapeHtml(cfg.namaSekolah || "SD NEGERI SUMBEREJO 04 AMBULU")}</h2>
+            <p>${escapeHtml(cfg.alamat || "Jl. Lapangan No. 88 Krajan Kidul, Desa Sumberejo, Kec. Ambulu, Kab. Jember")} &bull; Telp: ${escapeHtml(cfg.telepon || "-")} &bull; Email: ${escapeHtml(cfg.email || "-")}</p>
+          </div>
+
+          <div class="title">BUKU INDUK / REKAPITULASI PENDAFTARAN PESERTA DIDIK BARU (SPMB)</div>
+          <div class="sub-title">Tahun Ajaran 2026/2027 &bull; Total Terdaftar: <strong>${list.length} Calon Murid</strong> &bull; Dicetak: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 30px;">No</th>
+                <th>No. Registrasi</th>
+                <th>Nama Calon Murid</th>
+                <th>NIK</th>
+                <th style="width: 35px;">L/P</th>
+                <th>Tempat, Tanggal Lahir</th>
+                <th>Nama Wali</th>
+                <th>No. HP / WA</th>
+                <th>Alamat</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+
+          <div class="ttd-wrap">
+            <div class="ttd-box">
+              <p>Mengetahui,<br>Kepala UPTD Satuan Pendidikan<br>${escapeHtml(cfg.namaSekolah || "SDN Sumberejo 04 Ambulu")}</p>
+              <div class="ttd-space"></div>
+              <p><strong>( .................................................... )</strong><br>NIP. .............................................</p>
+            </div>
+            <div class="ttd-box">
+              <p>Ambulu, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}<br>Ketua Panitia SPMB,</p>
+              <div class="ttd-space"></div>
+              <p><strong>( .................................................... )</strong><br>NIP. .............................................</p>
+            </div>
+          </div>
+
+          <script>
+            window.onload = function() { window.print(); };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
     }
   };
   window.AppPendaftar = AppPendaftar;
 
   function initPendaftarEvents() {
-    document.getElementById("filterStatusPendaftar").addEventListener("change", loadPendaftarTable);
-    document.getElementById("searchPendaftar").addEventListener("input", loadPendaftarTable);
-    document.getElementById("btnRefreshPendaftar").addEventListener("click", async () => {
-      showToast("Memuat ulang data pendaftar...");
-      await loadAllData();
-      loadPendaftarTable();
-    });
+    const fStatus = document.getElementById("filterStatusPendaftar");
+    if (fStatus) fStatus.addEventListener("change", loadPendaftarTable);
 
-    document.getElementById("btnExportCsv").addEventListener("click", exportPendaftarCsv);
+    const fGender = document.getElementById("filterGenderPendaftar");
+    if (fGender) fGender.addEventListener("change", loadPendaftarTable);
+
+    const sPendaftar = document.getElementById("searchPendaftar");
+    if (sPendaftar) sPendaftar.addEventListener("input", loadPendaftarTable);
+
+    const btnRef = document.getElementById("btnRefreshPendaftar");
+    if (btnRef) {
+      btnRef.addEventListener("click", async () => {
+        showToast("Memuat ulang data pendaftar...");
+        await loadAllData();
+        loadPendaftarTable();
+      });
+    }
+
+    const btnExp = document.getElementById("btnExportCsv");
+    if (btnExp) btnExp.addEventListener("click", exportPendaftarCsv);
   }
 
   function loadPendaftarTable() {
     const tbody = document.getElementById("tablePendaftarBody");
-    const filterStatus = document.getElementById("filterStatusPendaftar").value;
-    const query = document.getElementById("searchPendaftar").value.toLowerCase().trim();
+    const filterStatus = document.getElementById("filterStatusPendaftar") ? document.getElementById("filterStatusPendaftar").value : "";
+    const filterGender = document.getElementById("filterGenderPendaftar") ? document.getElementById("filterGenderPendaftar").value : "";
+    const query = document.getElementById("searchPendaftar") ? document.getElementById("searchPendaftar").value.toLowerCase().trim() : "";
 
-    let list = AppState.pendaftarList;
+    let list = AppState.pendaftarList || [];
     if (filterStatus) {
       list = list.filter((p) => p.status === filterStatus);
+    }
+    if (filterGender) {
+      list = list.filter((p) => {
+        const g = String(p.jenisKelamin || "").toUpperCase();
+        return filterGender === "L" ? (g === "L" || g.startsWith("LAKI")) : (g === "P" || g.startsWith("PEREM"));
+      });
     }
     if (query) {
       list = list.filter((p) => (p.namaMurid && p.namaMurid.toLowerCase().includes(query)) || (p.nomorPendaftaran && p.nomorPendaftaran.toLowerCase().includes(query)));
     }
 
+    const infoEl = document.getElementById("counterPendaftarInfo");
+    if (infoEl) {
+      infoEl.textContent = `Menampilkan ${list.length} dari ${AppState.pendaftarList.length} pendaftar`;
+    }
+
     if (list.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">Tidak ada pendaftar yang sesuai.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">Tidak ada pendaftar yang sesuai filter.</td></tr>`;
       return;
     }
 
     tbody.innerHTML = list
       .map(
-        (p) => `
+        (p) => {
+          const cleanHp = String(p.hp || "").replace(/\D/g, "");
+          const waNumber = cleanHp.startsWith("0") ? "62" + cleanHp.slice(1) : cleanHp;
+          return `
       <tr>
         <td><code>${p.nomorPendaftaran}</code></td>
         <td><strong>${escapeHtml(p.namaMurid)}</strong></td>
         <td>${p.waktuDaftar || '-'}</td>
         <td>${escapeHtml(p.namaOrtu)}</td>
-        <td>${escapeHtml(p.hp)}</td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <span>${escapeHtml(p.hp)}</span>
+            <a href="https://wa.me/${waNumber}" target="_blank" class="btn btn-outline btn-sm" title="Chat WhatsApp langsung" style="color: #16a34a; border-color: #86efac; padding: 0.15rem 0.45rem; text-decoration: none; font-size: 0.8rem;">💬</a>
+          </div>
+        </td>
         <td><span class="badge badge-${p.status || 'baru'}">${p.status || 'baru'}</span></td>
         <td>
-          <button class="btn btn-primary btn-sm" onclick="AppPendaftar.viewDetail('${p.nomorPendaftaran}')">Detail & Verifikasi</button>
+          <div style="display: flex; gap: 0.35rem;">
+            <button class="btn btn-primary btn-sm" onclick="AppPendaftar.viewDetail('${p.nomorPendaftaran}')">Detail & Verifikasi</button>
+            <button class="btn btn-outline btn-sm" title="Cetak Bukti" onclick="AppPendaftar.cetakBukti('${p.nomorPendaftaran}')">🖨️</button>
+          </div>
         </td>
       </tr>
-    `
+    `;
+        }
       )
       .join("");
   }
@@ -1479,6 +1523,60 @@
     showToast("Berkas cadangan seluruh database sekolah (JSON) berhasil diunduh!", "success");
   }
   window.backupDatabaseJson = backupDatabaseJson;
+
+  async function restoreDatabaseJson(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    if (!confirm(`Apakah Anda yakin ingin memulihkan database dari file "${file.name}"?\nData saat ini akan diperbarui sesuai isi berkas cadangan.`)) {
+      event.target.value = "";
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      if (!data.identitasSekolah && !data.koleksiData && !data.pendaftarSpmb) {
+        throw new Error("Format berkas JSON cadangan tidak valid atau tidak dikenali.");
+      }
+
+      showToast("Sedang memulihkan database...", "info");
+
+      if (data.identitasSekolah) {
+        AppState.siteConfig = { ...AppState.siteConfig, ...data.identitasSekolah };
+        localStorage.setItem("sdn_site_config", JSON.stringify(AppState.siteConfig));
+        populateForms(AppState.siteConfig);
+        const items = Object.entries(AppState.siteConfig).map(([kunci, nilai]) => ({ kunci, nilai }));
+        apiCall("admin_saveKonten", { items }).catch(() => {});
+      }
+
+      if (data.koleksiData) {
+        AppState.collections = data.koleksiData;
+        Object.keys(data.koleksiData).forEach((sheetName) => {
+          renderCollectionTable(sheetName, data.koleksiData[sheetName] || []);
+        });
+      }
+
+      if (data.pendaftarSpmb && Array.isArray(data.pendaftarSpmb)) {
+        AppState.pendaftarList = data.pendaftarSpmb;
+        loadPendaftarTable();
+      }
+
+      renderDashboard({
+        pendaftar: AppState.pendaftarList,
+        config: AppState.siteConfig,
+        collections: AppState.collections
+      });
+
+      showToast("Seluruh database berhasil dipulihkan dari cadangan JSON!", "success");
+    } catch (err) {
+      showToast("Gagal memulihkan database: " + err.message, "error");
+    } finally {
+      event.target.value = "";
+    }
+  }
+  window.restoreDatabaseJson = restoreDatabaseJson;
 
   // ==========================================
   // 7. PUSTAKA MEDIA & KOMPRESI UNGGAH
@@ -1586,7 +1684,18 @@
       renderCollectionTable(sheetName, AppState.collections[sheetName]);
     } catch (err) {
       if (!Array.isArray(AppState.collections[sheetName]) || AppState.collections[sheetName].length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--danger); padding: 1.5rem;">Gagal memuat: ${escapeHtml(err.message)}</td></tr>`;
+        const keyMapFallback = { Pengumuman: "sdn_pengumuman_list", Guru: "sdn_guru_list", Ekstrakurikuler: "sdn_ekskul_list", Fasilitas: "sdn_fasilitas_list", Galeri: "sdn_galeri_list" };
+        let cachedFb = null;
+        try {
+          const rawFb = localStorage.getItem(keyMapFallback[sheetName]);
+          if (rawFb) cachedFb = JSON.parse(rawFb);
+        } catch (e) {}
+        if (Array.isArray(cachedFb) && cachedFb.length > 0) {
+          AppState.collections[sheetName] = cachedFb;
+          renderCollectionTable(sheetName, cachedFb);
+        } else {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--danger); padding: 1.5rem;">Gagal memuat: ${escapeHtml(err.message)}</td></tr>`;
+        }
       }
     }
   }
@@ -2154,30 +2263,8 @@
 
         try {
           // Kompresi di browser (Mendukung hingga 50 MB, optimal untuk web & database)
-          let dataUrl = "";
-          let compName = file.name;
-          let compSize = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
-          let compMime = file.type || "image/jpeg";
-          let compBase64 = "";
-
-          if (window.ImageProcessor && typeof window.ImageProcessor.compress === "function") {
-            try {
-              const compressed = await window.ImageProcessor.compress(file);
-              dataUrl = compressed.dataUrl || `data:${compressed.mime || "image/jpeg"};base64,${compressed.base64}`;
-              compName = compressed.name || file.name;
-              compSize = compressed.sizeFormatted || compSize;
-              compMime = compressed.mime || compMime;
-              compBase64 = compressed.base64 || "";
-            } catch (e) {
-              dataUrl = await safeCompressOrRead(file, 1400);
-            }
-          } else {
-            dataUrl = await safeCompressOrRead(file, 1400);
-          }
-
-          if (!compBase64 && dataUrl.includes(",")) {
-            compBase64 = dataUrl.split(",")[1];
-          }
+          const compressed = await ImageProcessor.compress(file);
+          const dataUrl = compressed.dataUrl || `data:${compressed.mime || "image/jpeg"};base64,${compressed.base64}`;
 
           // Pasang dataUrl ke hidden input dan pratinjau agar gambar instan aktif dan tidak pernah ter-reset ke default
           hiddenVal.value = dataUrl;
@@ -2422,23 +2509,81 @@
     const tbody = document.getElementById("tableLogBody");
     try {
       const logs = await apiCall("admin_listLog");
-      tbody.innerHTML = (logs || [])
-        .map(
-          (l) => `
-        <tr>
-          <td><small>${l.waktu}</small></td>
-          <td><strong>${escapeHtml(l.pengguna)}</strong></td>
-          <td><code>${escapeHtml(l.aksi)}</code></td>
-          <td>${escapeHtml(l.modul)}</td>
-          <td>${escapeHtml(l.ringkasan)}</td>
-        </tr>
-      `
-        )
-        .join("");
+      AppState.auditLogs = logs || [];
+      renderAuditLogs(AppState.auditLogs);
     } catch (e) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">Gagal memuat log aktivitas.</td></tr>`;
+      if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">Gagal memuat log aktivitas.</td></tr>`;
     }
   }
+
+  function renderAuditLogs(logs) {
+    const tbody = document.getElementById("tableLogBody");
+    if (!tbody) return;
+
+    if (!logs || logs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Tidak ada aktivitas yang sesuai.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = logs
+      .map(
+        (l) => `
+      <tr>
+        <td><small>${l.waktu || '-'}</small></td>
+        <td><strong>${escapeHtml(l.pengguna || '-')}</strong></td>
+        <td><code>${escapeHtml(l.aksi || '-')}</code></td>
+        <td>${escapeHtml(l.modul || '-')}</td>
+        <td>${escapeHtml(l.ringkasan || '-')}</td>
+      </tr>
+    `
+      )
+      .join("");
+  }
+
+  function filterAuditLog(query) {
+    const q = (query || "").toLowerCase().trim();
+    const list = AppState.auditLogs || [];
+    if (!q) {
+      renderAuditLogs(list);
+      return;
+    }
+    const filtered = list.filter((l) =>
+      (l.pengguna && l.pengguna.toLowerCase().includes(q)) ||
+      (l.aksi && l.aksi.toLowerCase().includes(q)) ||
+      (l.modul && l.modul.toLowerCase().includes(q)) ||
+      (l.ringkasan && l.ringkasan.toLowerCase().includes(q))
+    );
+    renderAuditLogs(filtered);
+  }
+  window.filterAuditLog = filterAuditLog;
+
+  function exportAuditLogCsv() {
+    const list = AppState.auditLogs || [];
+    if (list.length === 0) {
+      showToast("Belum ada data log aktivitas untuk diunduh.", "error");
+      return;
+    }
+
+    const headers = ["Waktu", "Pengguna", "Aksi", "Modul", "Keterangan Ringkas"];
+    const rows = list.map((l) => [
+      `"${l.waktu || ''}"`,
+      `"${l.pengguna || ''}"`,
+      `"${l.aksi || ''}"`,
+      `"${l.modul || ''}"`,
+      `"${(l.ringkasan || '').replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.href = encodedUri;
+    link.download = `Log_Aktivitas_SDN_Sumberejo_${new Date().toISOString().split("T")[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast("Log aktivitas berhasil diunduh dalam format CSV!", "success");
+  }
+  window.exportAuditLogCsv = exportAuditLogCsv;
 
   // ==========================================
   // 10. HELPER NOTIFIKASI TOAST & SANITASI

@@ -35,6 +35,71 @@
     return await fallbackRes.json();
   }
 
+  function extractActionFromBundle(bundle, action, params = {}) {
+    if (!bundle || typeof bundle !== "object") return null;
+    const cols = bundle.collections || {};
+    switch (action) {
+      case "getSiteBundle":
+        return bundle;
+      case "getSiteConfig":
+        return bundle.config || {};
+      case "getPengumuman": {
+        const limit = Math.max(1, parseInt(params.limit, 10) || 10);
+        const list = Array.isArray(bundle.pengumuman)
+          ? bundle.pengumuman
+          : Array.isArray(cols.Pengumuman)
+          ? cols.Pengumuman.filter((r) => r.tampil === true || String(r.tampil).toUpperCase() === "TRUE")
+          : [];
+        return list.slice(0, limit);
+      }
+      case "getGuru":
+        return Array.isArray(bundle.guru)
+          ? bundle.guru
+          : Array.isArray(cols.Guru)
+          ? cols.Guru.filter((r) => r.tampil === true || String(r.tampil).toUpperCase() === "TRUE")
+          : [];
+      case "getEkskul":
+        return Array.isArray(bundle.ekskul)
+          ? bundle.ekskul
+          : Array.isArray(cols.Ekstrakurikuler)
+          ? cols.Ekstrakurikuler.filter((r) => r.tampil === true || String(r.tampil).toUpperCase() === "TRUE")
+          : [];
+      case "getFasilitas":
+        return Array.isArray(bundle.fasilitas)
+          ? bundle.fasilitas
+          : Array.isArray(cols.Fasilitas)
+          ? cols.Fasilitas.filter((r) => r.tampil === true || String(r.tampil).toUpperCase() === "TRUE")
+          : [];
+      case "getGaleri": {
+        const limit = Math.max(1, parseInt(params.limit, 10) || 20);
+        const list = Array.isArray(bundle.galeri)
+          ? bundle.galeri
+          : Array.isArray(cols.Galeri)
+          ? cols.Galeri.filter((r) => r.tampil === true || String(r.tampil).toUpperCase() === "TRUE")
+          : [];
+        return list.slice(0, limit);
+      }
+      case "cekStatus": {
+        const nomor = String(params.nomor || "").trim().toUpperCase();
+        const pendaftar = Array.isArray(bundle.pendaftar) ? bundle.pendaftar : [];
+        const found = pendaftar.find(
+          (p) => String(p.nomorPendaftaran || "").trim().toUpperCase() === nomor
+        );
+        if (!found) {
+          return { ditemukan: false, message: "Nomor pendaftaran tidak ditemukan." };
+        }
+        return {
+          ditemukan: true,
+          nomorPendaftaran: found.nomorPendaftaran,
+          namaMurid: found.namaMurid,
+          status: found.status || "diproses"
+        };
+      }
+      default:
+        return null;
+    }
+  }
+
   /**
    * Panggilan HTTP GET publik secara REAL-TIME
    * @param {string} action Nama endpoint aksi
@@ -57,6 +122,25 @@
       });
 
       if (!json.ok) {
+        // Jika GAS lama hanya mendukung getSiteBundle, otomatis tarik getSiteBundle lalu ekstrak datanya
+        if (action !== "getSiteBundle" && fallback) {
+          const bundleQs = new URLSearchParams({ action: "getSiteBundle", _t: Date.now() }).toString();
+          const bundleJson = await fetchJsonWithFallback(
+            `${proxyUrl}?${bundleQs}`,
+            `${gasUrl}?${bundleQs}`,
+            {
+              method: "GET",
+              headers: { Accept: "application/json" },
+              cache: "no-store"
+            }
+          );
+          if (bundleJson && bundleJson.ok && bundleJson.data) {
+            const extracted = extractActionFromBundle(bundleJson.data, action, params);
+            if (extracted !== null) {
+              return extracted;
+            }
+          }
+        }
         throw new Error(json.message || "Permintaan API gagal diproses.");
       }
       return json.data;
